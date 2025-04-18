@@ -6,8 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Index - eNno Bootstrap Template</title>
     <meta name="description" content="">
-    <meta name="keywords" content="">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('TemplateLP/assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('TemplateLP/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
@@ -22,6 +22,9 @@
     <link href="{{ asset('TemplateLP/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('TemplateLP/assets/css/main.css') }}" rel="stylesheet">
+
+
+    @stack('css')
 
     </head>
 
@@ -40,7 +43,8 @@
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <div id="preloader"></div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('TemplateLP/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('TemplateLP/assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('TemplateLP/assets/vendor/aos/aos.js') }}"></script>
@@ -51,7 +55,7 @@
     <script src="{{ asset('TemplateLP/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
     <script src="{{ asset('TemplateLP/assets/js/main.js') }}"></script>
-
+    
 </body>
 
 </html>

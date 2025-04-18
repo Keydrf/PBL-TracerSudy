@@ -17,7 +17,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::group(['prefix' => 'Alumni'], function () {
+Route::group(['prefix' => 'alumni'], function () {
     Route::get('/', [AlumniController :: class, 'index']);
     Route::post('/list', [AlumniController :: class, 'list']);
     Route::get('/create', [AlumniController :: class, 'create' ]);

@@ -25,7 +25,29 @@
     <link href="{{asset('TemplateDashboard/assets/css/paper-dashboard.css?v=2.0.1')}}" rel="stylesheet" />
     <link href="{{asset('TemplateDashboard/assets/demo/demo.css')}}" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="{{ asset('TemplateLP/assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('TemplateLP/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+    <link href="{{ asset('TemplateLP/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('TemplateLP/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('TemplateLP/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('TemplateLP/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('TemplateLP/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('TemplateLP/assets/css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('TemplateDashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('TemplateDashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('TemplateDashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('TemplateDashboard/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    @stack('css')
 </head>
 
 <body class="">
@@ -65,6 +87,34 @@
             demo.initChartsPages();
         });
     </script>
+    <script src="{{ asset('TemplateDashboard/dist/js/demo.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    {{-- jquery-validation --}}
+    <script src="{{ asset('TemplateDashboard/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('TemplateDashboard/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('TemplateDashboard/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script>
+        // Untuk mengirimkan token Laravel CSRF pada setiap request ajax
+        $.ajaxSetup({ 
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+            } 
+        });
+    </script>
+    @stack('js')
 </body>
 
 </html>
