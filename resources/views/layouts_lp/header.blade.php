@@ -9,34 +9,34 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active">Survei Alumni</a></li>
-          <li><a href="#about">Survei Perusahaan</a></li>
-          <li><a href="#services">#</a></li>
-          <li><a href="#portfolio">#</a></li>
-          {{-- <li><a href="#team">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
-          <li><a href="#contact">Contact</a></li> --}}
+          <li><a href="/" class="active">Beranda</a></li>
+          <li><a href="/surveialumni" >Survei Alumni</a></li>
+          <li><a href="/surveiperusahaan">Survei Perusahaan</a></li>
+          <li><a href="/sebaranprofesi">Sebaran Profesi</a></li>
+          
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      {{-- <a class="btn-getstarted" href="index.html#about">Get Started</a> --}}
+
 
     </div>
+    <script>
+      // Ambil path URL saat ini
+      const currentPath = window.location.pathname;
+    
+      // Ambil semua link dalam navmenu
+      const navLinks = document.querySelectorAll('#navmenu a');
+    
+      // Loop semua link dan bandingkan dengan currentPath
+      navLinks.forEach(link => {
+        // Jika href cocok dengan path saat ini
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active'); // Tambahkan class active
+        } else {
+          link.classList.remove('active'); // Pastikan yang lain tidak active
+        }
+      });
+    </script>
+    
   </header>

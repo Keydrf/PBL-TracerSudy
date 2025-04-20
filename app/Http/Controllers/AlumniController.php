@@ -2,43 +2,96 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AlumniModel;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class AlumniController extends Controller
 {
     public function index()
     {
-        $kategori = AlumniModel::all();
-
         return view('adminalumni.index');
     }
 
     public function list(Request $request)
     {
-        $alumni = AlumniModel::select('program_studi', 'nim', 'nama', 'tanggal_lulus');
-
-        
+        $alumni = AlumniModel::select('alumni_id', 'program_studi', 'nim', 'nama', 'tanggal_lulus');
 
         return DataTables::of($alumni)
             ->addIndexColumn()
-            ->addColumn('aksi', function ($alumni) { // menambahkan kolom aksi
-                /*$btn = '<a href="'.url('/alu,ni/' . $alumni->barang_id).'" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="'.url('/alu,ni/' . $alumni->barang_id . '/edit').'"class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="'.
-                    url('/alu,ni/'.$alumni->barang_id).'">'
-                    . csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Kita yakit menghapus data ini?\');">Hapus</button></form>';*/
-                $btn = '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+            ->addColumn('aksi', function ($alumni) {
+                $btn = '<a href="' . url('/alumni/' . $alumni->alumni_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
                 $btn .= '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
-            ->rawColumns(['aksi']) // ada teks html
+            ->rawColumns(['aksi'])
             ->make(true);
+    }
+
+    public function create()
+    {
+        return view('adminalumni.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'program_studi' => 'required|string|max:100',
+            'nim' => 'required|string|max:10|unique:alumni,nim',
+            'nama' => 'required|string|unique:alumni,nama',
+            'tanggal_lulus' => 'required|date_format:Y-m-d\TH:i',
+        ]);
+
+        AlumniModel::create($request->all());
+
+        return redirect('/alumni')->with('success', 'Data alumni berhasil disimpan.');
+    }
+
+    public function edit(string $id)
+    {
+        $alumni = AlumniModel::findOrFail($id);
+        return view('adminalumni.edit', ['alumni' => $alumni]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'program_studi' => 'required|string|max:100',
+            'nim' => 'required|string|max:10|unique:alumni,nim,' . $id . ',alumni_id',
+            'nama' => 'required|string|unique:alumni,nama,' . $id . ',alumni_id',
+            'tanggal_lulus' => 'required|date_format:Y-m-d\TH:i',
+        ]);
+
+        $alumni = AlumniModel::findOrFail($id);
+        $alumni->update($request->all());
+
+        return redirect('/alumni')->with('success', 'Data alumni berhasil diubah');
+    }
+
+    public function confirm_ajax(string $id)
+    {
+        $alumni = AlumniModel::findOrFail($id);
+        return view('adminalumni.confirm_ajax', ['alumni' => $alumni]);
+    }
+
+    public function delete_ajax(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $alumni = AlumniModel::find($id);
+
+            if ($alumni) {
+                $alumni->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
     }
 }

@@ -34,7 +34,7 @@
 
     <main class="main">
 
-        @include('layouts_lp.landingpage')
+        @yield('content')
 
     </main>
 

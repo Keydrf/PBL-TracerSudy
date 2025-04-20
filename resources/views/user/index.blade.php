@@ -4,59 +4,60 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
   /* Tambahkan border ke seluruh tabel dan radius sudut */
-  #table-lulusan.table-bordered {
+  #table-admin.table-bordered {
       border-radius: 8px; /* Sesuaikan nilai radius sesuai keinginan Anda */
       overflow: hidden; /* Penting agar border-radius tidak "bocor" di dalam sel */
   }
 
-  #table-lulusan.table-bordered th,
-  #table-lulusan.table-bordered td {
+  #table-admin.table-bordered th,
+  #table-admin.table-bordered td {
       border: 1px solid #dee2e6;
       border-left: none; /* Hilangkan border kiri sel */
       border-right: none; /* Hilangkan border kanan sel */
   }
 
   /* Tambahkan border kiri dan kanan hanya pada baris pertama (header) */
-  #table-lulusan.table-bordered thead th:first-child,
-  #table-lulusan.table-bordered tbody tr:first-child td:first-child {
+  #table-admin.table-bordered thead th:first-child,
+  #table-admin.table-bordered tbody tr:first-child td:first-child {
       border-left: 1px solid #dee2e6;
   }
 
-  #table-lulusan.table-bordered thead th:last-child,
-  #table-lulusan.table-bordered tbody tr:first-child td:last-child {
+  #table-admin.table-bordered thead th:last-child,
+  #table-admin.table-bordered tbody tr:first-child td:last-child {
       border-right: 1px solid #dee2e6;
   }
 
   /* Tambahkan border bawah hanya pada header */
-  #table-lulusan.table-bordered thead th {
+  #table-admin.table-bordered thead th {
       border-bottom: 2px solid #dee2e6;
   }
 
   /* Style untuk header tabel */
-  #table-lulusan thead th {
+  #table-admin thead th {
       background-color: #84b5e5;
       color: white;
       white-space: nowrap;
   }
 
   /* Style untuk sel-sel tabel */
-  #table-lulusan td {
+  #table-admin td {
       vertical-align: middle;
   }
 
   /* Style untuk kolom nama */
-  #table-lulusan td:nth-child(4) { /* Kolom keempat (indeks 3) adalah Nama */
+  #table-admin td:nth-child(4) { /* Kolom keempat (indeks 3) adalah Nama */
       font-weight: bold;
   }
 
   /* Efek hover pada baris */
-  #table-lulusan tbody tr:hover {
+  #table-admin tbody tr:hover {
       background-color: #f0f0f0;
   }
 
   /* Style untuk tombol aksi */
-  #table-lulusan .btn-sm {
+  #table-admin .btn-sm {
       margin-right: 5px;
+
   }
   .btn-add{
     background-color: #84b5e5;
@@ -67,8 +68,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Data Lulusan</h4>
-                    <a href="{{ url('/alumni/create') }}" class="btn btn-sm btn-add">
+                    <h4 class="card-title"> Data Admin</h4>
+                    <a href="{{ url('/user/create') }}" class="btn btn-sm btn-add">
                         <i class="fas fa-plus"></i> Tambah
                     </a>
                 </div>
@@ -82,14 +83,13 @@
                     @endif
                     <div class="table-responsive">
                         
-                        <table class="table table-bordered table-sm table-striped table-hover" id="table-lulusan">
+                        <table class="table table-bordered table-sm table-striped table-hover" id="table-admin">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Program Studi</th>
-                                    <th>NIM</th>
+                                    <th>Level Nama</th>
+                                    <th>Username</th>
                                     <th>Nama</th>
-                                    <th>Tanggal Lulus</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -114,47 +114,34 @@
             });
         }
 
+        var dataUser;
         $(document).ready(function () {
-            const tableLulusan = $('#table-lulusan').DataTable({ // Menggunakan const dan nama variabel yang lebih deskriptif
+            dataUser = $('#table-admin').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('alumni/list') }}",
+                    url: "{{ url('user/list') }}",
                     type: "POST",
                     dataType: "json",
-                    headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }
+                    headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }, // Tambahkan CSRF header
+                    data: function (d) {
+                        d.level_id = $('#level_id').val();
+                    }
                 },
                 columns: [
-                    {
-                        data: null,
-                        className: "text-center",
-                        width: "5%",
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    { data: "program_studi", className: "" },
-                    { data: "nim", className: "" },
-                    { data: "nama", className: "" },
-                    { data: "tanggal_lulus", className: "" },
-                    {
-                        data: "aksi",
-                        className: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        width: "25%" // Sesuaikan lebar kolom aksi jika perlu
-                    }
+                    { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
+                    { data: "username", orderable: true, searchable: true },
+                    { data: "nama", orderable: true, searchable: true },
+                    { data: "level.level_nama", orderable: true, searchable: false },
+                    { data: "aksi", orderable: false, searchable: false }
                 ]
             });
 
-            // Anda bisa menambahkan filter jika diperlukan, contoh:
-            // $('#table-lulusan_filter input').unbind().bind('keyup', function (e) {
-            //     if (e.keyCode === 13) {
-            //         tableLulusan.search(this.value).draw();
-            //     }
-            // });
-        });
+            if ($('#level_id').length) {
+                $('#level_id').on('change', function () {
+                    dataUser.ajax.reload();
+                });
+            }
+        });     
     </script>
 @endpush

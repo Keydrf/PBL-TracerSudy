@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             KategoriProfesiSeeder::class,
             ProfesiSeeder::class,
             PerusahaanSeeder::class,
+            LevelSeeder::class,
             UserSeeder::class,
             SurveiAlumniSeeder::class,
             SurveiPerusahaanSeeder::class,
