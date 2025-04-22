@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfesiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,17 @@ Route::group(['prefix' => 'alumni'], function () {
     Route::put('/{id}', [AlumniController :: class, 'update']);
     Route::get('/{id}/delete_ajax', [AlumniController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Alumni ajax
     Route::delete('/{id}/delete_ajax', [AlumniController::class, 'delete_ajax']);
+});
+Route::group(['prefix' => 'profesi'], function () {
+    Route::get('/', [ProfesiController::class, 'index']);           // Menampilkan semua profesi
+    Route::get('/create', [ProfesiController::class, 'create']);    // Form untuk membuat profesi baru
+    Route::post('/', [ProfesiController::class, 'store']);          // Menyimpan profesi baru
+    Route::get('/{id}/edit', [ProfesiController::class, 'edit']);   // Form untuk mengedit profesi
+    Route::put('/{id}', [ProfesiController::class, 'update']);      // Mengupdate profesi
+    Route::get('/{id}', [ProfesiController::class, 'show']);        // Menampilkan detail profesi
+    Route::delete('/{id}', [ProfesiController::class, 'destroy']);  // Menghapus profesi
+    Route::delete('/profesi/{id}/delete_ajax', [ProfesiController::class, 'delete_ajax']);
+
 });
 
 Route::get('/', function () {
