@@ -62,15 +62,20 @@
     background-color: #84b5e5;
     color: #ffffff;
   }
+  .btn-import{
+    background-color: #84b5e5;
+    color: #ffffff;
+  }
 </style>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title"> Data Lulusan</h4>
-                    <a href="{{ url('/alumni/create') }}" class="btn btn-sm btn-add">
+                    <a href="{{ url('/alumni/create') }}" class="btn  btn-add">
                         <i class="fas fa-plus"></i> Tambah
                     </a>
+                    <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-import">Import Lulusan</button>
                 </div>
                 
                 <div class="card-body">

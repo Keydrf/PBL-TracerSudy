@@ -1,20 +1,6 @@
-<footer class="footer footer-black  footer-white ">
-    <div class="container-fluid">
-      <div class="row">
-        <nav class="footer-nav">
-          <ul>
-            <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-            <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-            <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-          </ul>
-        </nav>
-        <div class="credits ml-auto">
-          <span class="copyright">
-            © <script>
-              document.write(new Date().getFullYear())
-            </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-          </span>
-        </div>
-      </div>
+<footer class="footer">
+    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+      <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
+      <span class="float-none float-sm-end d-block mt-1 mt-sm-0 text-center">Copyright © 2023. All rights reserved.</span>
     </div>
   </footer>

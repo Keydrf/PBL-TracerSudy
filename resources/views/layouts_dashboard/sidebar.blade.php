@@ -1,80 +1,57 @@
-<div class="sidebar" data-color="white" data-active-color="danger">
-    <div class="logo">
-        <a href="https://www.creative-tim.com" class="simple-text logo-mini">
-            <div class="logo-image-small">
-                <img src="{{ asset('TemplateDashboard/assets/img/logo-small.png') }}" alt="Logo Small">
-            </div>
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">
+          <i class="mdi mdi-grid-large menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
         </a>
-        <a href="https://www.creative-tim.com" class="simple-text logo-normal">
-            Trace.Edu
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/level">
+          <i class="menu-icon mdi mdi-layers-outline"></i>
+          <span class="menu-title">Level</span>
         </a>
-    </div>
-    <div class="sidebar-wrapper">
-        <ul class="nav">
-            <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
-                <a href="{{ url('dashboard') }}">
-                    <i class="nc-icon nc-bank"></i>
-                    <p>Dashboard</p>
-                </a>
-            </li>
-            <li class="{{ request()->is('level') ? 'active' : '' }}">
-                <a href="{{ url('level') }}">
-                    <i class="nc-icon nc-key-25"></i>
-                    <p>Level</p>
-                </a>
-            </li>
-            <li class="{{ request()->is('user') ? 'active' : '' }}">
-                <a href="{{ url('user') }}">
-                    <i class="nc-icon nc-single-02"></i>
-                    <p>User</p>
-                </a>
-            </li>
-            <li class="{{ request()->is('alumni') ? 'active' : '' }}">
-                <a href="{{ url('alumni') }}">
-                    <i class="nc-icon nc-hat-3"></i>
-                    <p>Lulusan</p>
-                </a>
-            </li>
-            <li class="{{ request()->is('profesis*') ? 'active' : '' }}">
-                <a href="{{ url('profesis') }}">
-                    <i class="nc-icon nc-planet"></i>
-                    <p>Profesi</p>
-                </a>
-            </li>
-            <li class="{{ request()->is('laporans*') ? 'active' : '' }}">
-                <a href="{{ url('laporans') }}">
-                    <i class="nc-icon nc-paper"></i>
-                    <p>Laporan</p>
-                </a>
-            </li>
-            {{-- <li>
-                <a href="./user.html">
-                    <i class="nc-icon nc-single-02"></i>
-                    <p>User Profile</p>
-                </a>
-            </li> --}}
-            {{-- <li>
-                <a href="./tables.html">
-                    <i class="nc-icon nc-tile-56"></i>
-                    <p>Table List</p>
-                </a>
-            </li>
-            <li>
-                <a href="./typography.html">
-                    <i class="nc-icon nc-caps-small"></i>
-                    <p>Typography</p>
-                </a>
-            </li> --}}
-            {{-- <li class="active-pro">
-                <a href="./upgrade.html">
-                    <i class="nc-icon nc-spaceship"></i>
-                    <p>Upgrade to PRO</p>
-                </a>
-            </li> --}}
-        </ul>
-    </div>
-</div>
-<script>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/user">
+          <i class="menu-icon mdi mdi-account-circle-outline"></i>
+          <span class="menu-title">User</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/alumni">
+          <i class="mdi mdi-account-multiple menu-icon"></i>
+          <span class="menu-title">Alumni</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/kategori-profesi">
+          <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+          <span class="menu-title">Kategori Profesi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/profesi">
+          <i class="mdi mdi-account-tie menu-icon"></i>
+          <span class="menu-title">Profesi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/laporan">
+          <i class="mdi mdi-file-document menu-icon"></i>
+          <span class="menu-title">Laporan</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class="mdi mdi-logout menu-icon"></i>
+          <span class="menu-title">Logout</span>
+        </a>
+      </li>
+      
+    </ul>
+  </nav>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar-wrapper ul.nav li a');

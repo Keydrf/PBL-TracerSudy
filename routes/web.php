@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\KategoriProfesiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,10 @@ use App\Http\Controllers\UserController;
 */
 Route::get('/dashboard', function () {
     return view('dashboard');
+});
+
+Route::get('/admin', function () {
+    return view('layouts_admin.isi');
 });
 
 Route::get('/surveialumni', function () {
@@ -60,13 +65,31 @@ Route::group(['prefix' => 'alumni'], function () {
     Route::post('/list', [AlumniController :: class, 'list']);
     Route::get('/create', [AlumniController :: class, 'create' ]);
     Route::post('/', [AlumniController :: class, 'store']);
-    Route::get('/{id}', [AlumniController :: class, 'show']);
+    // Route::get('/{id}', [AlumniController :: class, 'show']);
     Route::get('/{id}/edit', [AlumniController :: class, 'edit' ]);
     Route::put('/{id}', [AlumniController :: class, 'update']);
     Route::get('/{id}/delete_ajax', [AlumniController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Alumni ajax
     Route::delete('/{id}/delete_ajax', [AlumniController::class, 'delete_ajax']);
+    
+    Route::post('/import_ajax', [AlumniController::class, 'import_ajax']);
+    // Route::get('/import', [AlumniController::class, 'import']);
+    // Route::post('/import-', [AlumniController::class, 'import']);
+});
+
+Route::group(['prefix' => 'kategori-profesi'], function () {
+    Route::get('/', [KategoriProfesiController :: class, 'index']);
+    Route::post('/list', [KategoriProfesiController :: class, 'list']);
+    Route::get('/create', [KategoriProfesiController :: class, 'create' ]);
+    Route::post('/', [KategoriProfesiController :: class, 'store']);
+    Route::get('/{id}', [KategoriProfesiController :: class, 'show']);
+    Route::get('/{id}/edit', [KategoriProfesiController :: class, 'edit' ]);
+    Route::put('/{id}', [KategoriProfesiController :: class, 'update']);
+    Route::get('/{id}/delete_ajax', [KategoriProfesiController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete KategoriProfesi ajax
+    Route::delete('/{id}/delete_ajax', [KategoriProfesiController::class, 'delete_ajax']);
 });
 
 Route::get('/', function () {
     return view('landingpage');
 });
+
+Route::get('/alumni/import', [AlumniController::class, 'import']);

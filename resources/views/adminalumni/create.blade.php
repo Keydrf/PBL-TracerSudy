@@ -9,7 +9,7 @@
         <div class="card-body">
             <form method="POST" action="{{ url('alumni') }}" class="form-horizontal">
                 @csrf
-
+                
                 <div class="form-group row">
                     <label class="col-md-2 control-label col-form-label">Program Studi</label>
                     <div class="col-md-10">

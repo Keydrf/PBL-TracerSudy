@@ -2,119 +2,109 @@
 <html lang="en">
 
 <head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Star Admin2 </title>
+  <!-- plugins:css -->
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.3/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <meta charset="utf-8" />
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/feather/feather.css') }}">
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/ti-icons/css/themify-icons.css') }}">
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/typicons/typicons.css') }}">
+  <link rel="stylesheet"
+    href="{{ asset('TemplateAdmin/dist/assets/vendors/simple-line-icons/css/simple-line-icons.css') }}">
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/css/vendor.bundle.base.css') }}">
+  <link rel="stylesheet"
+    href="{{ asset('TemplateAdmin/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet"
+    href="{{ asset('TemplateAdmin/dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('TemplateAdmin/dist/assets/js/select.dataTables.min.css') }}">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/css/style.css') }}">
+  <!-- endinject -->
 
-    <link rel="apple-touch-icon" sizes="76x76" href="{{asset('TemplateDashboard/assets/img/apple-icon.png')}}">
-
-    <link rel="icon" type="image/png" href="{{asset('TemplateDashboard/assets/img/favicon.png')}}">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Paper Dashboard 2 by Creative Tim
-    </title>
-
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{asset('TemplateDashboard/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
-
-    <link href="{{asset('TemplateDashboard/assets/css/paper-dashboard.css?v=2.0.1')}}" rel="stylesheet" />
-    <link href="{{asset('TemplateDashboard/assets/demo/demo.css')}}" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('TemplateLP/assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('TemplateLP/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-
-    <link href="{{ asset('TemplateLP/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('TemplateLP/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('TemplateLP/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('TemplateLP/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('TemplateLP/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('TemplateLP/assets/css/main.css') }}" rel="stylesheet">
-    <link href="{{ asset('TemplateDashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('TemplateDashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('TemplateDashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('TemplateDashboard/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-
-    @stack('css')
+  @stack('css')
 </head>
 
-<body class="">
-    <div class="wrapper ">
-        @include('layouts_dashboard.sidebar')
-        <div class="main-panel">
-            @include('layouts_dashboard.header')
-            <div class="content">
-                <section class="content">
-                    @yield('content')
-                </section>
-
-            </div>
-            @include('layouts_dashboard.footer')
-        </div>
-
-    </div>
-    <script src="{{asset('TemplateDashboard/assets/js/core/jquery.min.js')}}"></script>
-
-    <script src="{{asset('TemplateDashboard/assets/js/core/popper.min.js')}}"></script>
-
-    <script src="{{asset('TemplateDashboard/assets/js/core/bootstrap.min.js')}}"></script>
-
-    <script src="{{asset('TemplateDashboard/assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-    <script src="{{asset('TemplateDashboard/assets/js/plugins/chartjs.min.js')}}"></script>
-    <script src="{{asset('TemplateDashboard/assets/js/plugins/bootstrap-notify.js')}}"></script>
-    <script src="{{asset('TemplateDashboard/assets/js/paper-dashboard.min.js?v=2.0.1')}}"
-        type="text/javascript"></script>
-    <script src="{{asset('TemplateDashboard/assets/demo/demo.js')}}"></script>
-
+<body class="with-welcome-text">
+  <div class="container-scroller">
     
+    <!-- partial:partials/_navbar.html -->
+    @include('layouts_dashboard.header')
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      @include('layouts_dashboard.sidebar')
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <section class="content">
+            @yield('content')
+          </section>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        @include('layouts_dashboard.footer')
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
 
-    <script>
-        $(document).ready(function () {
-            // Javascript method's body can be found in TemplateDashboard/assets/assets-for-demo/js/demo.js
-            demo.initChartsPages();
-        });
-    </script>
-    <script src="{{ asset('TemplateDashboard/dist/js/demo.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script
+    src="{{ asset('TemplateAdmin/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="{{ asset('TemplateAdmin/dist/assets/vendors/chart.js/chart.umd.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/off-canvas.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/template.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/settings.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/hoverable-collapse.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/todolist.js') }}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('TemplateAdmin/dist/assets/js/dashboard.js') }}"></script>
+  <script src="{{ asset('TemplateAdmin/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('TemplateAdmin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('TemplateAdmin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('TemplateAdmin/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('TemplateAdmin/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+  {{-- <!-- <script src="{{ asset('TemplateAdmin/dist/assets/js/Chart.roundedBarCharts.js') }}"></script> --> --}}
+  <!-- End custom js for this page-->
 
-    {{-- jquery-validation --}}
-    <script src="{{ asset('TemplateDashboard/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('TemplateDashboard/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <!-- SweetAlert2 -->
-    <script src="{{ asset('TemplateDashboard/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script>
-        // Untuk mengirimkan token Laravel CSRF pada setiap request ajax
-        $.ajaxSetup({ 
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
-            } 
-        });
-    </script>
-    @stack('js')
+  <!-- SweetAlert2 -->
+  <!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.3/dist/sweetalert2.min.js"></script>
+
+  <script>
+    // Untuk mengirimkan token Laravel CSRF pada setiap request ajax
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+  @stack('js')
 </body>
 
 </html>
