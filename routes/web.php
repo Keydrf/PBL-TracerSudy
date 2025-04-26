@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfesiController;
+use App\Http\Controllers\KategoriProfesiController;
 
 /*
 |--------------------------------------------------------------------------
