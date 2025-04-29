@@ -2,74 +2,12 @@
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-    /* Tambahkan border ke seluruh tabel dan radius sudut */
-    #table-kategori-profesi.table-bordered {
-        border-radius: 8px; /* Sesuaikan nilai radius sesuai keinginan Anda */
-        overflow: hidden; /* Penting agar border-radius tidak "bocor" di dalam sel */
-    }
-
-    #table-kategori-profesi.table-bordered th,
-    #table-kategori-profesi.table-bordered td {
-        border: 1px solid #dee2e6;
-        border-left: none; /* Hilangkan border kiri sel */
-        border-right: none; /* Hilangkan border kanan sel */
-    }
-
-    /* Tambahkan border kiri dan kanan hanya pada baris pertama (header) */
-    #table-kategori-profesi.table-bordered thead th:first-child,
-    #table-kategori-profesi.table-bordered tbody tr:first-child td:first-child {
-        border-left: 1px solid #dee2e6;
-    }
-
-    #table-kategori-profesi.table-bordered thead th:last-child,
-    #table-kategori-profesi.table-bordered tbody tr:first-child td:last-child {
-        border-right: 1px solid #dee2e6;
-    }
-
-    /* Tambahkan border bawah hanya pada header */
-    #table-kategori-profesi.table-bordered thead th {
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    /* Style untuk header tabel */
-    #table-kategori-profesi thead th {
-        background-color: #84b5e5;
-        color: white;
-        white-space: nowrap;
-    }
-
-    /* Style untuk sel-sel tabel */
-    #table-kategori-profesi td {
-        vertical-align: middle;
-    }
-
-    /* Style untuk kolom nama */
-    #table-kategori-profesi td:nth-child(3) { /* Kolom ketiga (indeks 2) adalah Nama Kategori */
-        font-weight: bold;
-    }
-
-    /* Efek hover pada baris */
-    #table-kategori-profesi tbody tr:hover {
-        background-color: #f0f0f0;
-    }
-
-    /* Style untuk tombol aksi */
-    #table-kategori-profesi .btn-sm {
-        margin-right: 5px;
-
-    }
-    .btn-add{
-        background-color: #84b5e5;
-        color: #ffffff;
-    }
-</style>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title"> Data Kategori Profesi</h4>
-                    <a href="{{ url('/kategori-profesi/create') }}" class="btn btn-sm btn-add">
+                    <a href="{{ url('/kategori/create') }}" class="btn btn-sm btn-primary">
                         <i class="fas fa-plus"></i> Tambah
                     </a>
                 </div>
@@ -83,7 +21,7 @@
                     @endif
                     <div class="table-responsive">
 
-                        <table class="table table-bordered table-sm table-striped table-hover" id="table-kategori-profesi">
+                        <table class="table table-bordered table-sm table-striped table-hover" id="table-kategori">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -115,11 +53,11 @@
         }
 
         $(document).ready(function () {
-            const tableKategoriProfesi = $('#table-kategori-profesi').DataTable({
+            const tableKategoriProfesi = $('#table-kategori').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('kategori-profesi/list') }}",
+                    url: "{{ url('kategori/list') }}",
                     type: "POST",
                     dataType: "json",
                     headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }
@@ -148,7 +86,7 @@
             });
 
             // Anda bisa menambahkan filter jika diperlukan, contoh:
-            // $('#table-kategori-profesi_filter input').unbind().bind('keyup', function (e) {
+            // $('#table-k_filter input').unbind().bind('keyup', function (e) {
             //     if (e.keyCode === 13) {
             //         tableKategoriProfesi.search(this.value).draw();
             //     }

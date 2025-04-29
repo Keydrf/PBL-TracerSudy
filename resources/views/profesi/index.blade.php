@@ -1,52 +1,111 @@
-@extends('layouts.app')
+@extends('layouts_dashboard.template')
 
 @section('content')
-<h2>Daftar Profesi</h2>
-<a href="{{ url('profesi/create') }}">+ Tambah Profesi</a>
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th><th>Kategori</th><th>Nama</th><th>Deskripsi</th><th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($profesi as $row)
-        <tr>
-            <td>{{ $row->profesi_id }}</td>
-            <td>{{ $row->kategori->nama_kategori ?? '-' }}</td>
-            <td>{{ $row->nama_profesi }}</td>
-            <td>{{ $row->deskripsi }}</td>
-            <td>
-                <a href="{{ url('profesi/' . $row->profesi_id . '/edit') }}">Edit</a>
-                <button class="delete-btn" data-id="{{ $row->profesi_id }}">Hapus</button>
-            </td>            
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Data Profesi</h4>
+                <a href="{{ url('/profesi/create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus"></i> Tambah
+                </a>
+            </div>
+
+            <div class="card-body">
+                @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-sm table-striped table-hover" id="table-profesi">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kategori Profesi</th>
+                                <th>Nama Profesi</th>
+                                <th>Deskripsi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{-- Modal --}}
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"
+    data-width="75%"></div>
+@endsection
+
+@push('js')
 <script>
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            var profesiId = this.getAttribute('data-id');
-            if (confirm('Yakin ingin menghapus profesi ini?')) {
-                $.ajax({
-                    url: '/profesi/' + profesiId + '/delete_ajax',
-                    type: 'DELETE',
-                    data: {
-                        "_token": "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        alert(response.success);
-                        location.reload(); // Reload halaman setelah penghapusan berhasil
-                    },
-                    error: function(xhr) {
-                        alert('Error: ' + xhr.status + ' ' + xhr.statusText);
-                    }
-                });
-            }
+    function modalAction(url = '') {
+        $('#myModal').load(url, function () {
+            $('#myModal').modal('show');
         });
+    }
+
+    var dataProfesi;
+    $(document).ready(function () {
+        dataProfesi = $('#table-profesi').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('profesi/list') }}", // Ganti URL ini
+                type: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }, // Tambahkan CSRF header
+                data: function (d) {
+                    d.kategori_id = $('#kategori_id').val();
+                }
+            },
+            columns: [{
+                    data: "DT_RowIndex",
+                    className: "text-center",
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "kategori_profesi.nama_kategori",
+                    orderable: true,
+                    searchable: true
+                }, // Relasi ke kategori
+                {
+                    data: "nama_profesi",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "deskripsi",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "aksi",
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        if ($('#kategori_id').length) {
+            $('#kategori_id').on('change', function () {
+                dataProfesi.ajax.reload();
+            });
+        }
     });
 </script>
-
-@endsection
+@endpush

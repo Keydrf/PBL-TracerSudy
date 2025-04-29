@@ -15,7 +15,7 @@
 
                 <a href="{{ url('kategori-profesi') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
             @else
-                <form method="POST" action="{{ url('/kategori-profesi/'.$kategori_profesi->kategori_id) }}" class="form-horizontal">
+                <form method="POST" action="{{ url('/kategori/'.$kategori_profesi->kategori_id) }}" class="form-horizontal">
                     @csrf
                     {!! method_field('PUT') !!}
 
@@ -41,7 +41,7 @@
                     <div class="form-group row">
                         <div class="col-md-10 offset-md-2">
                             <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                            <a class="btn btn-sm btn-default ml-1" href="{{ url('kategori-profesi') }}">Kembali</a>
+                            <a class="btn btn-sm btn-default ml-1" href="{{ url('kategori') }}">Kembali</a>
                         </div>
                     </div>
                 </form>

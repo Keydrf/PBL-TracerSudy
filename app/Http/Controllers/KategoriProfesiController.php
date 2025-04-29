@@ -20,8 +20,8 @@ class KategoriProfesiController extends Controller
         return DataTables::of($kategoriProfesi)
             ->addIndexColumn()
             ->addColumn('aksi', function ($kategoriProfesi) {
-                $btn = '<a href="' . url('/kategori-profesi/' . $kategoriProfesi->kategori_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/kategori-profesi/' . $kategoriProfesi->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<a href="' . url('/kategori/' . $kategoriProfesi->kategori_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
+                $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategoriProfesi->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -42,7 +42,7 @@ class KategoriProfesiController extends Controller
 
         KategoriProfesiModel::create($request->all());
 
-        return redirect('/kategori-profesi')->with('success', 'Data kategori profesi berhasil disimpan.');
+        return redirect('/kategori')->with('success', 'Data kategori profesi berhasil disimpan.');
     }
 
     public function edit(string $id)
@@ -61,7 +61,7 @@ class KategoriProfesiController extends Controller
         $kategoriProfesi = KategoriProfesiModel::findOrFail($id);
         $kategoriProfesi->update($request->all());
 
-        return redirect('/kategori-profesi')->with('success', 'Data kategori profesi berhasil diubah');
+        return redirect('/kategori')->with('success', 'Data kategori profesi berhasil diubah');
     }
 
     public function confirm_ajax(string $id)

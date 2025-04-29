@@ -21,19 +21,12 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        $user = UserModel::select('admin_id','username', 'nama', 'level_id')
-        ->with('level');
+        $user = UserModel::select('admin_id', 'username', 'nama', 'level_id')
+            ->with('level');
 
         return DataTables::of($user)
             ->addIndexColumn()
-            ->addColumn('aksi', function ($user) { // menambahkan kolom aksi
-                /*$btn = '<a href="'.url('/alu,ni/' . $user->barang_id).'" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="'.url('/alu,ni/' . $user->barang_id . '/edit').'"class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="'.
-                    url('/alu,ni/'.$user->barang_id).'">'
-                    . csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Kita yakit menghapus data ini?\');">Hapus</button></form>';*/
-                
+            ->addColumn('aksi', function ($user) {
                 $btn = '<a href="' . url('/user/' . $user->admin_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
                 $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->admin_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
@@ -77,7 +70,7 @@ class UserController extends Controller
         $user = UserModel::find($id);
         $level = LevelModel::all();
 
-        
+
 
         $page = (object) [
             'title' => 'Edit user'

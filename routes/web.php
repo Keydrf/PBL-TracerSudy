@@ -66,18 +66,14 @@ Route::group(['prefix' => 'alumni'], function () {
     Route::post('/list', [AlumniController :: class, 'list']);
     Route::get('/create', [AlumniController :: class, 'create' ]);
     Route::post('/', [AlumniController :: class, 'store']);
-    // Route::get('/{id}', [AlumniController :: class, 'show']);
     Route::get('/{id}/edit', [AlumniController :: class, 'edit' ]);
     Route::put('/{id}', [AlumniController :: class, 'update']);
     Route::get('/{id}/delete_ajax', [AlumniController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Alumni ajax
     Route::delete('/{id}/delete_ajax', [AlumniController::class, 'delete_ajax']);
-    
     Route::post('/import_ajax', [AlumniController::class, 'import_ajax']);
-    // Route::get('/import', [AlumniController::class, 'import']);
-    // Route::post('/import-', [AlumniController::class, 'import']);
 });
 
-Route::group(['prefix' => 'kategori-profesi'], function () {
+Route::group(['prefix' => 'kategori'], function () {
     Route::get('/', [KategoriProfesiController :: class, 'index']);
     Route::post('/list', [KategoriProfesiController :: class, 'list']);
     Route::get('/create', [KategoriProfesiController :: class, 'create' ]);
@@ -89,15 +85,15 @@ Route::group(['prefix' => 'kategori-profesi'], function () {
     Route::delete('/{id}/delete_ajax', [KategoriProfesiController::class, 'delete_ajax']);
 });
 Route::group(['prefix' => 'profesi'], function () {
-    Route::get('/', [ProfesiController::class, 'index']);           // Menampilkan semua profesi
-    Route::get('/create', [ProfesiController::class, 'create']);    // Form untuk membuat profesi baru
-    Route::post('/', [ProfesiController::class, 'store']);          // Menyimpan profesi baru
-    Route::get('/{id}/edit', [ProfesiController::class, 'edit']);   // Form untuk mengedit profesi
-    Route::put('/{id}', [ProfesiController::class, 'update']);      // Mengupdate profesi
-    Route::get('/{id}', [ProfesiController::class, 'show']);        // Menampilkan detail profesi
-    Route::delete('/{id}', [ProfesiController::class, 'destroy']);  // Menghapus profesi
-    Route::delete('/profesi/{id}/delete_ajax', [ProfesiController::class, 'delete_ajax']);
-
+    Route::get('/', [ProfesiController :: class, 'index']);
+    Route::post('/list', [ProfesiController :: class, 'list']);
+    Route::get('/create', [ProfesiController :: class, 'create' ]);
+    Route::post('/', [ProfesiController :: class, 'store']);
+    Route::get('/{id}', [ProfesiController :: class, 'show']);
+    Route::get('/{id}/edit', [ProfesiController :: class, 'edit' ]);
+    Route::put('/{id}', [ProfesiController :: class, 'update']);
+    Route::get('/{id}/delete_ajax', [ProfesiController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Profesi ajax
+    Route::delete('/{id}/delete_ajax', [ProfesiController::class, 'delete_ajax']);
 });
 
 Route::get('/', function () {

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
   <!-- SweetAlert2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.3/dist/sweetalert2.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
   <link rel="stylesheet" href="{{ asset('TemplateAdmin/dist/assets/vendors/ti-icons/css/themify-icons.css') }}">
@@ -93,7 +93,7 @@
   <!-- SweetAlert2 -->
   <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.3/dist/sweetalert2.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
   <script>
     // Untuk mengirimkan token Laravel CSRF pada setiap request ajax
     $.ajaxSetup({
