@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Star Admin2</title>
+    <title>Tracer Study</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('../public/TemplateAdmin/src/assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('../public/TemplateAdmin/src/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
@@ -21,7 +21,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('../public/TemplateAdmin/src/assets/css/style.css') }}">
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{ asset('../public/TemplateAdmin/src/assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('../public/TemplateAdmin/src/assets/images/favicon2.png') }}" />
     <!-- Additional CSS for form validation -->
     <link rel="stylesheet" href="{{ asset('../public/TemplateAdmin/src/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
   </head>
