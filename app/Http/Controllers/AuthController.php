@@ -63,7 +63,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:20|unique:user',
             'nama' => 'required|string|max:100',
-            'level_id' => 'required|exists:level,level_id',
+            'level_id' => 'required|exists:level,level_id,level_kode,!superadmin', // Blok superadmin
             'password' => 'required|string|min:8|confirmed',
         ]);
 

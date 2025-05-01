@@ -51,7 +51,8 @@ Route::middleware(['auth'])
     Route::get('/sebaranprofesi', function () {
         return view('sebaranprofesi.index');
     });
-    Route::middleware(['authorize:admin'])->group(function() {
+
+    Route::middleware(['authorize:superadmin'])->group(function() {
         Route::group(['prefix' => 'level'], function () {
             Route::get('/', [LevelController :: class, 'index']);
             Route::post('/list', [LevelController :: class, 'list']);
@@ -63,9 +64,7 @@ Route::middleware(['auth'])
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']); //menghapus data Level ajax
             Route::delete('/{id}', [LevelController :: class, 'destroy' ]);
         });
-    });
     
-    Route::middleware(['authorize:admin'])->group(function() {
         Route::group(['prefix' => 'user'], function () {
             Route::get('/', [UserController :: class, 'index']);
             Route::post('/list', [UserController :: class, 'list']);
@@ -78,7 +77,7 @@ Route::middleware(['auth'])
             Route::delete('/{id}', [UserController :: class, 'destroy' ]);
         });
     });
-    
+
     Route::middleware(['authorize:superadmin,admin'])->group(function() {
         Route::group(['prefix' => 'alumni'], function () {
             Route::get('/', [AlumniController :: class, 'index']);
@@ -91,9 +90,7 @@ Route::middleware(['auth'])
             Route::delete('/{id}/delete_ajax', [AlumniController::class, 'delete_ajax']);
             Route::post('/import_ajax', [AlumniController::class, 'import_ajax']);
         });
-    });
-    
-    Route::middleware(['authorize:superadmin,admin'])->group(function() {
+
         Route::group(['prefix' => 'kategori'], function () {
             Route::get('/', [KategoriProfesiController :: class, 'index']);
             Route::post('/list', [KategoriProfesiController :: class, 'list']);
@@ -105,9 +102,7 @@ Route::middleware(['auth'])
             Route::get('/{id}/delete_ajax', [KategoriProfesiController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete KategoriProfesi ajax
             Route::delete('/{id}/delete_ajax', [KategoriProfesiController::class, 'delete_ajax']);
         });
-    });
-
-    Route::middleware(['authorize:superadmin,admin'])->group(function() {
+    
         Route::group(['prefix' => 'profesi'], function () {
             Route::get('/', [ProfesiController :: class, 'index']);
             Route::post('/list', [ProfesiController :: class, 'list']);

@@ -19,7 +19,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/css/style.css') }}">
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/src/assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/src/assets/images/favicon2.png') }}" />
     <!-- Additional CSS for form validation -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
   </head>

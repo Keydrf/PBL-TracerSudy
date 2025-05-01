@@ -33,7 +33,15 @@ class UserModel extends Authenticatable
     // Cek apakah user memiliki role tertentu
     public function hasRole($role): bool
     {
-        return $this->level->level_kode == $role;
+        if (!$this->level) {
+            return false;
+        }
+
+        if (is_array($role)) {
+            return in_array($this->level->level_kode, $role);
+        }
+
+        return $this->level->level_kode === $role;
     }
 
     // Mendapatkan kode role
