@@ -21,7 +21,9 @@ use App\Http\Controllers\KategoriProfesiController;
 use App\Http\Controllers\AuthController;
 
 Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
-
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/check-username', [AuthController::class, 'checkUsername'])->name('check.username');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
