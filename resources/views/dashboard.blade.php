@@ -12,7 +12,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Email Statistics 1</h5>
+                        <h5 class="card-title">Jumlah Alumni per Prodi</h5>
                         <p class="card-category">Last Campaign Performance</p>
                     </div>
                     <div class="card-body">
@@ -23,7 +23,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Email Statistics 2</h5>
+                        <h5 class="card-title">Jumlah Alumni per Kategori Profesi</h5>
                         <p class="card-category">Last Campaign Performance</p>
                     </div>
                     <div class="card-body">
@@ -34,7 +34,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Email Statistics 3</h5>
+                        <h5 class="card-title">Jumlah Profesi per Kategori</h5>
                         <p class="card-category">Last Campaign Performance</p>
                     </div>
                     <div class="card-body">
@@ -51,20 +51,45 @@
 
     <script>
         window.addEventListener("DOMContentLoaded", function () {
-            const dataEmail = {
-                labels: ['Open', 'Click', 'Unsubscribe'],
-                series: [20, 40, 40]
+            // Data Alumni Berdasarkan Program Studi
+            const dataChart1 = {
+                labels: ['TI', 'S', 'PPL Situs'],
+                series: [1, 1, 1]
             };
-
+    
+            // Data Alumni Berdasarkan Kategori Profesi
+            const dataChart2 = {
+                labels: ['Bidang Infokom', 'Belum Bekerja'],
+                series: [2, 1]
+            };
+    
+            // Jumlah Profesi per Kategori
+            const dataChart3 = {
+                labels: ['Bidang Infokom', 'Non infokom', 'Belum Bekerja'],
+                series: [7,4,1]
+            };
+    
+            function withPercentage(data) {
+                const total = data.series.reduce((a, b) => a + b, 0);
+                return {
+                    ...data,
+                    labels: data.labels.map((label, index) => {
+                        const percent = ((data.series[index] / total) * 100).toFixed(1);
+                        return `${label} (${percent}%)`;
+                    })
+                };
+            }
+    
             const options = {
                 labelInterpolationFnc: function (value) {
                     return value;
                 }
             };
-
-            new Chartist.Pie('#chartEmail1', dataEmail, options);
-            new Chartist.Pie('#chartEmail2', dataEmail, options);
-            new Chartist.Pie('#chartEmail3', dataEmail, options);
+    
+            new Chartist.Pie('#chartEmail1', withPercentage(dataChart1), options);
+            new Chartist.Pie('#chartEmail2', withPercentage(dataChart2), options);
+            new Chartist.Pie('#chartEmail3', withPercentage(dataChart3), options);
         });
     </script>
+    
 @endsection
