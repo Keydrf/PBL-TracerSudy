@@ -10,7 +10,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "phpoffice/phpspreadsheet": "^4.2",
+        "maatwebsite/excel": "3.1.64",
+        "openspout/openspout": "^4.28",
+        "phpoffice/phpspreadsheet": "1.29.9",
         "tymon/jwt-auth": "2.1.1",
         "yajra/laravel-datatables": "^10.0"
     },

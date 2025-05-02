@@ -8,12 +8,10 @@ use App\Http\Controllers\{
     ProfesiController,
     KategoriProfesiController,
     AuthController,
-<<<<<<< HEAD
     DashboardController,
-    AlumniDataController
-=======
-    LandingController
->>>>>>> fe9bce9106a049084515d18967dc05fcc645b04a
+    AlumniDataController,
+    LandingController,
+    LaporanController
 };
 
 /*
@@ -83,6 +81,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Alumni and Profesi Management Routes (Super Admin and Admin)
     Route::middleware(['authorize:superadmin,admin'])->group(function () {
+
+        Route::controller(LaporanController::class)->group(function () {
+            Route::prefix('laporan')->group(function () {
+                Route::get('/', 'index');
+                Route::get('/tracer-study', 'tracerStudy');
+                Route::get('/survei-kepuasan', 'surveiKepuasan');
+                Route::get('/belum-tracer', 'belumTracer');
+                Route::get('/belum-survei', 'belumSurvei');
+            });
+        });
+
         Route::controller(AlumniController::class)->group(function () {
             Route::prefix('alumni')->group(function () {
                 Route::get('/', 'index');
