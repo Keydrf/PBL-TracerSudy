@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\AlumniBelumIsiSurveiExport;
 use App\Exports\PenggunaAlumniBelumIsiSurveiExport;
+use App\Exports\SurveyPenggunaLulusanExport;
 use App\Exports\TracerStudyLulusanExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -28,5 +29,10 @@ class LaporanController extends Controller
     public function tracerStudy()
     {
         return Excel::download(new TracerStudyLulusanExport, 'Rekap Tracer Studi Lulusan.xlsx');
+    }
+
+    public function surveiKepuasan()
+    {
+        return Excel::download(new SurveyPenggunaLulusanExport, 'Rekap Survey Pengguna Lulusan.xlsx');
     }
 }
