@@ -17,20 +17,21 @@ class UserSeeder extends Seeder
         DB::table('user')->insert([
             [
                 'level_id' => 1,
-                'username' => 'admin',
-                'nama' => 'Administrator',
-                'password' => Hash::make('12345678'), // Gunakan Hash::make untuk mengenkripsi password
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'level_id' => 2,
                 'username' => 'superadmin',
                 'nama' => 'Super Administrator',
                 'password' => Hash::make('12345678'), // Gunakan Hash::make untuk mengenkripsi password
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'level_id' => 2,
+                'username' => 'admin',
+                'nama' => 'Administrator',
+                'password' => Hash::make('12345678'), // Gunakan Hash::make untuk mengenkripsi password
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            
         ]);
     }
 }

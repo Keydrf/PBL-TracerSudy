@@ -16,23 +16,23 @@ class AuthorizeUser
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
-        
-        if (!$user) {
+
+        if (!$user || !$user->level) {
             return redirect()->route('login');
         }
-    
+
+        $userRole = $user->level->level_kode; // Ambil kode level dari relasi
+
         // Superadmin bisa akses semua
-        if ($user->hasRole('superadmin')) {
+        if ($userRole === 'SUPADM') {
             return $next($request);
         }
-    
-        // Cek role yang diizinkan
-        foreach ($roles as $role) {
-            if ($user->hasRole($role)) {
-                return $next($request);
-            }
+
+        // Cek apakah role user ada di dalam daftar role yang diizinkan
+        if (in_array($userRole, $roles)) {
+            return $next($request);
         }
-    
+
         abort(403, 'Forbidden. Kamu tidak punya akses ke halaman ini');
     }
 }

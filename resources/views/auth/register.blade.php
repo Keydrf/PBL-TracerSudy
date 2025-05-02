@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Tracer Study</title>
+    <title>Register - Star Admin2</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
     <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/css/style.css') }}">
     <!-- endinject -->
@@ -36,14 +34,20 @@
                   <img src="{{ asset('TemplateAdmin/src/assets/images/logo.svg') }}" alt="logo">
                 </div>
                 <h4>Hello! let's get started</h4>
-                <h6 class="fw-light">Sign in to continue.</h6>
-                <form action="{{ url('login') }}" method="POST" id="form-login" class="pt-3">
+                <h6 class="fw-light">Create your account to continue.</h6>
+                <form action="{{ route('register') }}" method="POST" id="form-register" class="pt-3">
                   @csrf
                   <div class="form-group">
                     <div class="input-group">
-                      <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Username">
+                      <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Username" value="{{ old('username') }}">
                     </div>
                     <small id="error-username" class="error-text text-danger"></small>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" id="nama" name="nama" class="form-control form-control-lg" placeholder="Full Name" value="{{ old('nama') }}">
+                    </div>
+                    <small id="error-nama" class="error-text text-danger"></small>
                   </div>
                   <div class="form-group">
                     <div class="input-group">
@@ -51,52 +55,42 @@
                     </div>
                     <small id="error-password" class="error-text text-danger"></small>
                   </div>
-                  <div class="mt-3 d-grid gap-2">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">SIGN IN</button>
-                  </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="remember"> Keep me signed in
-                      </label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="password" id="password_confirmation" name="password_confirmation" class="form-control form-control-lg" placeholder="Confirm Password">
                     </div>
                   </div>
-                  {{-- <div class="text-center mt-4 fw-light">
-                    Don't have an account? <a href="{{ route('register') }}" class="text-primary">Create</a>
-                  </div> --}}
+                  <div class="form-group">
+                    <select name="level_id" class="form-control form-control-lg">
+                      <option value="">Select Role</option>
+                      @foreach($levels as $level)
+                        <option value="{{ $level->level_id }}" {{ old('level_id') == $level->level_id ? 'selected' : '' }}>
+                          {{ $level->level_nama }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <small id="error-level_id" class="error-text text-danger"></small>
+                  </div>
+                  <div class="mt-3 d-grid gap-2">
+                    <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">REGISTER</button>
+                  </div>
+                  <div class="text-center mt-4 fw-light">
+                    Already have an account? <a href="{{ route('login') }}" class="text-primary">Login</a>
+                  </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <!-- content-wrapper ends -->
       </div>
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{{ asset('TemplateAdmin/src/assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('TemplateAdmin/src/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="{{ asset('TemplateAdmin/src/assets/js/off-canvas.js') }}"></script>
-    <script src="{{ asset('TemplateAdmin/src/assets/js/template.js') }}"></script>
-    <script src="{{ asset('TemplateAdmin/src/assets/js/settings.js') }}"></script>
-    <script src="{{ asset('TemplateAdmin/src/assets/js/hoverable-collapse.js') }}"></script>
-    <script src="{{ asset('TemplateAdmin/src/assets/js/todolist.js') }}"></script>
-    <!-- endinject -->
-    
-    <!-- Additional JS for form validation -->
-    {{-- <script src="{{ asset('TemplateAdmin/src/plugins/jquery/jquery.min.js') }}"></script> --}}
+
+    <!-- Scripts sama dengan login.blade.php -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('TemplateAdmin/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('TemplateAdmin/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('TemplateAdmin/src/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ asset('TemplateAdmin/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('TemplateAdmin/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-<script src="{{ asset('TemplateAdmin/src/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    
     <script>
         $.ajaxSetup({
             headers: {
@@ -105,17 +99,39 @@
         });
 
         $(document).ready(function() {
-            $("#form-login").validate({
+            $("#form-register").validate({
                 rules: {
                     username: {
                         required: true,
                         minlength: 4,
-                        maxlength: 20
+                        maxlength: 20,
+                        remote: {
+                            url: "{{ route('check.username') }}",
+                            type: "post"
+                        }
+                    },
+                    nama: {
+                        required: true,
+                        maxlength: 100
                     },
                     password: {
                         required: true,
-                        minlength: 6,
-                        maxlength: 20
+                        minlength: 6
+                    },
+                    password_confirmation: {
+                        required: true,
+                        equalTo: "#password"
+                    },
+                    level_id: {
+                        required: true
+                    }
+                },
+                messages: {
+                    username: {
+                        remote: "Username sudah digunakan"
+                    },
+                    password_confirmation: {
+                        equalTo: "Password confirmation tidak sama"
                     }
                 },
                 submitHandler: function(form) {
@@ -130,17 +146,20 @@
                                     title: 'Success',
                                     text: response.message,
                                 }).then(function() {
-                                    window.location = response.redirect;
+                                    window.location.href = "{{ url('/dashboard') }}";
                                 });
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {
                                     $('#error-' + prefix).text(val[0]);
                                 });
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: response.message
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                $('.error-text').text('');
+                                $.each(xhr.responseJSON.errors, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
                                 });
                             }
                         }

@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::check()) { // jika sudah login, maka redirect ke halaman home
-            return redirect('/');
+            return redirect('/dashboard');
         }
         return view('auth.login');
     }
@@ -106,4 +106,6 @@ class AuthController extends Controller
         $exists = UserModel::where('username', $request->username)->exists();
         return response()->json(['valid' => !$exists]);
     }
+
+    
 }

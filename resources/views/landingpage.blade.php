@@ -10,7 +10,7 @@
                     <h1>Berbagi Jejak Karir Alumni</h1>
                     <p>Ikuti perkembangan karir alumni dan berikan kontribusi pada almamater Anda.</p>
                     <div class="d-flex">
-                        <a href="#about" class="btn-get-started">Mulai Sekarang</a>
+                        <a href="/surveialumni" class="btn-get-started">Mulai Sekarang</a>
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">

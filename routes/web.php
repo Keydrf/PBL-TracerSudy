@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LevelController;
-use App\Http\Controllers\AlumniController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfesiController;
-use App\Http\Controllers\KategoriProfesiController;
+use App\Http\Controllers\{
+    LevelController,
+    AlumniController,
+    UserController,
+    ProfesiController,
+    KategoriProfesiController,
+    AuthController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -18,107 +21,100 @@ use App\Http\Controllers\KategoriProfesiController;
 |
 */
 
-use App\Http\Controllers\AuthController;
+Route::view('/', 'landingpage');
+Route::view('/surveialumni', 'surveialumni.survei');
+Route::view('/surveiperusahaan', 'surveiperusahaan.survei');
+Route::view('/sebaranprofesi', 'sebaranprofesi.index');
 
-Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/check-username', [AuthController::class, 'checkUsername'])->name('check.username');
-Route::get('login', [AuthController::class, 'login'])->name('login');
-Route::post('login', [AuthController::class, 'postlogin']);
-Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::pattern('id', '[0-9]+');
 
-Route::middleware(['auth'])
-->group(function () { // artinya semua route di dalam group ini harus login dulu
+// Authentication Routes
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/register', 'showRegistrationForm')->name('register');
+    Route::post('/register', 'register');
+    Route::post('/check-username', 'checkUsername')->name('check.username');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'postlogin');
+    Route::post('/logout', 'logout')->name('logout')->middleware('auth');
+});
 
-    // masukkan semua route yang perlu autentikasi di sini
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-    
-    Route::get('/admin', function () {
-        return view('layouts_admin.isi');
-    });
-    
-    Route::get('/surveialumni', function () {
-        return view('surveialumni.survei');
-    });
-    
-    Route::get('/surveiperusahaan', function () {
-        return view('surveiperusahaan.survei');
-    });
-    
-    Route::get('/sebaranprofesi', function () {
-        return view('sebaranprofesi.index');
-    });
+Route::middleware(['auth'])->group(function () {
+    Route::view('/dashboard', 'dashboard');
+    Route::view('/admin', 'layouts_admin.isi');
 
-    Route::middleware(['authorize:superadmin'])->group(function() {
-        Route::group(['prefix' => 'level'], function () {
-            Route::get('/', [LevelController :: class, 'index']);
-            Route::post('/list', [LevelController :: class, 'list']);
-            Route::get('/create', [LevelController :: class, 'create' ]);
-            Route::post('/', [LevelController :: class, 'store']);
-            Route::get('/{id}/edit', [LevelController :: class, 'edit' ]);
-            Route::put('/{id}', [LevelController :: class, 'update']);
-            Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
-            Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']); //menghapus data Level ajax
-            Route::delete('/{id}', [LevelController :: class, 'destroy' ]);
-        });
-    
-        Route::group(['prefix' => 'user'], function () {
-            Route::get('/', [UserController :: class, 'index']);
-            Route::post('/list', [UserController :: class, 'list']);
-            Route::get('/create', [UserController :: class, 'create' ]);
-            Route::post('/', [UserController :: class, 'store']);
-            Route::get('/{id}/edit', [UserController :: class, 'edit' ]);
-            Route::put('/{id}', [UserController :: class, 'update']);
-            Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
-            Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); //menghapus data User ajax
-            Route::delete('/{id}', [UserController :: class, 'destroy' ]);
+    // Level Management Routes (Super Admin Only)
+    Route::middleware(['authorize:superadmin'])->controller(LevelController::class)->group(function () {
+        Route::prefix('level')->group(function () {
+            Route::get('/', 'index');
+            Route::post('/list', 'list');
+            Route::get('/create', 'create');
+            Route::post('/', 'store');
+            Route::get('/{id}/edit', 'edit');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}/delete_ajax', 'confirm_ajax');
+            Route::delete('/{id}/delete_ajax', 'delete_ajax');
+            Route::delete('/{id}', 'destroy');
         });
     });
 
-    Route::middleware(['authorize:superadmin,admin'])->group(function() {
-        Route::group(['prefix' => 'alumni'], function () {
-            Route::get('/', [AlumniController :: class, 'index']);
-            Route::post('/list', [AlumniController :: class, 'list']);
-            Route::get('/create', [AlumniController :: class, 'create' ]);
-            Route::post('/', [AlumniController :: class, 'store']);
-            Route::get('/{id}/edit', [AlumniController :: class, 'edit' ]);
-            Route::put('/{id}', [AlumniController :: class, 'update']);
-            Route::get('/{id}/delete_ajax', [AlumniController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Alumni ajax
-            Route::delete('/{id}/delete_ajax', [AlumniController::class, 'delete_ajax']);
-            Route::post('/import_ajax', [AlumniController::class, 'import_ajax']);
+    // User Management Routes (Super Admin Only)
+    Route::middleware(['authorize:superadmin'])->controller(UserController::class)->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'index');
+            Route::post('/list', 'list');
+            Route::get('/create', 'create');
+            Route::post('/', 'store');
+            Route::get('/{id}/edit', 'edit');
+            Route::put('/{id}', 'update');
+            Route::get('/{id}/delete_ajax', 'confirm_ajax');
+            Route::delete('/{id}/delete_ajax', 'delete_ajax');
+            Route::delete('/{id}', 'destroy');
+        });
+    });
+
+    // Alumni and Profesi Management Routes (Super Admin and Admin)
+    Route::middleware(['authorize:superadmin,admin'])->group(function () {
+        Route::controller(AlumniController::class)->group(function () {
+            Route::prefix('alumni')->group(function () {
+                Route::get('/', 'index');
+                Route::post('/list', 'list');
+                Route::get('/create', 'create');
+                Route::post('/', 'store');
+                Route::get('/{id}/edit', 'edit');
+                Route::put('/{id}', 'update');
+                Route::get('/{id}/delete_ajax', 'confirm_ajax');
+                Route::delete('/{id}/delete_ajax', 'delete_ajax');
+                Route::post('/import_ajax', 'import_ajax');
+                Route::get('/import', 'import'); //ditambahkan
+            });
         });
 
-Route::group(['prefix' => 'kategori'], function () {
-    Route::get('/', [KategoriProfesiController :: class, 'index']);
-    Route::post('/list', [KategoriProfesiController :: class, 'list']);
-    Route::get('/create', [KategoriProfesiController :: class, 'create' ]);
-    Route::post('/', [KategoriProfesiController :: class, 'store']);
-    Route::get('/{id}', [KategoriProfesiController :: class, 'show']);
-    Route::get('/{id}/edit', [KategoriProfesiController :: class, 'edit' ]);
-    Route::put('/{id}', [KategoriProfesiController :: class, 'update']);
-    Route::get('/{id}/delete_ajax', [KategoriProfesiController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete KategoriProfesi ajax
-    Route::delete('/{id}/delete_ajax', [KategoriProfesiController::class, 'delete_ajax']);
+        Route::controller(KategoriProfesiController::class)->group(function () {
+            Route::prefix('kategori')->group(function () {
+                Route::get('/', 'index');
+                Route::post('/list', 'list');
+                Route::get('/create', 'create');
+                Route::post('/', 'store');
+                Route::get('/{id}', 'show');
+                Route::get('/{id}/edit', 'edit');
+                Route::put('/{id}', 'update');
+                Route::get('/{id}/delete_ajax', 'confirm_ajax');
+                Route::delete('/{id}/delete_ajax', 'delete_ajax');
+            });
+        });
+
+        Route::controller(ProfesiController::class)->group(function () {
+            Route::prefix('profesi')->group(function () {
+                Route::get('/', 'index');
+                Route::post('/list', 'list');
+                Route::get('/create', 'create');
+                Route::post('/', 'store');
+                Route::get('/{id}', 'show');
+                Route::get('/{id}/edit', 'edit');
+                Route::put('/{id}', 'update');
+                Route::get('/{id}/delete_ajax', 'confirm_ajax');
+                Route::delete('/{id}/delete_ajax', 'delete_ajax');
+            });
+        });
+    });
 });
-Route::group(['prefix' => 'profesi'], function () {
-    Route::get('/', [ProfesiController :: class, 'index']);
-    Route::post('/list', [ProfesiController :: class, 'list']);
-    Route::get('/create', [ProfesiController :: class, 'create' ]);
-    Route::post('/', [ProfesiController :: class, 'store']);
-    Route::get('/{id}', [ProfesiController :: class, 'show']);
-    Route::get('/{id}/edit', [ProfesiController :: class, 'edit' ]);
-    Route::put('/{id}', [ProfesiController :: class, 'update']);
-    Route::get('/{id}/delete_ajax', [ProfesiController::class, 'confirm_ajax']); //untuk menampilkan form confirm delete Profesi ajax
-    Route::delete('/{id}/delete_ajax', [ProfesiController::class, 'delete_ajax']);
-});
-
-Route::get('/', function () {
-    return view('landingpage');
-});
-
-Route::get('/alumni/import', [AlumniController::class, 'import']);
-
-
-Route::get('/sebaran-profesi', [ProfesiController::class, 'getSebaranProfesi']);

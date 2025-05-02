@@ -10,7 +10,7 @@
                     <a href="{{ url('/alumni/create') }}" class="btn btn-sm btn-primary">
                         <i class="fas fa-plus"></i> Tambah
                     </a>
-                    <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-sm btn-primary">Import Lulusan</button>
+                    <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-sm btn-primary"><i class="mdi mdi-file-import"></i>Import Lulusan</button>
                 </div>
                 
                 <div class="card-body">
