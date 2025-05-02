@@ -17,21 +17,27 @@ return new class extends Migration
             $table->string('no_telepon', 100);
             $table->string('email', 100);
             $table->integer('tahun_lulus');
-            $table->dateTime('tanggal_pertama_kerja');
-            $table->integer('masa_tunggu');
-            $table->dateTime('tanggal_pertama_kerja_instansi_saat_ini');
-            $table->string('jenis_instansi', 100);
-            $table->string('nama_instansi', 100);
-            $table->string('skala', 100);
-            $table->string('lokasi_instansi', 255);
-            $table->string('kategori_profesi', 100);
-            $table->string('profesi', 100);
-            $table->string('nama_atasan', 100);
-            $table->string('jabatan_atasan', 100);
-            $table->string('no_telepon_atasan', 100);
-            $table->string('email_atasan', 100);
+            $table->dateTime('tanggal_pertama_kerja')->nullable();
+            $table->integer('masa_tunggu')->nullable();
+            $table->dateTime('tanggal_pertama_kerja_instansi_saat_ini')->nullable();
+            $table->string('jenis_instansi', 100)->nullable();
+            $table->string('nama_instansi', 100)->nullable();
+            $table->string('skala', 100)->nullable();
+            $table->string('lokasi_instansi', 255)->nullable();
+        
+            // Tambahkan foreign key untuk menghubungkan dengan tabel profesi dan kategori profesi
+            $table->unsignedBigInteger('profesi_id')->nullable();
+            $table->foreign('profesi_id')->references('profesi_id')->on('profesi');
+        
+            $table->unsignedBigInteger('kategori_id')->nullable(); // Tambahkan kolom kategori_id
+            $table->foreign('kategori_id')->references('kategori_id')->on('kategori_profesi'); // Definisikan foreign key
+        
+            $table->string('nama_atasan', 100)->nullable();
+            $table->string('jabatan_atasan', 100)->nullable();
+            $table->string('no_telepon_atasan', 100)->nullable();
+            $table->string('email_atasan', 100)->nullable();
             $table->timestamps();
-
+        
             $table->foreign('nim')->references('nim')->on('alumni');
         });
     }

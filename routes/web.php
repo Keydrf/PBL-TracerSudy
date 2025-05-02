@@ -8,8 +8,12 @@ use App\Http\Controllers\{
     ProfesiController,
     KategoriProfesiController,
     AuthController,
+<<<<<<< HEAD
     DashboardController,
     AlumniDataController
+=======
+    LandingController
+>>>>>>> fe9bce9106a049084515d18967dc05fcc645b04a
 };
 
 /*
@@ -23,10 +27,10 @@ use App\Http\Controllers\{
 |
 */
 
-Route::view('/', 'landingpage');
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::view('/surveialumni', 'surveialumni.survei');
 Route::view('/surveiperusahaan', 'surveiperusahaan.survei');
-Route::view('/sebaranprofesi', 'sebaranprofesi.index');
+Route::get('/sebaran-profesi', [ProfesiController::class, 'sebaranProfesiView'])->name('sebaran.profesi');
 
 Route::pattern('id', '[0-9]+');
 
