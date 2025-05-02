@@ -33,6 +33,6 @@ class AuthorizeUser
             return $next($request);
         }
 
-        abort(403, 'Forbidden. Kamu tidak punya akses ke halaman ini');
+        return redirect('/forbiddenError');
     }
 }

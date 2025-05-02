@@ -43,9 +43,11 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::view('/dashboard', 'dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/admin', 'layouts_admin.isi');
-
+    Route::get('/forbiddenError', function () {
+        return view('auth.forbiddenError');
+    });
     // Add the route for DashboardController
     // Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/api/alumni-data', [AlumniDataController::class, 'getAlumniData']);
