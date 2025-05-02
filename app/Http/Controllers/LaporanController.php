@@ -13,8 +13,8 @@ class LaporanController extends Controller
         return view('laporan.index');
     }
 
-    public function tracerStudy()
+    public function belumTracer()
     {
-        return Excel::download(new AlumniBelumIsiSurveiExport, 'alumni-belum-isi-survei.xlsx');
+        return Excel::download(new AlumniBelumIsiSurveiExport, 'Rekap Alumni Belum Isi TS.xlsx');
     }
 }
