@@ -97,7 +97,12 @@ Route::group(['prefix' => 'profesi'], function () {
 });
 
 Route::get('/', function () {
-    return view('landingpage');
+    return view('landingpage')->name('landingpage');
 });
 
+
+
 Route::get('/alumni/import', [AlumniController::class, 'import']);
+
+
+Route::get('/sebaran-profesi', [ProfesiController::class, 'getSebaranProfesi']);

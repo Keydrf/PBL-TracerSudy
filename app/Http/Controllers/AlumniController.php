@@ -24,8 +24,8 @@ class AlumniController extends Controller
         return DataTables::of($alumni)
             ->addIndexColumn()
             ->addColumn('aksi', function ($alumni) {
-                $btn = '<a href="' . url('/alumni/' . $alumni->alumni_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<a href="' . url('/alumni/' . $alumni->alumni_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
+                $btn .= '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])

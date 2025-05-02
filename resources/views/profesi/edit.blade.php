@@ -20,9 +20,10 @@
                 <form method="POST" action="{{ url('/profesi/' . $profesi->profesi_id) }}" class="formhorizontal">
                     @csrf
                     {!! method_field('PUT') !!}
+                    <br>
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Kategori Profesi</label>
-                        <div class="col-11">
+                        <label class="col-2 control-label col-form-label">Kategori Profesi</label>
+                        <div class="col-10">
                             <select class="form-control" id="kategori_id" name="kategori_id" required>
                                 <option value="">- Pilih Kategori Profesi -</option>
                                 @foreach($kategori_profesi as $item)
@@ -36,8 +37,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Nama Profesi</label>
-                        <div class="col-11">
+                        <label class="col-2 control-label col-form-label">Nama Profesi</label>
+                        <div class="col-10">
                             <input type="text" class="form-control" id="nama_profesi" name="nama_profesi"
                                 value="{{ old('nama_profesi', $profesi->nama_profesi) }}" required>
                             @error('nama_profesi')
@@ -46,8 +47,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Deskripsi</label>
-                        <div class="col-11">
+                        <label class="col-2 control-label col-form-label">Deskripsi</label>
+                        <div class="col-10">
                             <input type="text" class="form-control" id="deskripsi" name="deskripsi"
                                 value="{{ old('deskripsi', $profesi->deskripsi) }}" required>
                             @error('deskripsi')
@@ -56,8 +57,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-1 control-label col-form-label"></label>
-                        <div class="col-11">
+                        <label class="col-2 control-label col-form-label"></label>
+                        <div class="col-10">
                             <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                             <a class="btn btn-sm btn-default ml-1" href="{{ url('profesi') }}">Kembali</a>
                         </div>

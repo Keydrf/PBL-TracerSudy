@@ -5,7 +5,7 @@
 
     <div class="container" data-aos="fade-up">
         <div class="section-title">
-            <h2>Sebaran Profesi</h2>
+            <h2>Sebaran Profesi Alumni</h2>
             {{-- <p>Berikut merupakan visualisasi sebaran profesi alumni dalam bentuk diagram.</p> --}}
         </div>
 
@@ -19,10 +19,10 @@
         const sebaranProfesiChart = new Chart(ctx, {
             type: 'bar', // Bisa diubah ke 'pie', 'doughnut', dll
             data: {
-                labels: ['PNS', 'Wirausaha', 'Swasta', 'BUMN', 'Freelancer'],
+                labels: [], // Inisialisasi array kosong untuk label
                 datasets: [{
                     label: 'Jumlah Alumni',
-                    data: [45, 25, 80, 30, 20],
+                    data: [], // Inisialisasi array kosong untuk data
                     backgroundColor: [
                         '#1e90ff',
                         '#ff7f50',
@@ -63,6 +63,26 @@
                     }
                 }
             }
+        });
+
+        // Ambil data dari database menggunakan AJAX
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/sebaran-profesi', // Ganti dengan URL yang sesuai
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Isi label dan data dari response
+                    sebaranProfesiChart.data.labels = data.labels;
+                    sebaranProfesiChart.data.datasets[0].data = data.data;
+                    sebaranProfesiChart.update(); // Update chart setelah data diubah
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                    // Tampilkan pesan error kepada pengguna
+                    alert('Gagal mengambil data sebaran profesi. Silakan coba lagi nanti.');
+                }
+            });
         });
     </script>
 @endsection

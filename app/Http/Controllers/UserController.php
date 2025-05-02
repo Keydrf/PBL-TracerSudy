@@ -27,8 +27,8 @@ class UserController extends Controller
         return DataTables::of($user)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
-                $btn = '<a href="' . url('/user/' . $user->admin_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->admin_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<a href="' . url('/user/' . $user->admin_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
+                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->admin_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button> ';
                 return $btn;
             })
             ->rawColumns(['aksi']) // ada teks html

@@ -17,7 +17,7 @@
         <a href="{{ url('level') }}" class="btn btn-sm btn-default mt-2">Kembali</a>       @else 
         <form method="POST" action="{{ url('/level/'.$level->level_id) }}" class="formhorizontal">           @csrf 
           {!! method_field('PUT') !!}  <!-- tambahkan baris ini untuk proses edit yang butuh method PUT --> 
-          
+          <br>
           <div class="form-group row"> 
             <label class="col-1 control-label col-form-label">Kode Level</label> 
             <div class="col-11"> 

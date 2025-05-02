@@ -15,9 +15,11 @@
 
                 <a href="{{ url('alumni') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
             @else
-                <form method="POST" action="{{ url('/alumni/'.$alumni->alumni_id) }}" class="form-horizontal">
+                <form method="POST" action="{{ url('/alumni/' . $alumni->alumni_id) }}" class="form-horizontal">
                     @csrf
-                    {!! method_field('PUT') !!} <div class="form-group row">
+                    {!! method_field('PUT') !!}
+                    <br>
+                    <div class="form-group row">
                         <label class="col-md-2 control-label col-form-label">Program Studi</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" id="program_studi" name="program_studi"
@@ -31,8 +33,8 @@
                     <div class="form-group row">
                         <label class="col-md-2 control-label col-form-label">NIM</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="nim" name="nim"
-                                value="{{ old('nim', $alumni->nim) }}" required>
+                            <input type="text" class="form-control" id="nim" name="nim" value="{{ old('nim', $alumni->nim) }}"
+                                required>
                             @error('nim')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -54,7 +56,8 @@
                         <label class="col-md-2 control-label col-form-label">Tanggal Lulus</label>
                         <div class="col-md-10">
                             <input type="datetime-local" class="form-control" id="tanggal_lulus" name="tanggal_lulus"
-                                value="{{ old('tanggal_lulus', \Carbon\Carbon::parse($alumni->tanggal_lulus)->format('Y-m-d\TH:i')) }}" required>
+                                value="{{ old('tanggal_lulus', \Carbon\Carbon::parse($alumni->tanggal_lulus)->format('Y-m-d\TH:i')) }}"
+                                required>
                             @error('tanggal_lulus')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror

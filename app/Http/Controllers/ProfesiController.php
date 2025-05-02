@@ -6,6 +6,8 @@ use App\Models\ProfesiModel;
 use App\Models\KategoriProfesiModel; // Pastikan kategori ada di sini
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
+
 
 
 class ProfesiController extends Controller
@@ -24,8 +26,8 @@ class ProfesiController extends Controller
             return DataTables::of($profesi)
             ->addIndexColumn()
             ->addColumn('aksi', function ($profesi) {
-                $btn = '<a href="' . url('/profesi/' . $profesi->profesi_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/profesi/' . $profesi->profesi_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<a href="' . url('/profesi/' . $profesi->profesi_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
+                $btn .= '<button onclick="modalAction(\'' . url('/profesi/' . $profesi->profesi_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button> ';
                 return $btn;
             })
             ->rawColumns(['aksi']) // ada teks html
@@ -132,5 +134,22 @@ class ProfesiController extends Controller
             }
         }
         return redirect('/profesi');
+    }
+
+    public function getSebaranProfesi()
+    {
+        // Query untuk menghitung jumlah alumni per profesi
+        $data = DB::table('survei_alumni')
+            ->select('profesi', DB::raw('count(*) as jumlah_alumni'))
+            ->groupBy('profesi')
+            ->get();
+
+        // Format data untuk digunakan di chart.js
+        $response = [
+            'labels' => $data->pluck('profesi'),
+            'data' => $data->pluck('jumlah_alumni'),
+        ];
+
+        return response()->json($response);
     }
 }

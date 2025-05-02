@@ -20,8 +20,8 @@ class KategoriProfesiController extends Controller
         return DataTables::of($kategoriProfesi)
             ->addIndexColumn()
             ->addColumn('aksi', function ($kategoriProfesi) {
-                $btn = '<a href="' . url('/kategori/' . $kategoriProfesi->kategori_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategoriProfesi->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<a href="' . url('/kategori/' . $kategoriProfesi->kategori_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
+                $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategoriProfesi->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])

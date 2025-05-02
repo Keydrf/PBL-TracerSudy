@@ -15,14 +15,15 @@
 
                 <a href="{{ url('kategori-profesi') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
             @else
-                <form method="POST" action="{{ url('/kategori/'.$kategori_profesi->kategori_id) }}" class="form-horizontal">
+                <form method="POST" action="{{ url('/kategori/' . $kategori_profesi->kategori_id) }}" class="form-horizontal">
                     @csrf
                     {!! method_field('PUT') !!}
-
+                    <br>
                     <div class="form-group row">
                         <label class="col-md-2 control-label col-form-label">Kode Kategori</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="kode_kategori" name="kode_kategori" value="{{ old('kode_kategori', $kategori_profesi->kode_kategori) }}" required>
+                            <input type="text" class="form-control" id="kode_kategori" name="kode_kategori"
+                                value="{{ old('kode_kategori', $kategori_profesi->kode_kategori) }}" required>
                             @error('kode_kategori')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -31,7 +32,8 @@
                     <div class="form-group row">
                         <label class="col-md-2 control-label col-form-label">Nama Kategori</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ old('nama_kategori', $kategori_profesi->nama_kategori) }}" required>
+                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
+                                value="{{ old('nama_kategori', $kategori_profesi->nama_kategori) }}" required>
                             @error('nama_kategori')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
