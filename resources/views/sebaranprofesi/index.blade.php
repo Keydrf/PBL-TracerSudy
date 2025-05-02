@@ -1,88 +1,173 @@
 @extends('layouts_lp.template')
 
 @section('content')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="container" data-aos="fade-up">
-        <div class="section-title">
-            <h2>Sebaran Profesi Alumni</h2>
-            {{-- <p>Berikut merupakan visualisasi sebaran profesi alumni dalam bentuk diagram.</p> --}}
-        </div>
-
-        <div class="col-lg-12">
-            <canvas id="sebaranProfesiChart" width="400" height="200"></canvas>
-        </div>
+<div class="container" data-aos="fade-up">
+    <div class="section-title">
+        <h2>Sebaran Profesi Alumni</h2>
     </div>
 
-    <script>
-        const ctx = document.getElementById('sebaranProfesiChart').getContext('2d');
-        const sebaranProfesiChart = new Chart(ctx, {
-            type: 'bar', // Bisa diubah ke 'pie', 'doughnut', dll
-            data: {
-                labels: [], // Inisialisasi array kosong untuk label
-                datasets: [{
-                    label: 'Jumlah Alumni',
-                    data: [], // Inisialisasi array kosong untuk data
-                    backgroundColor: [
-                        '#1e90ff',
-                        '#ff7f50',
-                        '#28a745',
-                        '#ffc107',
-                        '#6f42c1'
-                    ],
-                    borderRadius: 8
-                }]
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sebaran Berdasarkan Kategori</h5>
+                    <canvas id="sebaranKategoriChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Profesi di Bidang Infokom</h5>
+                    <canvas id="profesiInfokomChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Profesi di Bidang Non-Infokom</h5>
+                    <canvas id="profesiNonInfokomChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const pastelColors = [
+        '#FAF0E6', '#FFB6C1', '#ADD8E6', '#B0C4DE', '#D3D3D3',
+        '#FFE4C4', '#E6E6FA', '#F0F8FF', '#AFEEEE', '#90EE90',
+        '#FFDAB9', '#FFFACD', '#F5F5DC', '#F8BBD0', '#87CEEB'
+    ];
+
+    function getColor(index) {
+        return pastelColors[index % pastelColors.length];
+    }
+
+    // Data dari Laravel
+    const labelsKategori = @json($labelsKategori);
+    const dataKategori = @json($dataKategori);
+
+    const labelsInfokom = @json($labelsProfesiInfokom);
+    const dataInfokom = @json($dataProfesiInfokom);
+
+    const labelsNonInfokom = @json($labelsProfesiNonInfokom);
+    const dataNonInfokom = @json($dataProfesiNonInfokom);
+
+    // Generate warna otomatis
+    function generateColors(length, offset = 0) {
+        const colors = [];
+        for (let i = 0; i < length; i++) {
+            colors.push(getColor(i + offset));
+        }
+        return colors;
+    }
+
+    // Chart: Sebaran Berdasarkan Kategori
+    new Chart(document.getElementById('sebaranKategoriChart'), {
+        type: 'bar',
+        data: {
+            labels: labelsKategori,
+            datasets: [{
+                label: 'Jumlah Alumni',
+                data: dataKategori,
+                backgroundColor: generateColors(dataKategori.length),
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.dataset.label}: ${context.parsed.y}`
+                    }
+                }
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.dataset.label}: ${context.parsed.y}`;
-                            }
-                        }
-                    }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Jumlah Alumni' },
+                    ticks: { precision: 0 }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah Alumni'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Profesi'
-                        }
-                    }
+                x: {
+                    title: { display: true, text: 'Kategori Profesi' }
                 }
             }
-        });
+        }
+    });
 
-        // Ambil data dari database menggunakan AJAX
-        $(document).ready(function() {
-            $.ajax({
-                url: '/api/sebaran-profesi', // Ganti dengan URL yang sesuai
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    // Isi label dan data dari response
-                    sebaranProfesiChart.data.labels = data.labels;
-                    sebaranProfesiChart.data.datasets[0].data = data.data;
-                    sebaranProfesiChart.update(); // Update chart setelah data diubah
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                    // Tampilkan pesan error kepada pengguna
-                    alert('Gagal mengambil data sebaran profesi. Silakan coba lagi nanti.');
+    // Chart: Profesi Infokom
+    new Chart(document.getElementById('profesiInfokomChart'), {
+        type: 'bar',
+        data: {
+            labels: labelsInfokom,
+            datasets: [{
+                label: 'Jumlah Alumni',
+                data: dataInfokom,
+                backgroundColor: generateColors(dataInfokom.length, 3)
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.dataset.label}: ${context.parsed.y}`
+                    }
                 }
-            });
-        });
-    </script>
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Jumlah Alumni' },
+                    ticks: { precision: 0 }
+                },
+                x: {
+                    title: { display: true, text: 'Profesi' }
+                }
+            }
+        }
+    });
+
+    // Chart: Profesi Non-Infokom
+    new Chart(document.getElementById('profesiNonInfokomChart'), {
+        type: 'bar',
+        data: {
+            labels: labelsNonInfokom,
+            datasets: [{
+                label: 'Jumlah Alumni',
+                data: dataNonInfokom,
+                backgroundColor: generateColors(dataNonInfokom.length, 7),
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.dataset.label}: ${context.parsed.y}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Jumlah Alumni' },
+                    ticks: { precision: 0 }
+                },
+                x: {
+                    title: { display: true, text: 'Profesi' }
+                }
+            }
+        }
+    });
+</script>
 @endsection

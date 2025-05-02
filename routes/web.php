@@ -24,7 +24,7 @@ use App\Http\Controllers\{
 Route::view('/', 'landingpage');
 Route::view('/surveialumni', 'surveialumni.survei');
 Route::view('/surveiperusahaan', 'surveiperusahaan.survei');
-Route::view('/sebaranprofesi', 'sebaranprofesi.index');
+Route::get('/sebaran-profesi', [ProfesiController::class, 'sebaranProfesiView'])->name('sebaran.profesi');
 
 Route::pattern('id', '[0-9]+');
 

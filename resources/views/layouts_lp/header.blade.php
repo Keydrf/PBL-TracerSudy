@@ -12,7 +12,7 @@
           <li><a href="/" class="active">Beranda</a></li>
           <li><a href="/surveialumni" >Survei Alumni</a></li>
           <li><a href="/surveiperusahaan">Survei Perusahaan</a></li>
-          <li><a href="/sebaranprofesi">Sebaran Profesi</a></li>
+          <li><a href="/sebaran-profesi">Sebaran Profesi</a></li>
           
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

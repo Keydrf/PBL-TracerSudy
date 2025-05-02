@@ -7,6 +7,7 @@ use App\Models\KategoriProfesiModel; // Pastikan kategori ada di sini
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 
 
@@ -23,7 +24,7 @@ class ProfesiController extends Controller
         $profesi = ProfesiModel::select('profesi_id', 'nama_profesi', 'deskripsi', 'kategori_id')
             ->with('kategori_profesi'); // Pastikan relasi 'kategoriProfesi' sudah benar
 
-            return DataTables::of($profesi)
+        return DataTables::of($profesi)
             ->addIndexColumn()
             ->addColumn('aksi', function ($profesi) {
                 $btn = '<a href="' . url('/profesi/' . $profesi->profesi_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
@@ -136,20 +137,58 @@ class ProfesiController extends Controller
         return redirect('/profesi');
     }
 
-    public function getSebaranProfesi()
+    public function sebaranProfesiView(): View
     {
-        // Query untuk menghitung jumlah alumni per profesi
-        $data = DB::table('survei_alumni')
-            ->select('profesi', DB::raw('count(*) as jumlah_alumni'))
-            ->groupBy('profesi')
-            ->get();
+        // Data untuk grafik sebaran berdasarkan kategori
+        $dataKategori = DB::table('survei_alumni')
+            ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+            ->join('kategori_profesi', 'profesi.kategori_id', '=', 'kategori_profesi.kategori_id')
+            ->select('kategori_profesi.nama_kategori', DB::raw('count(*) as jumlah_alumni'))
+            ->whereIn('kategori_profesi.kode_kategori', ['K001', 'K002'])
+            ->groupBy('kategori_profesi.nama_kategori')
+            ->get()
+            ->toArray();
 
-        // Format data untuk digunakan di chart.js
-        $response = [
-            'labels' => $data->pluck('profesi'),
-            'data' => $data->pluck('jumlah_alumni'),
-        ];
+        $labelsKategori = array_column($dataKategori, 'nama_kategori');
+        $jumlahAlumniKategori = array_map('round', array_column($dataKategori, 'jumlah_alumni'));
 
-        return response()->json($response);
+        // Data untuk grafik sebaran profesi di dalam kategori Infokom
+        $dataProfesiInfokom = DB::table('survei_alumni')
+            ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+            ->join('kategori_profesi', 'profesi.kategori_id', '=', 'kategori_profesi.kategori_id')
+            ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah_alumni'))
+            ->where('kategori_profesi.kode_kategori', 'K001')
+            ->groupBy('profesi.nama_profesi')
+            ->orderBy('jumlah_alumni', 'desc')
+            ->limit(10)
+            ->get()
+            ->toArray();
+
+        $labelsProfesiInfokom = array_column($dataProfesiInfokom, 'nama_profesi');
+        $jumlahAlumniProfesiInfokom = array_map('round', array_column($dataProfesiInfokom, 'jumlah_alumni'));
+
+        // Data untuk grafik sebaran profesi di dalam kategori Non-Infokom
+        $dataProfesiNonInfokom = DB::table('survei_alumni')
+            ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+            ->join('kategori_profesi', 'profesi.kategori_id', '=', 'kategori_profesi.kategori_id')
+            ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah_alumni'))
+            ->where('kategori_profesi.kode_kategori', 'K002')
+            ->groupBy('profesi.nama_profesi')
+            ->orderBy('jumlah_alumni', 'desc')
+            ->limit(10)
+            ->get()
+            ->toArray();
+
+        $labelsProfesiNonInfokom = array_column($dataProfesiNonInfokom, 'nama_profesi');
+        $jumlahAlumniProfesiNonInfokom = array_map('round', array_column($dataProfesiNonInfokom, 'jumlah_alumni'));
+
+        return view('sebaranprofesi.index', [
+            'labelsKategori' => $labelsKategori,
+            'dataKategori' => $jumlahAlumniKategori,
+            'labelsProfesiInfokom' => $labelsProfesiInfokom,
+            'dataProfesiInfokom' => $jumlahAlumniProfesiInfokom,
+            'labelsProfesiNonInfokom' => $labelsProfesiNonInfokom,
+            'dataProfesiNonInfokom' => $jumlahAlumniProfesiNonInfokom,
+        ]);
     }
 }

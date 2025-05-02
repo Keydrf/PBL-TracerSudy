@@ -7,9 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\LevelModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable; // implemetasi class Authenticable
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserModel extends Authenticatable
 {
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(){
+        return [];
+    }
     protected $table = 'user';
     protected $primaryKey = 'admin_id';
     protected $hidden = ['password'];
