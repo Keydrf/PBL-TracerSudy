@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     UserController,
     ProfesiController,
     KategoriProfesiController,
-    AuthController
+    AuthController,
+    LandingController
 };
 
 /*
@@ -21,7 +22,7 @@ use App\Http\Controllers\{
 |
 */
 
-Route::view('/', 'landingpage');
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::view('/surveialumni', 'surveialumni.survei');
 Route::view('/surveiperusahaan', 'surveiperusahaan.survei');
 Route::get('/sebaran-profesi', [ProfesiController::class, 'sebaranProfesiView'])->name('sebaran.profesi');

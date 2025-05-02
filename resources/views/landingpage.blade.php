@@ -32,31 +32,34 @@
 
                 <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-activity icon"></i></div>
-                        <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-                        <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
+                        <div class="icon"><i class="bi bi-graph-up-arrow icon"></i></div>
+                        <h4><a href="" class="stretched-link">Pemantauan Karier Alumni</a></h4>
+                        <p>Melacak perkembangan karier alumni untuk mengetahui seberapa relevan pendidikan dengan dunia
+                            kerja.</p>
                     </div>
                 </div><!-- End Service Item -->
 
                 <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-                        <h4><a href="" class="stretched-link">Sed ut perspici</a></h4>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
+                        <div class="icon"><i class="bi bi-bar-chart-line icon"></i></div>
+                        <h4><a href="" class="stretched-link">Evaluasi Kurikulum</a></h4>
+                        <p>Data alumni digunakan untuk menilai efektivitas kurikulum dan meningkatkan kualitas pembelajaran.
+                        </p>
                     </div>
                 </div><!-- End Service Item -->
 
                 <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-item position-relative">
-                        <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-                        <h4><a href="" class="stretched-link">Magni Dolores</a></h4>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
+                        <div class="icon"><i class="bi bi-people icon"></i></div>
+                        <h4><a href="" class="stretched-link">Hubungan Institusi dan Alumni</a></h4>
+                        <p>Membangun jaringan komunikasi berkelanjutan antara kampus dan alumni untuk kemajuan bersama.</p>
                     </div>
                 </div><!-- End Service Item -->
 
             </div>
 
         </div>
+
 
     </section><!-- /Featured Services Section -->
 
@@ -65,9 +68,10 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <span>About Us<br></span>
-            <h2>About</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <span>Tentang Tracer Study<br></span>
+            <h2>Tentang Kami</h2>
+            <p>Platform ini digunakan untuk melacak jejak alumni setelah lulus serta mengevaluasi keterkaitan dunia kerja
+                dengan kurikulum pendidikan.</p>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -78,25 +82,22 @@
                     <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
                 </div>
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+                    <h3>Menjalin Koneksi Alumni dan Meningkatkan Mutu Pendidikan</h3>
                     <p class="fst-italic">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                        et dolore
-                        magna aliqua.
+                        Tracer Study membantu institusi pendidikan memahami perjalanan karier alumni dan menilai relevansi
+                        pendidikan yang diberikan.
                     </p>
                     <ul>
-                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.</span></li>
-                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate
-                                velit.</span></li>
-                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu
-                                fugiat nulla pariatur.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Mengumpulkan data alumni secara sistematis dan
+                                terstruktur.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Menilai efektivitas kurikulum dan kesiapan kerja
+                                lulusan.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Membangun hubungan jangka panjang antara alumni dan
+                                institusi melalui umpan balik yang konstruktif.</span></li>
                     </ul>
                     <p>
-                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
+                        Data dari Tracer Study sangat berguna untuk pengembangan program studi, akreditasi, serta sebagai
+                        dasar perencanaan strategis pendidikan yang lebih baik di masa depan.
                     </p>
                 </div>
             </div>
@@ -105,50 +106,48 @@
 
     </section><!-- /About Section -->
 
+
     <!-- Stats Section -->
     <section id="stats" class="stats section">
-
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-
             <div class="row gy-4">
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Clients</p>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalAlumni }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Total Alumni</p>
                     </div>
-                </div><!-- End Stats Item -->
+                </div>
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Projects</p>
+                        <span data-purecounter-start="0" data-purecounter-end="0"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Tracer Study Terisi</p>
                     </div>
-                </div><!-- End Stats Item -->
+                </div>
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Hours Of Support</p>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalProfesi }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Profesi</p>
                     </div>
-                </div><!-- End Stats Item -->
+                </div>
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Workers</p>
+                        <span data-purecounter-start="0" data-purecounter-end="0"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Pengguna Terdaftar</p>
                     </div>
-                </div><!-- End Stats Item -->
+                </div>
 
             </div>
-
         </div>
+    </section>
 
-    </section><!-- /Stats Section -->
 
     <!-- Services Section -->
     <section id="services" class="services section light-background">
@@ -268,36 +267,36 @@
             <div class="swiper init-swiper" data-speed="600" data-delay="5000"
                 data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
                 <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 600,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": "auto",
-                  "pagination": {
-                    "el": ".swiper-pagination",
-                    "type": "bullets",
-                    "clickable": true
-                  },
-                  "breakpoints": {
-                    "320": {
-                      "slidesPerView": 1,
-                      "spaceBetween": 40
-                    },
-                    "1200": {
-                      "slidesPerView": 3,
-                      "spaceBetween": 20
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": "auto",
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      },
+                      "breakpoints": {
+                        "320": {
+                          "slidesPerView": 1,
+                          "spaceBetween": 40
+                        },
+                        "1200": {
+                          "slidesPerView": 3,
+                          "spaceBetween": 20
+                        }
+                      }
                     }
-                  }
-                }
-              </script>
+                  </script>
                 <div class="swiper-wrapper">
 
                     <div class="swiper-slide">
                         <div class="testimonial-item" "="">
-                <p>
-                  <i class=" bi bi-quote quote-icon-left"></i>
+                    <p>
+                      <i class=" bi bi-quote quote-icon-left"></i>
                             <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus.
                                 Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at
                                 semper.</span>

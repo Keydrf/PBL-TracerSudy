@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Sebaran Berdasarkan Kategori</h5>
-                    <canvas id="sebaranKategoriChart" width="400" height="300"></canvas>
+                    <canvas id="sebaranKategoriChart" width="400" height="150"></canvas>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
             datasets: [{
                 label: 'Jumlah Alumni',
                 data: dataNonInfokom,
-                backgroundColor: generateColors(dataNonInfokom.length, 7),
+                backgroundColor: generateColors(dataNonInfokom.length, 2),
                 borderRadius: 8
             }]
         },
