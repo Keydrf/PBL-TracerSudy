@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>TraceEdu</title>
+  <title>Star Admin2 </title>
   <!-- plugins:css -->
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
@@ -23,6 +23,7 @@
   <link rel="stylesheet"
     href="{{ asset('TemplateAdmin/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
   <!-- endinject -->
+  <link rel="shortcut icon" href="{{ asset('../public/TemplateAdmin/src/assets/images/favicon2.png') }}" />
   <!-- Plugin css for this page -->
   <link rel="stylesheet"
     href="{{ asset('TemplateAdmin/dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
