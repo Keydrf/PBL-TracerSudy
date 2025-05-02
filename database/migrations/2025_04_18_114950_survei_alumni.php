@@ -28,7 +28,9 @@ return new class extends Migration
             // Tambahkan foreign key untuk menghubungkan dengan tabel profesi dan kategori profesi
             $table->unsignedBigInteger('profesi_id')->nullable();
             $table->foreign('profesi_id')->references('profesi_id')->on('profesi');
-        
+            $table->integer('pendapatan');
+            $table->string('alamat_kantor', 255);
+            $table->string('kabupaten', 255);
             $table->unsignedBigInteger('kategori_id')->nullable(); // Tambahkan kolom kategori_id
             $table->foreign('kategori_id')->references('kategori_id')->on('kategori_profesi'); // Definisikan foreign key
         

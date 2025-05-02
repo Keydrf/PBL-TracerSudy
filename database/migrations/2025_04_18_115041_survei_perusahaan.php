@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('pengembangan_diri', 255);
             $table->string('kepemimpinan', 255);
             $table->string('etoskerja', 255);
-            $table->string('kompetensi', 255);
+            $table->string('kompetensi_yang_belum_dipenuhi', 255);
             $table->string('saran', 255);
 
             $table->timestamps();

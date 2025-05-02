@@ -33,7 +33,7 @@ class SurveiPerusahaanSeeder extends Seeder
                 'pengembangan_diri' => $kepuasan[array_rand($kepuasan)],
                 'kepemimpinan' => $kepuasan[array_rand($kepuasan)],
                 'etoskerja' => $kepuasan[array_rand($kepuasan)],
-                'kompetensi' => 'Sangat Baik',
+                'kompetensi_yang_belum_dipenuhi' => 'Sangat Baik',
                 'saran' => 'Pertahankan kualitas alumni.',
                 'created_at' => now(),
                 'updated_at' => now(),

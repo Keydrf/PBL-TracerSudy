@@ -30,6 +30,9 @@ class SurveiAlumniSeeder extends Seeder
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Jakarta',
                 'profesi_id' => 1, // Contoh: ID Profesi Software Engineer
+                'pendapatan' => 10000000,
+                'alamat_kantor' => 'Jln. Apel No. 5',
+                'kabupaten' => 'Kab. Buah',
                 'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
                 'nama_atasan' => 'Jane Smith',
                 'jabatan_atasan' => 'Project Manager',
@@ -51,6 +54,9 @@ class SurveiAlumniSeeder extends Seeder
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Jakarta',
                 'profesi_id' => 9, // Contoh: ID Profesi Trainer / Guru / Dosen (IT)
+                'pendapatan' => 9000000,
+                'alamat_kantor' => 'Jln. Mangga No. 3',
+                'kabupaten' => 'Kab. Buah',
                 'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
                 'nama_atasan' => 'John Smith',
                 'jabatan_atasan' => 'Kepala Bagian',
@@ -72,6 +78,9 @@ class SurveiAlumniSeeder extends Seeder
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Bandung',
                 'profesi_id' => 2, // Contoh: ID Profesi IT Support / IT Administrator
+                'pendapatan' => 12000000,
+                'alamat_kantor' => 'Jln. Anggur No. 7',
+                'kabupaten' => 'Kab. Buah',
                 'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
                 'nama_atasan' => 'Rini Sukaesih',
                 'jabatan_atasan' => 'Manager IT',
@@ -93,6 +102,9 @@ class SurveiAlumniSeeder extends Seeder
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Surabaya',
                 'profesi_id' => 11, // Contoh: ID Profesi Procurement & Operational Team
+                'pendapatan' => 15000000,
+                'alamat_kantor' => 'Jln. Manggis No. 9',
+                'kabupaten' => 'Kab. Buah',
                 'kategori_id' => 2, // Contoh: ID Kategori Bidang Non Infokom
                 'nama_atasan' => 'Budi Santoso',
                 'jabatan_atasan' => 'Supervisor Procurement',
@@ -114,6 +126,9 @@ class SurveiAlumniSeeder extends Seeder
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Yogyakarta',
                 'profesi_id' => 4, // Contoh: ID Profesi Digital Marketing Specialist
+                'pendapatan' => 20000000,
+                'alamat_kantor' => 'Jln. Duren No. 12',
+                'kabupaten' => 'Kab. Buah',
                 'kategori_id' => 1, // Kategori Infokom
                 'nama_atasan' => 'Nadiem Makarim',
                 'jabatan_atasan' => 'CEO',
