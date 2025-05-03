@@ -12,6 +12,8 @@ use App\Http\Controllers\{
     AlumniDataController,
     LandingController,
     LaporanController,
+    AlumniSurveyController,
+    SurveiPerusahaanController
 };
 
 /*
@@ -26,8 +28,27 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::view('/surveialumni', 'surveialumni.survei');
-Route::view('/surveiperusahaan', 'surveiperusahaan.survei');
+Route::controller(AlumniSurveyController::class)->group(function () {
+    // Halaman utama survei alumni
+    Route::get('/surveialumni', 'create')->name('alumni.survey.create');
+    
+    // Menyimpan data survei alumni
+    Route::post('/surveialumni', 'store')->name('alumni.survey.store');
+    
+    // API untuk pencarian alumni - Pastikan route ini benar
+    Route::get('/api/alumni/search', 'search')->name('api.alumni.search');
+});
+
+
+
+
+
+// Survey Routes
+Route::get('/surveiperusahaan', [SurveiPerusahaanController::class, 'create'])->name('survei.perusahaan.create');
+Route::post('/surveiperusahaan', [SurveiPerusahaanController::class, 'store'])->name('survei.perusahaan.store');
+
+// API Route for Alumni Search
+Route::get('/api/alumni/search-for-survey', [SurveiPerusahaanController::class, 'searchAlumni'])->name('api.alumni.search-for-survey');
 Route::get('/sebaran-profesi', [ProfesiController::class, 'sebaranProfesiView'])->name('sebaran.profesi');
 
 Route::pattern('id', '[0-9]+');

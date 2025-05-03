@@ -43,6 +43,7 @@
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <div id="preloader"></div>
+    @stack('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('TemplateLP/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
