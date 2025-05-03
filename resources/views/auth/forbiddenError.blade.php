@@ -20,7 +20,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/css/style.css') }}">
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/src/assets/images/favicon2.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/TEH.png') }}" />
   </head>
   <body>
     <div class="container-scroller">

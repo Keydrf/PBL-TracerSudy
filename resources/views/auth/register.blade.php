@@ -19,7 +19,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/assets/css/style.css') }}">
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/src/assets/images/favicon2.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('TemplateAdmin/TEH.png') }}" />
     <!-- Additional CSS for form validation -->
     <link rel="stylesheet" href="{{ asset('TemplateAdmin/src/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
   </head>
@@ -31,7 +31,7 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{ asset('TemplateAdmin/src/assets/images/logo.svg') }}" alt="logo">
+                  <img src="{{ asset('TemplateAdmin/TEDB1.PNG') }}" alt="logo">
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="fw-light">Create your account to continue.</h6>
