@@ -11,7 +11,7 @@ use App\Http\Controllers\{
     DashboardController,
     AlumniDataController,
     LandingController,
-    LaporanController
+    LaporanController,
 };
 
 /*
@@ -43,7 +43,8 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/admin', 'layouts_admin.isi');
     Route::get('/forbiddenError', function () {
         return view('auth.forbiddenError');

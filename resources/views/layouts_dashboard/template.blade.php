@@ -23,7 +23,7 @@
   <link rel="stylesheet"
     href="{{ asset('TemplateAdmin/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{ asset('../public/TemplateAdmin/src/assets/images/favicon2.png') }}" />
+  <link rel="shortcut icon" href="{{ asset('TemplateAdmin/TEH.png') }}" />
   <!-- Plugin css for this page -->
   <link rel="stylesheet"
     href="{{ asset('TemplateAdmin/dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">

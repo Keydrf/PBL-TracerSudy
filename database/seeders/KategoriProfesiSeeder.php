@@ -28,6 +28,12 @@ class KategoriProfesiSeeder extends Seeder
             ],
             [
                 'kode_kategori' => 'K003',
+                'nama_kategori' => 'Lainnya',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori' => 'K004',
                 'nama_kategori' => 'Belum Bekerja',
                 'created_at' => now(),
                 'updated_at' => now(),

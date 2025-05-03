@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - eNno Bootstrap Template</title>
+    <title>TraceEdu</title>
     <meta name="description" content="">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('TemplateLP/assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('TemplateAdmin/TEH.png') }}" rel="icon">
     <link href="{{ asset('TemplateLP/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <link href="https://fonts.googleapis.com" rel="preconnect">
