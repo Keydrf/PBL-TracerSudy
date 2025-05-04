@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\AlumniModel;
 use App\Models\ProfesiModel;
 use App\Models\SurveiAlumniModel;
+use App\Models\PerusahaanModel;
 
 class LandingController extends Controller
 {
     public function index()
     {
         $totalAlumni = AlumniModel::count();
-        // $totalTracer = Tracer::whereNotNull('submitted_at')->count();
+        $totalSurveiAlumni = SurveiAlumniModel::count();
         $totalProfesi = ProfesiModel::count();
-        // $totalPengguna = User::count();
+        $totalPerusahaan = PerusahaanModel::count();
 
-        return view('landingpage', compact('totalAlumni', 'totalProfesi'));
+        return view('landingpage', compact('totalAlumni', 'totalSurveiAlumni', 'totalProfesi', 'totalPerusahaan'));
     }
 }

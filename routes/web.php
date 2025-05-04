@@ -13,7 +13,8 @@ use App\Http\Controllers\{
     LandingController,
     LaporanController,
     AlumniSurveyController,
-    SurveiPerusahaanController
+    SurveiPerusahaanController,
+    PerusahaanController
 };
 
 /*
@@ -26,7 +27,7 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/populate', [PerusahaanController::class, 'populate'])->name('pop');
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::controller(AlumniSurveyController::class)->group(function () {
     // Halaman utama survei alumni
@@ -46,6 +47,7 @@ Route::controller(AlumniSurveyController::class)->group(function () {
 // Survey Routes
 Route::get('/surveiperusahaan', [SurveiPerusahaanController::class, 'create'])->name('survei.perusahaan.create');
 Route::post('/surveiperusahaan', [SurveiPerusahaanController::class, 'store'])->name('survei.perusahaan.store');
+Route::resource('perusahaan', PerusahaanController::class);
 
 // API Route for Alumni Search
 Route::get('/api/alumni/search-for-survey', [SurveiPerusahaanController::class, 'searchAlumni'])->name('api.alumni.search-for-survey');
@@ -113,6 +115,14 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/survei-kepuasan', 'surveiKepuasan');
                 Route::get('/belum-tracer', 'belumTracer');
                 Route::get('/belum-survei', 'belumSurvei');
+            });
+        });
+
+        Route::controller(PerusahaanController::class)->group(function () {
+            Route::prefix('perusahaan')->group(function () {
+                Route::get('/', 'index')->name('perusahaan.index');
+                Route::post('/list', 'list');
+                // Route::get('/populate', 'populate');
             });
         });
 

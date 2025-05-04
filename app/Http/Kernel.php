@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Console\Scheduling\Schedule;
 
 class Kernel extends HttpKernel
 {
@@ -40,7 +41,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -66,4 +67,12 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'authorize' => \App\Http\Middleware\AuthorizeUser::class,
     ];
+    protected function schedule(Schedule $schedule)
+    {
+        // Jalankan command setiap detik
+        $schedule->command('perusahaan:populate')->everyMinute();
+
+        // Contoh lain: Jalankan setiap minggu pada hari Senin pukul 02:00 pagi
+        // $schedule->command('perusahaan:populate')->weeklyOn(1, '02:00');
+    }
 }
