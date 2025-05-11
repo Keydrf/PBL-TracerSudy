@@ -20,12 +20,12 @@ class SurveiPerusahaanSeeder extends Seeder
 
         DB::table('survei_perusahaan')->insert([
             [
-                'nama' => 'PT. ABC',
-                'instansi' => 'Swasta',
+                'nama' => 'Kementerian Pendidikan',
+                'instansi' => 'Instansi Pemerintah',
                 'jabatan' => 'Manajer',
                 'no_telepon' => '081234567890',
                 'email' => 'abc@example.com',
-                'nim' => '1234567890', // Ganti dengan NIM alumni yang ada
+                'nim' => '4321098765', // Ganti dengan NIM alumni yang ada
                 'kerjasama' => $kepuasan[array_rand($kepuasan)],
                 'keahlian' => $kepuasan[array_rand($kepuasan)],
                 'kemampuan_basing' => $kepuasan[array_rand($kepuasan)],
@@ -35,10 +35,32 @@ class SurveiPerusahaanSeeder extends Seeder
                 'etoskerja' => $kepuasan[array_rand($kepuasan)],
                 'kompetensi_yang_belum_dipenuhi' => 'Sangat Baik',
                 'saran' => 'Pertahankan kualitas alumni.',
+                'perusahaan_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'PT. Telkom Indonesia',
+                'instansi' => 'BUMN',
+                'jabatan' => 'Supervisor',
+                'no_telepon' => '082234567891',
+                'email' => 'xyz@example.com',
+                'nim' => '6677889900', // Ganti dengan NIM alumni yang ada
+                'kerjasama' => $kepuasan[array_rand($kepuasan)],
+                'keahlian' => $kepuasan[array_rand($kepuasan)],
+                'kemampuan_basing' => $kepuasan[array_rand($kepuasan)],
+                'kemampuan_komunikasi' => $kepuasan[array_rand($kepuasan)],
+                'pengembangan_diri' => $kepuasan[array_rand($kepuasan)],
+                'kepemimpinan' => $kepuasan[array_rand($kepuasan)],
+                'etoskerja' => $kepuasan[array_rand($kepuasan)],
+                'kompetensi_yang_belum_dipenuhi' => 'Baik',
+                'saran' => 'Tingkatkan kemampuan komunikasi.',
+                'perusahaan_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             
+
         ]);
     }
 }

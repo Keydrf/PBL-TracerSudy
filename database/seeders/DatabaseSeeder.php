@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
             AlumniSeeder::class,
             KategoriProfesiSeeder::class,
             ProfesiSeeder::class,
-            PerusahaanSeeder::class,
             LevelSeeder::class,
             UserSeeder::class,
             SurveiAlumniSeeder::class,
+            PerusahaanSeeder::class,
             SurveiPerusahaanSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
