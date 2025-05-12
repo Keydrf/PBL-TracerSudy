@@ -10,18 +10,19 @@ class PenggunaAlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return DB::table('alumni')
-            ->leftJoin('survei_perusahaan', 'alumni.nim', '=', 'survei_perusahaan.nim')
-            ->whereNull('survei_perusahaan.nim')
+        return DB::table('perusahaan')
+            ->leftJoin('survei_perusahaan', 'perusahaan.perusahaan_id', '=', 'survei_perusahaan.perusahaan_id')
+            ->leftJoin('survei_alumni', 'perusahaan.survei_alumni_id', '=', 'survei_alumni.survei_alumni_id')
+            ->whereNull('survei_perusahaan.perusahaan_id')
             ->select(
-                DB::raw('NULL AS nama'),                  // Nama (perusahaan)
-                DB::raw('NULL AS instansi'),              // Instansi (perusahaan)
-                DB::raw('NULL AS jabatan'),               // Jabatan (perusahaan)
-                DB::raw('NULL AS no_telepon'),            // No. HP (perusahaan)
-                DB::raw('NULL AS email'),                 // Email (perusahaan)
-                'alumni.nama AS nama_alumni',             // Nama Alumni
-                'alumni.program_studi',
-                'alumni.tanggal_lulus'
+                'perusahaan.nama_atasan',                               // Nama 
+                'perusahaan.nama_instansi',                             // Instansi 
+                'survei_alumni.jabatan_atasan AS jabatan',              // Jabatan
+                'perusahaan.no_telepon',                                // No. HP 
+                'perusahaan.email',                                     // Email 
+                'perusahaan.nama_alumni',                               // Nama Alumni
+                'perusahaan.program_studi',                             // Program Studi
+                DB::raw('YEAR(perusahaan.tahun_lulus) AS tahun_lulus')  // Hanya mengambil tahun
             )
             ->get();
     }
@@ -36,7 +37,7 @@ class PenggunaAlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
             'Email',
             'Nama Alumni',
             'Program Studi',
-            'Tanggal Lulus'
+            'Tahun Lulus'
         ];
     }
 }
