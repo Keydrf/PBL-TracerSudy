@@ -1,6 +1,9 @@
 @extends('layouts_dashboard.template')
 
 @section('content')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Gaya Dasar untuk Grafik */
         .chart-container {
@@ -53,16 +56,19 @@
             min-height: 1px;
             padding-right: 15px;
             padding-left: 15px;
-            flex: 0 0 25%; /* 100% / 4 = 25% */
+            flex: 0 0 25%;
+            /* 100% / 4 = 25% */
             max-width: 25%;
         }
 
         /* Gaya untuk Judul yang Ditengah */
         .judul-tengah {
             text-align: center;
-            font-size: 1.5rem; /* Ubah ukuran font sesuai kebutuhan */
+            font-size: 1.5rem;
+            /* Ubah ukuran font sesuai kebutuhan */
             font-weight: bold;
-            margin-bottom: 1rem; /* Tambahkan margin bawah agar tidak terlalu dekat dengan grafik */
+            margin-bottom: 1rem;
+            /* Tambahkan margin bawah agar tidak terlalu dekat dengan grafik */
         }
     </style>
 
@@ -72,7 +78,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Jumlah Alumni per Prodi</h5>
-                        
+
                     </div>
                     <div class="card-body">
                         <div id="prodiChartContainer" class="chart-container">
@@ -85,7 +91,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Jumlah Alumni per Kategori Profesi</h5>
-                        
+
                     </div>
                     <div class="card-body">
                         <div id="kategoriProfesiChartContainer" class="chart-container">
@@ -98,7 +104,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Jumlah Profesi per Kategori</h5>
-                        
+
                     </div>
                     <div class="card-body">
                         <div id="jumlahProfesiChartContainer" class="chart-container">
@@ -109,7 +115,7 @@
             </div>
         </div>
     </div>
-<br>
+    <br>
     <div class="card">
         <div class="row row-grafik">
             <div class="col-md-6">
@@ -140,7 +146,7 @@
             </div>
         </div>
     </div>
-<br>
+    <br>
     <div class="card">
         <div class="row">
             <div class="col-md-12">
@@ -170,7 +176,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        window.addEventListener("DOMContentLoaded", function () {
+        window.addEventListener("DOMContentLoaded", function() {
             // Data Alumni Berdasarkan Program Studi (Dummy)
             const dataChart1 = {
                 labels: ['TI', 'S', 'PPL Situs'],
@@ -227,14 +233,15 @@
                                 borderWidth: 1,
                                 displayColors: true,
                                 callbacks: {
-                                    label: function (context) {
+                                    label: function(context) {
                                         let label = context.label || '';
                                         if (label) {
                                             label += ': ';
                                         }
                                         const value = context.parsed;
                                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = total > 0 ? (value / total * 100).toFixed(1) + '%' : '0%';
+                                        const percentage = total > 0 ? (value / total * 100).toFixed(
+                                            1) + '%' : '0%';
                                         label += value + ' (' + percentage + ')';
                                         return label;
                                     }
@@ -287,7 +294,7 @@
             const dataKepuasanPengguna = @json($dataKepuasan ?? []);
             const kriteriaKepuasan = @json($kriteriaKepuasan ?? []);
 
-            kriteriaKepuasan.forEach(function (kriteria, index) {
+            kriteriaKepuasan.forEach(function(kriteria, index) {
                 const chartId = `kepuasanPieChart_${index}`;
                 const data = dataKepuasanPengguna[kriteria];
                 if (data && data.labels && data.series) {
