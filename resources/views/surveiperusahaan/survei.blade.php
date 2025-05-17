@@ -149,12 +149,29 @@
                 </div>
             @endif
 
-            <form action="{{ route('survei.perusahaan.store') }}" method="post" class="survey-form" data-aos="fade-up" data-aos-delay="200">
+            <form action="{{ route('survei.perusahaan.store') }}" method="post" class="survey-form" data-aos="fade-up"
+                data-aos-delay="200">
                 @csrf
                 <div class="row gy-4">
                     <!-- Data Penilai -->
                     <div class="col-md-12">
                         <h4 class="mb-3">Data Penilai</h4>
+                    </div>
+
+                    <!-- Perusahaan -->
+                    <div class="form-group">
+                        <label for="perusahaan_id">Perusahaan</label>
+                        <select name="perusahaan_id" id="perusahaan_id" class="form-control" style="width: 100%;">
+                            <option value="">-- Pilih Perusahaan --</option>
+                            @foreach($perusahaanList as $perusahaan)
+                                <option value="{{ $perusahaan->perusahaan_id }}" {{ old('perusahaan_id') == $perusahaan->perusahaan_id ? 'selected' : '' }}>
+                                    {{ $perusahaan->nama_instansi }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('perusahaan_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Nama Penilai -->
@@ -228,23 +245,23 @@
                         <h4 class="mb-3">Penilaian Kinerja (1-5)</h4>
                         <p class="text-muted">1 = Sangat Kurang, 2 = Kurang, 3 = Cukup, 4 = Baik, 5 = Sangat Baik</p>
                     </div>
-                    
+
                     <!-- Kerjasama Tim -->
                     <div class="col-md-6">
                         <label class="pb-2">Kerjasama Tim <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="kerjasama-5" name="kerjasama" value="5" {{ old('kerjasama') == '5' ? 'checked' : '' }} required>
                             <label for="kerjasama-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="kerjasama-4" name="kerjasama" value="4" {{ old('kerjasama') == '4' ? 'checked' : '' }} required>
                             <label for="kerjasama-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="kerjasama-3" name="kerjasama" value="3" {{ old('kerjasama') == '3' ? 'checked' : '' }} required>
                             <label for="kerjasama-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="kerjasama-2" name="kerjasama" value="2" {{ old('kerjasama') == '2' ? 'checked' : '' }} required>
                             <label for="kerjasama-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="kerjasama-1" name="kerjasama" value="1" {{ old('kerjasama') == '1' ? 'checked' : '' }} required>
                             <label for="kerjasama-1" title="Sangat Kurang"></label>
                         </div>
@@ -252,23 +269,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Keahlian di bidang TI -->
                     <div class="col-md-6">
                         <label class="pb-2">Keahlian di bidang TI <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="keahlian-5" name="keahlian" value="5" {{ old('keahlian') == '5' ? 'checked' : '' }} required>
                             <label for="keahlian-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="keahlian-4" name="keahlian" value="4" {{ old('keahlian') == '4' ? 'checked' : '' }} required>
                             <label for="keahlian-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="keahlian-3" name="keahlian" value="3" {{ old('keahlian') == '3' ? 'checked' : '' }} required>
                             <label for="keahlian-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="keahlian-2" name="keahlian" value="2" {{ old('keahlian') == '2' ? 'checked' : '' }} required>
                             <label for="keahlian-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="keahlian-1" name="keahlian" value="1" {{ old('keahlian') == '1' ? 'checked' : '' }} required>
                             <label for="keahlian-1" title="Sangat Kurang"></label>
                         </div>
@@ -276,23 +293,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Kemampuan berbahasa asing -->
                     <div class="col-md-6">
                         <label class="pb-2">Kemampuan berbahasa asing <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="kemampuan_basing-5" name="kemampuan_basing" value="5" {{ old('kemampuan_basing') == '5' ? 'checked' : '' }} required>
                             <label for="kemampuan_basing-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="kemampuan_basing-4" name="kemampuan_basing" value="4" {{ old('kemampuan_basing') == '4' ? 'checked' : '' }} required>
                             <label for="kemampuan_basing-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="kemampuan_basing-3" name="kemampuan_basing" value="3" {{ old('kemampuan_basing') == '3' ? 'checked' : '' }} required>
                             <label for="kemampuan_basing-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="kemampuan_basing-2" name="kemampuan_basing" value="2" {{ old('kemampuan_basing') == '2' ? 'checked' : '' }} required>
                             <label for="kemampuan_basing-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="kemampuan_basing-1" name="kemampuan_basing" value="1" {{ old('kemampuan_basing') == '1' ? 'checked' : '' }} required>
                             <label for="kemampuan_basing-1" title="Sangat Kurang"></label>
                         </div>
@@ -300,23 +317,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Kemampuan berkomunikasi -->
                     <div class="col-md-6">
                         <label class="pb-2">Kemampuan berkomunikasi <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="kemampuan_komunikasi-5" name="kemampuan_komunikasi" value="5" {{ old('kemampuan_komunikasi') == '5' ? 'checked' : '' }} required>
                             <label for="kemampuan_komunikasi-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="kemampuan_komunikasi-4" name="kemampuan_komunikasi" value="4" {{ old('kemampuan_komunikasi') == '4' ? 'checked' : '' }} required>
                             <label for="kemampuan_komunikasi-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="kemampuan_komunikasi-3" name="kemampuan_komunikasi" value="3" {{ old('kemampuan_komunikasi') == '3' ? 'checked' : '' }} required>
                             <label for="kemampuan_komunikasi-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="kemampuan_komunikasi-2" name="kemampuan_komunikasi" value="2" {{ old('kemampuan_komunikasi') == '2' ? 'checked' : '' }} required>
                             <label for="kemampuan_komunikasi-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="kemampuan_komunikasi-1" name="kemampuan_komunikasi" value="1" {{ old('kemampuan_komunikasi') == '1' ? 'checked' : '' }} required>
                             <label for="kemampuan_komunikasi-1" title="Sangat Kurang"></label>
                         </div>
@@ -324,23 +341,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Pengembangan diri -->
                     <div class="col-md-6">
                         <label class="pb-2">Pengembangan diri <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="pengembangan_diri-5" name="pengembangan_diri" value="5" {{ old('pengembangan_diri') == '5' ? 'checked' : '' }} required>
                             <label for="pengembangan_diri-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="pengembangan_diri-4" name="pengembangan_diri" value="4" {{ old('pengembangan_diri') == '4' ? 'checked' : '' }} required>
                             <label for="pengembangan_diri-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="pengembangan_diri-3" name="pengembangan_diri" value="3" {{ old('pengembangan_diri') == '3' ? 'checked' : '' }} required>
                             <label for="pengembangan_diri-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="pengembangan_diri-2" name="pengembangan_diri" value="2" {{ old('pengembangan_diri') == '2' ? 'checked' : '' }} required>
                             <label for="pengembangan_diri-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="pengembangan_diri-1" name="pengembangan_diri" value="1" {{ old('pengembangan_diri') == '1' ? 'checked' : '' }} required>
                             <label for="pengembangan_diri-1" title="Sangat Kurang"></label>
                         </div>
@@ -348,23 +365,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Kepemimpinan -->
                     <div class="col-md-6">
                         <label class="pb-2">Kepemimpinan <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="kepemimpinan-5" name="kepemimpinan" value="5" {{ old('kepemimpinan') == '5' ? 'checked' : '' }} required>
                             <label for="kepemimpinan-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="kepemimpinan-4" name="kepemimpinan" value="4" {{ old('kepemimpinan') == '4' ? 'checked' : '' }} required>
                             <label for="kepemimpinan-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="kepemimpinan-3" name="kepemimpinan" value="3" {{ old('kepemimpinan') == '3' ? 'checked' : '' }} required>
                             <label for="kepemimpinan-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="kepemimpinan-2" name="kepemimpinan" value="2" {{ old('kepemimpinan') == '2' ? 'checked' : '' }} required>
                             <label for="kepemimpinan-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="kepemimpinan-1" name="kepemimpinan" value="1" {{ old('kepemimpinan') == '1' ? 'checked' : '' }} required>
                             <label for="kepemimpinan-1" title="Sangat Kurang"></label>
                         </div>
@@ -372,23 +389,23 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Etos Kerja -->
                     <div class="col-md-6">
                         <label class="pb-2">Etos Kerja <span class="text-danger">*</span></label>
                         <div class="rating-container">
                             <input type="radio" id="etoskerja-5" name="etoskerja" value="5" {{ old('etoskerja') == '5' ? 'checked' : '' }} required>
                             <label for="etoskerja-5" title="Sangat Baik"></label>
-                    
+
                             <input type="radio" id="etoskerja-4" name="etoskerja" value="4" {{ old('etoskerja') == '4' ? 'checked' : '' }} required>
                             <label for="etoskerja-4" title="Baik"></label>
-                    
+
                             <input type="radio" id="etoskerja-3" name="etoskerja" value="3" {{ old('etoskerja') == '3' ? 'checked' : '' }} required>
                             <label for="etoskerja-3" title="Cukup"></label>
-                    
+
                             <input type="radio" id="etoskerja-2" name="etoskerja" value="2" {{ old('etoskerja') == '2' ? 'checked' : '' }} required>
                             <label for="etoskerja-2" title="Kurang"></label>
-                    
+
                             <input type="radio" id="etoskerja-1" name="etoskerja" value="1" {{ old('etoskerja') == '1' ? 'checked' : '' }} required>
                             <label for="etoskerja-1" title="Sangat Kurang"></label>
                         </div>
@@ -404,9 +421,10 @@
 
                     <!-- Kompetensi yang dibutuhkan tapi belum dapat dipenuhi -->
                     <div class="col-md-12">
-                        <label for="kompetensi_yang_belum_dipenuhi" class="pb-2">Kompetensi yang dibutuhkan tapi belum dapat dipenuhi <span
-                                class="text-danger">*</span></label>
-                        <textarea class="form-control" id="kompetensi_yang_belum_dipenuhi" name="kompetensi_yang_belum_dipenuhi" rows="3"
+                        <label for="kompetensi_yang_belum_dipenuhi" class="pb-2">Kompetensi yang dibutuhkan tapi belum dapat
+                            dipenuhi <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="kompetensi_yang_belum_dipenuhi"
+                            name="kompetensi_yang_belum_dipenuhi" rows="3"
                             required>{{ old('kompetensi_yang_belum_dipenuhi') }}</textarea>
                         @error('kompetensi_yang_belum_dipenuhi')
                             <div class="text-danger">{{ $message }}</div>
@@ -566,6 +584,91 @@
             surveyForm.addEventListener('submit', function () {
                 searchResults.classList.add('d-none');
             });
+
+            $(document).ready(function () {
+                $('select[name="perusahaan_id"]').select2({
+                    placeholder: "Cari perusahaan...",
+                    allowClear: true
+                });
+            });
+
+            $('#perusahaan_id').on('change', function () {
+                var perusahaanId = $(this).val();
+                if (perusahaanId) {
+                    $.ajax({
+                        url: '/survei-perusahaan/get/' + perusahaanId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data) {
+                                $('#instansi').val(data.instansi);
+                                $('#nama').val(data.nama_atasan);
+                                $('#no_telepon').val(data.no_telepon);
+                                $('#email').val(data.email);
+                            }
+                        }
+                    });
+                }
+            });
+
+            $(document).ready(function () {
+                // Initialize select2
+                $('select[name="perusahaan_id"]').select2({
+                    placeholder: "Cari perusahaan...",
+                    allowClear: true
+                });
+
+                // Company autofill function
+                $('#perusahaan_id').on('change', function () {
+                    var perusahaanId = $(this).val();
+
+                    // Clear fields if no company is selected
+                    if (!perusahaanId) {
+                        $('#nama').val('');
+                        $('#instansi').val('');
+                        $('#no_telepon').val('');
+                        $('#email').val('');
+                        return;
+                    }
+
+                    // Show loading indicator
+                    $('#loading-indicator').removeClass('d-none');
+
+                    // Fetch company data
+                    $.ajax({
+                        url: '/api/perusahaan/' + perusahaanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success && response.data) {
+                                var data = response.data;
+
+                                // Populate form fields
+                                $('#nama').val(data.nama_atasan);
+                                $('#instansi').val(data.instansi);
+                                $('#no_telepon').val(data.no_telepon);
+                                $('#email').val(data.email);
+                            } else {
+                                // Handle error
+                                console.error('Failed to fetch company data');
+                            }
+
+                            // Hide loading indicator
+                            $('#loading-indicator').addClass('d-none');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('AJAX Error: ' + status + ' - ' + error);
+                            alert('Terjadi kesalahan saat mengambil data perusahaan. Silakan coba lagi.');
+
+                            // Hide loading indicator
+                            $('#loading-indicator').addClass('d-none');
+                        }
+                    });
+                });
+            });
         </script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @endpush
 @endsection

@@ -123,7 +123,8 @@
                 </div>
             @endif
 
-            <form action="{{ route('alumni.survey.store') }}" method="post" class="survey-form" data-aos="fade-up" data-aos-delay="200">
+            <form action="{{ route('alumni.survey.store') }}" method="post" class="survey-form" data-aos="fade-up"
+                data-aos-delay="200">
                 @csrf
                 <div class="row gy-4">
                     <!-- Nama (Search) -->
@@ -334,6 +335,54 @@
                         @enderror
                     </div>
 
+                    <div class="col-md-12">
+                        <h4 class="mt-4 mb-3">Informasi Profesi Anda</h4>
+                    </div>
+
+                    <!-- Profesi -->
+                    <div class="form-group">
+                        <label for="profesi_id">Profesi</label>
+                        <select name="profesi_id" class="form-control">
+                            <option value="">-- Pilih Profesi --</option>
+                            @foreach($profesiList as $profesi)
+                                <option value="{{ $profesi->profesi_id }}" {{ old('profesi_id') == $profesi->profesi_id ? 'selected' : '' }}>
+                                    {{ $profesi->nama_profesi }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Pendapatan -->
+                    <div class="form-group">
+                        <label for="pendapatan">Pendapatan</label>
+                        <input type="number" name="pendapatan" class="form-control" value="{{ old('pendapatan') }}">
+                    </div>
+
+                    <!-- Alamat Kantor -->
+                    <div class="form-group">
+                        <label for="alamat_kantor">Alamat Kantor</label>
+                        <input type="text" name="alamat_kantor" class="form-control" value="{{ old('alamat_kantor') }}">
+                    </div>
+
+                    <!-- Kabupaten -->
+                    <div class="form-group">
+                        <label for="kabupaten">Kabupaten</label>
+                        <input type="text" name="kabupaten" class="form-control" value="{{ old('kabupaten') }}">
+                    </div>
+
+                    <!-- Kategori Profesi -->
+                    <div class="form-group">
+                        <label for="kategori_id">Kategori Profesi</label>
+                        <select name="kategori_id" class="form-control">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($kategoriList as $kategori)
+                                <option value="{{ $kategori->kategori_id }}" {{ old('kategori_id') == $kategori->kategori_id ? 'selected' : '' }}>
+                                    {{ $kategori->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="col-md-12 text-center">
                         <div class="error-message"></div>
                         <button type="submit">Simpan Data</button>
@@ -523,7 +572,22 @@
                 }
             });
 
+            $(document).ready(function () {
+                $('select[name="profesi_id"]').select2({
+                    placeholder: 'Cari Profesi',
+                    allowClear: true
+                });
+
+                $('select[name="kategori_id"]').select2({
+                    placeholder: 'Cari Kategori',
+                    allowClear: true
+                });
+            });
+
 
         </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @endpush
 @endsection
