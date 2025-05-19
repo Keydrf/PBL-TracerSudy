@@ -10,9 +10,9 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Data Perusahaan</h4>
+                <h4 class="card-title">@lang('company.page_title')</h4>
                 <a href="{{ url('/populate') }}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-plus"></i> Update
+                    <i class="fas fa-plus me-2"></i>@lang('company.add_button')
                 </a>
             </div>
 
@@ -28,16 +28,16 @@
                     <table class="table table-bordered table-striped table-hover table-sm" id="table-perusahaan">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Nama Atasan</th>
-                                <th>Instansi</th>
-                                <th>Nama Instansi</th>
-                                <th>Telepon</th>
-                                <th>Email</th>
-                                <th>Nama Alumni</th>
-                                <th>Program Studi</th>
-                                <th>Tahun Lulus</th>
-                                <th>Aksi</th>
+                                <th>@lang('company.table.headers.number')</th>
+                                <th>@lang('company.table.headers.supervisor_name')</th>
+                                <th>@lang('company.table.headers.agency_type')</th>
+                                <th>@lang('company.table.headers.agency_name')</th>
+                                <th>@lang('company.table.headers.phone')</th>
+                                <th>@lang('company.table.headers.email')</th>
+                                <th>@lang('company.table.headers.alumni_name')</th>
+                                <th>@lang('company.table.headers.program_study')</th>
+                                <th>@lang('company.table.headers.graduation_year')</th>
+                                <th>@lang('company.table.headers.action')</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -65,6 +65,7 @@
 
     $(document).ready(function () {
         $('#table-perusahaan').DataTable({
+            language: @json(__('company.datatable')),
             processing: true,
             serverSide: true,
             ajax: {

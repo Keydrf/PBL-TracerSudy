@@ -6,9 +6,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Data Kategori Profesi</h4>
+                    <h4 class="card-title">@lang('professionCategory.page_title')</h4>
                     <a href="{{ url('/kategori/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Tambah
+                        <i class="fas fa-plus me-2"></i>@lang('professionCategory.add_button')
                     </a>
                 </div>
 
@@ -24,10 +24,10 @@
                         <table class="table table-bordered table-sm table-striped table-hover" id="table-kategori">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kode Kategori</th>
-                                    <th>Nama Kategori</th>
-                                    <th>Aksi</th>
+                                    <th>@lang('professionCategory.table.headers.number')</th>
+                                    <th>@lang('professionCategory.table.headers.code')</th>
+                                    <th>@lang('professionCategory.table.headers.name')</th>
+                                    <th>@lang('professionCategory.table.headers.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -56,6 +56,7 @@
             const tableKategoriProfesi = $('#table-kategori').DataTable({
                 processing: true,
                 serverSide: true,
+                language: @json(__('professionCategory.datatable')),
                 ajax: {
                     url: "{{ url('kategori/list') }}",
                     type: "POST",

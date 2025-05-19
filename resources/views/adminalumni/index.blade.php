@@ -6,11 +6,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Data Lulusan</h4>
+                    <h4 class="card-title">@lang('alumni.page_title')</h4>
                     <a href="{{ url('/alumni/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Tambah
+                        <i class="fas fa-plus me-2"></i>@lang('alumni.add_button')
                     </a>
-                    <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-sm btn-primary"><i class="mdi mdi-file-import"></i>Import Lulusan</button>
+                    <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-sm btn-primary"><i class="mdi mdi-file-import me-2"></i>@lang('alumni.import_button')</button>
                 </div>
                 
                 <div class="card-body">
@@ -25,12 +25,12 @@
                         <table class="table table-bordered table-sm table-striped table-hover" id="table-lulusan">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Program Studi</th>
-                                    <th>NIM</th>
-                                    <th>Nama</th>
-                                    <th>Tanggal Lulus</th>
-                                    <th>Aksi</th>
+                                    <th>@lang('alumni.table.headers.number')</th>
+                                    <th>@lang('alumni.table.headers.study_program')</th>
+                                    <th>@lang('alumni.table.headers.nim')</th>
+                                    <th>@lang('alumni.table.headers.name')</th>
+                                    <th>@lang('alumni.table.headers.graduation_date')</th>
+                                    <th>@lang('alumni.table.headers.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -58,6 +58,7 @@
             const tableLulusan = $('#table-lulusan').DataTable({ // Menggunakan const dan nama variabel yang lebih deskriptif
                 processing: true,
                 serverSide: true,
+                language: @json(__('alumni.datatable')),
                 ajax: {
                     url: "{{ url('alumni/list') }}",
                     type: "POST",

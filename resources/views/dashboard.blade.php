@@ -77,7 +77,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Jumlah Alumni per Prodi</h5>
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_prodi')</h5>
 
                     </div>
                     <div class="card-body">
@@ -90,7 +90,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Jumlah Alumni per Kategori Profesi</h5>
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_kategori_profesi')</h5>
 
                     </div>
                     <div class="card-body">
@@ -103,7 +103,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Jumlah Profesi per Kategori</h5>
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.jumlah_profesi_per_kategori')</h5>
 
                     </div>
                     <div class="card-body">
@@ -121,8 +121,8 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Sebaran Profesi Lulusan</h5>
-                        <p class="card-category">10 profesi tertinggi, sisanya "Lainnya"</p>
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.sebaran_profesi')</h5>
+                        <p class="card-category">@lang('dashboard.deskripsi.sebaran_profesi')</p>
                     </div>
                     <div class="card-body">
                         <div id="sebaranProfesiChartContainer" class="chart-container">
@@ -134,8 +134,8 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Sebaran Jenis Instansi</h5>
-                        <p class="card-category">Pendidikan Tinggi, Instansi Pemerintah, Perusahaan Swasta, BUMN</p>
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.sebaran_instansi')</h5>
+                        <p class="card-category">@lang('dashboard.deskripsi.sebaran_instansi')</p>
                     </div>
                     <div class="card-body">
                         <div id="jenisInstansiChartContainer" class="chart-container">
@@ -150,8 +150,8 @@
     <div class="card">
         <div class="row">
             <div class="col-md-12">
-                <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Lulusan</h5>
-                <p class="card-category text-center">Skala Penilaian</p>
+                <h5 class="card-title judul-tengah">@lang('dashboard.judul_kartu.kepuasan_pengguna')</h5>
+                <p class="card-category text-center">@lang('dashboard.deskripsi.kepuasan_pengguna')</p>
             </div>
         </div>
         <div class="row row-grafik">
