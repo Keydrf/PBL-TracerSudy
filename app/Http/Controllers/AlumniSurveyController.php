@@ -10,7 +10,10 @@ class AlumniSurveyController extends Controller
 {
     public function create()
     {
-        return view('surveialumni.survei');
+        $profesiList = DB::table('profesi')->get();
+        $kategoriList = DB::table('kategori_profesi')->get();
+
+        return view('surveialumni.survei', compact('profesiList', 'kategoriList'));
     }
     public function store(Request $request)
     {
@@ -28,12 +31,15 @@ class AlumniSurveyController extends Controller
             'nama_instansi' => 'required|string|max:100',
             'skala' => 'required|string|max:100',
             'lokasi_instansi' => 'required|string|max:255',
-            'kategori_profesi' => 'required|string|max:100',
-            'profesi' => 'required|string|max:100',
             'nama_atasan' => 'required|string|max:100',
             'jabatan_atasan' => 'required|string|max:100',
             'no_telepon_atasan' => 'required|string|max:100',
             'email_atasan' => 'required|email|max:100',
+            'profesi_id' => 'nullable|exists:profesi,profesi_id',
+            'pendapatan' => 'required|integer',
+            'alamat_kantor' => 'required|string|max:255',
+            'kabupaten' => 'required|string|max:255',
+            'kategori_id' => 'nullable|exists:kategori_profesi,kategori_id',
         ]);
 
         if ($validator->fails()) {
@@ -43,14 +49,14 @@ class AlumniSurveyController extends Controller
         }
 
         try {
-            // Using raw query as requested (no framework/ORM)
             DB::insert('INSERT INTO survei_alumni (
-                nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja, 
-                masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi, 
-                nama_instansi, skala, lokasi_instansi, kategori_profesi, profesi, 
-                nama_atasan, jabatan_atasan, no_telepon_atasan, email_atasan, 
-                created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja, 
+            masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi, 
+            nama_instansi, skala, lokasi_instansi, 
+            nama_atasan, jabatan_atasan, no_telepon_atasan, email_atasan,
+            profesi_id, pendapatan, alamat_kantor, kabupaten, kategori_id,
+            created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $request->nim,
                 $request->no_telepon,
                 $request->email,
@@ -62,25 +68,26 @@ class AlumniSurveyController extends Controller
                 $request->nama_instansi,
                 $request->skala,
                 $request->lokasi_instansi,
-                $request->kategori_profesi,
-                $request->profesi,
                 $request->nama_atasan,
                 $request->jabatan_atasan,
                 $request->no_telepon_atasan,
                 $request->email_atasan,
+                $request->profesi_id,
+                $request->pendapatan,
+                $request->alamat_kantor,
+                $request->kabupaten,
+                $request->kategori_id,
                 now(),
                 now()
             ]);
 
-            return view('surveialumni.survei');
+            return redirect()->back()->with('success', 'Survei berhasil disimpan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
 
-    /**
-     * Search for alumni by NIM or name.
-     */
+
     public function search(Request $request)
     {
         $term = $request->input('term');

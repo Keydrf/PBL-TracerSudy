@@ -20,7 +20,7 @@
         <h1 class="welcome-text">
           <span id="greeting"></span>, <span class="text-black fw-bold">{{ Auth::user()->nama }}</span>
         </h1>
-        <h3 class="welcome-sub-text">Selamat Datang di Sistem Tracer Study</h3>
+        <h3 class="welcome-sub-text">@lang('header.welcome')</h3>
       </li>
     </ul>
     <ul class="navbar-nav navbar-nav-right">
@@ -31,21 +31,21 @@
            data-bs-toggle="dropdown"
            style="background-color: white; color: #1d3bb2; font-weight: 600; border: 1px solid #dee2e6;">
           <i class="fa fa-language me-2"></i>
-          <span id="selected-language" class="text-nowrap">Bahasa</span>
+          <span id="selected-language" class="text-nowrap">@lang('header.language.current')</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end mt-2" 
              style="min-width: 120px; border: 1px solid #dee2e6; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
           <a class="dropdown-item d-flex align-items-center py-2 px-3" 
-             href="#" 
+             href="{{ route('locale', ['locale' => 'id']) }}" 
              onclick="setLanguage('id')"
              style="color: #1d3bb2; font-weight: 500;">
-            Indonesia
+             @lang('header.language.id')
           </a>
           <a class="dropdown-item d-flex align-items-center py-2 px-3" 
-             href="#" 
+             href="{{ route('locale', ['locale' => 'en']) }}" 
              onclick="setLanguage('en')"
              style="color: #1d3bb2; font-weight: 500;">
-            English
+             @lang('header.language.en')
           </a>
         </div>
       </li>
@@ -79,21 +79,26 @@
 </nav>
 <script>
   function updateGreeting() {
+    const greetings = @json(__('header.greeting'));
     const now = new Date();
     const hour = now.getHours();
-    let greeting = 'Good Morning';
+    
+    let greetingType = 'evening';
+    if (hour < 12) greetingType = 'morning';
+    else if (hour < 18) greetingType = 'afternoon';
 
-    if (hour < 12) {
-      greeting = 'Good Morning';
-    } else if (hour < 18) {
-      greeting = 'Good Afternoon';
-    } else {
-      greeting = 'Good Evening';
-    }
-
-    document.getElementById('greeting').textContent = greeting;
+    document.getElementById('greeting').textContent = greetings[greetingType];
   }
 
-  updateGreeting(); // Set greeting saat halaman dimuat
-  setInterval(updateGreeting, 60000); // Update setiap menit (opsional)
+  document.addEventListener('DOMContentLoaded', function() {
+    const languages = @json(__('header.language'));
+    const currentLocale = "{{ app()->getLocale() }}";
+    
+    // Update selected language display
+    document.getElementById('selected-language').textContent = languages[currentLocale];
+    
+    // Initial greeting update
+    updateGreeting();
+    setInterval(updateGreeting, 60000);
+  });
 </script>

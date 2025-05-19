@@ -52,6 +52,13 @@ Route::resource('perusahaan', PerusahaanController::class);
 // API Route for Alumni Search
 Route::get('/api/alumni/search-for-survey', [SurveiPerusahaanController::class, 'searchAlumni'])->name('api.alumni.search-for-survey');
 Route::get('/sebaran-profesi', [ProfesiController::class, 'sebaranProfesiView'])->name('sebaran.profesi');
+Route::get('/perusahaan/{id}', [App\Http\Controllers\SurveiPerusahaanController::class, 'getPerusahaanData']);
+
+Route::get('locale/{locale}', function ($locale) {
+    app()->setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
+})->name('locale');
 
 Route::pattern('id', '[0-9]+');
 

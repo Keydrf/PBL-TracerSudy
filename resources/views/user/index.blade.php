@@ -7,9 +7,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Data Admin</h4>
+                    <h4 class="card-title">@lang('user.page_title')</h4>
                     <a href="{{ url('/user/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Tambah
+                        <i class="fas fa-plus me-2"></i>@lang('user.add_button')
                     </a>
                 </div>
                 
@@ -25,11 +25,11 @@
                         <table class="table table-bordered table-sm table-striped table-hover" id="table-admin">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Level Nama</th>
-                                    <th>Username</th>
-                                    <th>Nama</th>
-                                    <th>Aksi</th>
+                                    <th>@lang('user.table.headers.number')</th>
+                                    <th>@lang('user.table.headers.level')</th>
+                                    <th>@lang('user.table.headers.username')</th>
+                                    <th>@lang('user.table.headers.name')</th>
+                                    <th>@lang('user.table.headers.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -58,6 +58,7 @@
             dataUser = $('#table-admin').DataTable({
                 processing: true,
                 serverSide: true,
+                language: @json(__('user.datatable')),
                 ajax: {
                     url: "{{ url('user/list') }}",
                     type: "POST",

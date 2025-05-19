@@ -10,7 +10,11 @@ class SurveiPerusahaanController extends Controller
 {
     public function create()
     {
-        return view('surveiperusahaan.survei');
+        // Updated to return nama_instansi for better searchability
+        $perusahaanList = DB::table('perusahaan')
+            ->select('perusahaan_id', 'nama_instansi')
+            ->get();
+        return view('surveiperusahaan.survei', compact('perusahaanList'));
     }
 
     /**
@@ -20,7 +24,7 @@ class SurveiPerusahaanController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:10',
+            'nama' => 'required|string|max:100',
             'instansi' => 'required|string|max:100',
             'jabatan' => 'required|string|max:100',
             'no_telepon' => 'required|string|max:100',
@@ -35,6 +39,7 @@ class SurveiPerusahaanController extends Controller
             'etoskerja' => 'required|string|max:255',
             'kompetensi_yang_belum_dipenuhi' => 'required|string|max:255',
             'saran' => 'required|string|max:255',
+            'perusahaan_id' => 'required|exists:perusahaan,perusahaan_id',
         ]);
 
         if ($validator->fails()) {
@@ -44,13 +49,13 @@ class SurveiPerusahaanController extends Controller
         }
 
         try {
-            // Using raw query as requested (no framework/ORM)
+            // Simpan data survei perusahaan
             DB::insert('INSERT INTO survei_perusahaan (
-                nama, instansi, jabatan, no_telepon, email, nim,
-                kerjasama, keahlian, kemampuan_basing, kemampuan_komunikasi,
-                pengembangan_diri, kepemimpinan, etoskerja, kompetensi_yang_belum_dipenuhi, saran,
-                created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            nama, instansi, jabatan, no_telepon, email, nim,
+            kerjasama, keahlian, kemampuan_basing, kemampuan_komunikasi,
+            pengembangan_diri, kepemimpinan, etoskerja, kompetensi_yang_belum_dipenuhi, saran,
+            perusahaan_id, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $request->nama,
                 $request->instansi,
                 $request->jabatan,
@@ -66,6 +71,7 @@ class SurveiPerusahaanController extends Controller
                 $request->etoskerja,
                 $request->kompetensi_yang_belum_dipenuhi,
                 $request->saran,
+                $request->perusahaan_id,
                 now(),
                 now()
             ]);
@@ -79,26 +85,6 @@ class SurveiPerusahaanController extends Controller
     /**
      * Search for alumni by name.
      */
-    // public function searchAlumni(Request $request)
-    // {
-    //     $term = $request->input('term');
-        
-    //     if (strlen($term) < 3) {
-    //         return response()->json([]);
-    //     }
-
-    //     // Using raw query as requested (no framework/ORM)
-    //     $results = DB::select("
-    //         SELECT a.nim, a.nama, a.program_studi, a.tahun_lulus 
-    //         FROM alumni a
-    //         WHERE a.nama LIKE ? 
-    //         ORDER BY a.nama ASC 
-    //         LIMIT 10
-    //     ", ["%{$term}%"]);
-
-    //     return response()->json($results);
-    // }
-
     public function searchAlumni(Request $request)
     {
         $term = $request->input('term');
@@ -116,5 +102,26 @@ class SurveiPerusahaanController extends Controller
     ", ["%{$term}%", "%{$term}%"]);
 
         return response()->json($results);
+    }
+
+    /**
+     * Get company data for autofill
+     */
+    public function getPerusahaanData($perusahaan_id)
+    {
+        // Fetch all details from the perusahaan table
+        $perusahaan = DB::table('perusahaan')
+            ->where('perusahaan_id', $perusahaan_id)
+            ->first();
+
+        if ($perusahaan) {
+            // Map to expected field names for the form
+            return response()->json([
+                'success' => true,
+                'data' => $perusahaan
+            ]);
+        }
+
+        return response()->json(['success' => false]);
     }
 }

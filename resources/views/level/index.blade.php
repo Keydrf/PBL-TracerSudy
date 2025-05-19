@@ -7,9 +7,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Data Level</h4>
+                    <h4 class="card-title">@lang('level.page_title')</h4>
                     <a href="{{ url('/level/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Tambah
+                        <i class="fas fa-plus me-2"></i>@lang('level.add_button')
                     </a>
                 </div>
                 
@@ -25,10 +25,10 @@
                         <table class="table table-bordered table-sm table-striped table-hover" id="table-level">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kode Level</th>
-                                    <th>Nama Level</th>
-                                    <th>Aksi</th>
+                                    <th>@lang('level.table.headers.number')</th>
+                                    <th>@lang('level.table.headers.code')</th>
+                                    <th>@lang('level.table.headers.name')</th>
+                                    <th>@lang('level.table.headers.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -56,6 +56,7 @@
             const tableAdmin = $('#table-level').DataTable({ // Menggunakan const dan nama variabel yang lebih deskriptif
                 processing: true,
                 serverSide: true,
+                language: @json(__('level.datatable')),
                 ajax: {
                     url: "{{ url('level/list') }}",
                     type: "POST",
