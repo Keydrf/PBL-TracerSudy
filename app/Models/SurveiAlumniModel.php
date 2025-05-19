@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 
 class SurveiAlumniModel extends Model
 {
@@ -50,6 +52,7 @@ class SurveiAlumniModel extends Model
      *
      * @var array<int, string>
      */
+    
     protected $fillable = [
         'nim',
         'no_telepon',
@@ -117,8 +120,9 @@ class SurveiAlumniModel extends Model
     {
         return $this->belongsTo(KategoriProfesiModel::class, 'kategori_id', 'kategori_id');
     }
-    public function perusahaan()
+    
+    public function perusahaan(): HasOne
     {
-        return $this->hasOne(PerusahaanModel::class, 'survei_alumni_id');
+        return $this->hasOne(PerusahaanModel::class, 'survei_alumni_id', 'survei_alumni_id');
     }
 }
