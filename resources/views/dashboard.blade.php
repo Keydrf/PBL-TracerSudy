@@ -132,8 +132,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Jumlah Alumni per Kategori Profesi</h5>
-
+                        <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_kategori_profesi')</h5>
                     </div>
                     <div class="card-body">
                         <div id="kategoriProfesiChartContainer" class="chart-container">
@@ -198,20 +197,32 @@
         <table class="table table-bordered table-striped table-sm text-center" id="tableLingkupTempatKerja">
             <thead class="table-light">
                 <tr>
+                    <th>Tahun Lulus</th>
+                    <th>Jumlah Lulusan</th>
+                    <th>Jumlah Lulusan yang Terlacak</th>
+                    <th>Profesi Kerja Bidang Infokom</th>
+                    <th>Profesi Kerja Bidang Non Infokom</th>
                     <th>Lingkup Tempat Kerja</th>
-                    <th>Jumlah Alumni</th>
-                    <th>Kesesuaian dengan Infokom (%)</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($lingkupTempatKerjaData ?? [] as $item)
                     <tr>
-                        <td>{{ $item['lingkup_tempat_kerja'] }}</td>
-                        <td>{{ $item['jumlah'] }}</td>
-                        <td>{{ number_format($item['kesesuaian_infokom'], 2) }}%</td>
+                        <td>{{ $item['tahun_lulus'] }}</td>
+                        <td>{{ $item['jumlah_lulusan'] }}</td>
+                        <td>{{ $item['lulusan_terlacak'] }}</td>
+                        <td>{{ $item['profesi_infokom'] }}</td>
+                        <td>{{ $item['profesi_non_infokom'] }}</td>
+                        <td>
+                            <ul class="list-unstyled mb-0">
+                                <li>Multinasional/Internasional: {{ $item['multinasional'] }}</li>
+                                <li>Nasional: {{ $item['nasional'] }}</li>
+                                <li>Wirausaha: {{ $item['wirausaha'] }}</li>
+                            </ul>
+                        </td>
                     </tr>
                 @empty
-                    <tr><td colspan="3">Data tidak tersedia</td></tr>
+                    <tr><td colspan="6">Data tidak tersedia</td></tr>
                 @endforelse
             </tbody>
         </table>
