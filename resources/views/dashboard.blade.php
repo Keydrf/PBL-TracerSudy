@@ -72,6 +72,48 @@
         }
     </style>
 
+{{-- FILTER --}}
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Filter Data</h5>
+    </div>
+    <div class="card-body">
+        <form id="filterForm" method="GET" action="{{ url()->current() }}">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="program_studi" class="form-label">Program Studi</label>
+                    <select name="program_studi" id="program_studi" class="form-select">
+                        @php
+                            $programStudiOptions = [
+                                'D4 TI' => 'D4 TI',
+                                'D4 SIB' => 'D4 SIB',
+                                'D2 PPLS' => 'D2 PPLS',
+                                'S2 MRTI' => 'S2 MRTI'
+                            ];
+                        @endphp
+                        @foreach($programStudiOptions as $key => $val)
+                            <option value="{{ $key }}" {{ request('program_studi', 'D4 TI') == $key ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="tahun_awal" class="form-label">Tahun Awal</label>
+                    <input type="number" name="tahun_awal" id="tahun_awal" class="form-control"
+                           value="{{ request('tahun_awal', \Carbon\Carbon::now()->year - 3) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
+                    <input type="number" name="tahun_akhir" id="tahun_akhir" class="form-control"
+                           value="{{ request('tahun_akhir', \Carbon\Carbon::now()->year) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    
     <div class="card">
         <div class="row">
             <div class="col-md-4">
@@ -91,7 +133,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_kategori_profesi')</h5>
-
                     </div>
                     <div class="card-body">
                         <div id="kategoriProfesiChartContainer" class="chart-container">
@@ -147,6 +188,110 @@
         </div>
     </div>
     <br>
+{{-- tabel-tabel --}}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-sm text-center" id="tableLingkupTempatKerja">
+            <thead class="table-light">
+                <tr>
+                    <th>Tahun Lulus</th>
+                    <th>Jumlah Lulusan</th>
+                    <th>Jumlah Lulusan yang Terlacak</th>
+                    <th>Profesi Kerja Bidang Infokom</th>
+                    <th>Profesi Kerja Bidang Non Infokom</th>
+                    <th>Lingkup Tempat Kerja</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($lingkupTempatKerjaData ?? [] as $item)
+                    <tr>
+                        <td>{{ $item['tahun_lulus'] }}</td>
+                        <td>{{ $item['jumlah_lulusan'] }}</td>
+                        <td>{{ $item['lulusan_terlacak'] }}</td>
+                        <td>{{ $item['profesi_infokom'] }}</td>
+                        <td>{{ $item['profesi_non_infokom'] }}</td>
+                        <td>
+                            <ul class="list-unstyled mb-0">
+                                <li>Multinasional/Internasional: {{ $item['multinasional'] }}</li>
+                                <li>Nasional: {{ $item['nasional'] }}</li>
+                                <li>Wirausaha: {{ $item['wirausaha'] }}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6">Data tidak tersedia</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Rata-rata Masa Tunggu Mendapatkan Pekerjaan</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-sm text-center" id="tableMasaTunggu">
+            <thead class="table-light">
+                <tr>
+                    <th>Program Studi</th>
+                    <th>Rata-rata Masa Tunggu (Bulan)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($masaTungguData ?? [] as $item)
+                    <tr>
+                        <td>{{ $item->program_studi }}</td>
+                        <td>{{ number_format($item->rata_rata_bulan, 2) }}</td>
+
+                    </tr>
+                @empty
+                    <tr><td colspan="2">Data tidak tersedia</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Lulusan</h5>
+            <p class="card-category text-center">Skala Penilaian</p>
+        </div>
+    </div>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Penilaian Kepuasan Pengguna Lulusan</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-sm text-center" id="tableKepuasanPengguna">
+            <thead class="table-light">
+                <tr>
+                    <th>Kriteria</th>
+                    <th>Nilai Rata-rata</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($nilaiKepuasan ?? [] as $kriteria => $nilai)
+                    <tr>
+                        <td>{{ ucwords(str_replace('_', ' ', $kriteria)) }}</td>
+                        <td>{{ number_format($nilai['rata_rata'], 2) }}</td>
+                        <td>{{ $nilai['keterangan'] ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="3">Data tidak tersedia</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
     <div class="card">
         <div class="row">
             <div class="col-md-12">
@@ -154,20 +299,21 @@
                 <p class="card-category text-center">@lang('dashboard.deskripsi.kepuasan_pengguna')</p>
             </div>
         </div>
-        <div class="row row-grafik">
-            @foreach ($kriteriaKepuasan as $kriteria)
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">{{ ucwords(str_replace('_', ' ', $kriteria)) }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="kepuasan_{{ $loop->index }}" class="chart-container">
-                                <canvas id="kepuasanPieChart_{{ $loop->index }}"></canvas>
-                            </div>
+<div class="card">
+    <div class="row row-grafik">
+        @foreach ($kriteriaKepuasan as $kriteria)
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ ucwords(str_replace('_', ' ', $kriteria)) }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="kepuasan_{{ $loop->index }}" class="chart-container">
+                            <canvas id="kepuasanPieChart_{{ $loop->index }}"></canvas>
                         </div>
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
     </div>

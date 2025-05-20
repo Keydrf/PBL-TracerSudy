@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Models\SurveiAlumni; // import model
+use App\Models\SurveiAlumniModel;
 
 class DashboardController extends Controller
 {
@@ -86,6 +88,47 @@ class DashboardController extends Controller
                 'series' => $seriesKepuasan,
             ];
         }
+         // 1. Sebaran Lingkup Tempat Kerja & Kesesuaian Profesi
+        $lingkupTempatKerjaData = SurveiAlumniModel::select(
+                'lokasi_instansi as lingkup_tempat_kerja',
+                DB::raw('COUNT(*) as jumlah'),
+                DB::raw('SUM(CASE WHEN kategori_id IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as kesesuaian_infokom')
+            )
+            ->groupBy('lokasi_instansi')
+            ->get();
+
+        // 2. Rata-rata Masa Tunggu Per Prodi
+        $masaTungguData = DB::table('tracer_study.survei_alumni')
+            ->join('tracer_study.alumni', 'survei_alumni.survei_alumni_id', '=', 'alumni.alumni_id')
+            ->select(
+                'alumni.program_studi',
+                DB::raw('AVG(survei_alumni.masa_tunggu) as rata_rata_bulan')
+            )
+            ->groupBy('alumni.program_studi')
+            ->get();
+
+        // 3. Penilaian Kepuasan Pengguna Lulusan (ambil dari survei_perusahaan)
+        $kepuasan = DB::table('tracer_study.survei_perusahaan')
+            ->select([
+                DB::raw('AVG(kerjasama) as kerjasama'),
+                DB::raw('AVG(keahlian) as keahlian'),
+                DB::raw('AVG(kemampuan_basing) as kemampuan_basing'),
+                DB::raw('AVG(kemampuan_komunikasi) as komunikasi'),
+                DB::raw('AVG(pengembangan_diri) as pengembangan'),
+                DB::raw('AVG(kepemimpinan) as kepemimpinan'),
+                DB::raw('AVG(etoskerja) as etoskerja')
+            ])
+            ->first();
+
+        $nilaiKepuasan = [
+            'kerjasama' => ['rata_rata' => $kepuasan->kerjasama, 'keterangan' => ''],
+            'keahlian' => ['rata_rata' => $kepuasan->keahlian, 'keterangan' => ''],
+            'kemampuan_basing' => ['rata_rata' => $kepuasan->kemampuan_basing, 'keterangan' => ''],
+            'komunikasi' => ['rata_rata' => $kepuasan->komunikasi, 'keterangan' => ''],
+            'pengembangan_diri' => ['rata_rata' => $kepuasan->pengembangan, 'keterangan' => ''],
+            'kepemimpinan' => ['rata_rata' => $kepuasan->kepemimpinan, 'keterangan' => ''],
+            'etoskerja' => ['rata_rata' => $kepuasan->etoskerja, 'keterangan' => ''],
+        ];
 
         return view('dashboard', [
             'labelsProfesi' => $labelsProfesi,
@@ -94,6 +137,9 @@ class DashboardController extends Controller
             'dataInstansi' => $dataInstansi,
             'dataKepuasan' => $dataKepuasan,
             'kriteriaKepuasan' => $kriteriaKepuasan,
+            'lingkupTempatKerjaData' => $lingkupTempatKerjaData,
+            'masaTungguData' => $masaTungguData,
+            'nilaiKepuasan' => $nilaiKepuasan,
         ]);
     }
 }
