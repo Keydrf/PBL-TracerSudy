@@ -75,13 +75,13 @@
 {{-- FILTER --}}
 <div class="card mb-4">
     <div class="card-header">
-        <h5>Filter Data</h5>
+        <h5>@lang('dashboard.judul_kartu.filter_data')</h5>
     </div>
     <div class="card-body">
         <form id="filterForm" method="GET" action="{{ url()->current() }}">
             <div class="row">
                 <div class="col-md-4">
-                    <label for="program_studi" class="form-label">Program Studi</label>
+                    <label for="program_studi" class="form-label">@lang('dashboard.label_chart.prodi')</label>
                     <select name="program_studi" id="program_studi" class="form-select">
                         @php
                             $programStudiOptions = [
@@ -97,12 +97,12 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="tahun_awal" class="form-label">Tahun Awal</label>
+                    <label for="tahun_awal" class="form-label">@lang('dashboard.label_chart.tahun_awal')</label>
                     <input type="number" name="tahun_awal" id="tahun_awal" class="form-control"
                            value="{{ request('tahun_awal', \Carbon\Carbon::now()->year - 3) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
+                    <label for="tahun_akhir" class="form-label">@lang('dashboard.label_chart.tahun_akhir')</label>
                     <input type="number" name="tahun_akhir" id="tahun_akhir" class="form-control"
                            value="{{ request('tahun_akhir', \Carbon\Carbon::now()->year) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
                 </div>
@@ -191,18 +191,18 @@
 {{-- tabel-tabel --}}
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-striped table-sm text-center" id="tableLingkupTempatKerja">
             <thead class="table-light">
                 <tr>
-                    <th>Tahun Lulus</th>
-                    <th>Jumlah Lulusan</th>
-                    <th>Jumlah Lulusan yang Terlacak</th>
-                    <th>Profesi Kerja Bidang Infokom</th>
-                    <th>Profesi Kerja Bidang Non Infokom</th>
-                    <th>Lingkup Tempat Kerja</th>
+                    <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
+                    <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
+                    <th>@lang('dashboard.tabel_header.lulusan_terlacak')</th>
+                    <th>@lang('dashboard.tabel_header.profesi_infokom')</th>
+                    <th>@lang('dashboard.tabel_header.profesi_non_infokom')</th>
+                    <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja')</th>
                 </tr>
             </thead>
             <tbody>
@@ -215,14 +215,14 @@
                         <td>{{ $item['profesi_non_infokom'] }}</td>
                         <td>
                             <ul class="list-unstyled mb-0">
-                                <li>Multinasional/Internasional: {{ $item['multinasional'] }}</li>
-                                <li>Nasional: {{ $item['nasional'] }}</li>
-                                <li>Wirausaha: {{ $item['wirausaha'] }}</li>
+                                <li>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.multinasional'): {{ $item['multinasional'] }}</li>
+                                <li>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.nasional'): {{ $item['nasional'] }}</li>
+                                <li>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.wirausaha'): {{ $item['wirausaha'] }}</li>
                             </ul>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6">Data tidak tersedia</td></tr>
+                    <tr><td colspan="6">@lang('dashboard.pesan.data_tidak_tersedia')</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -231,14 +231,14 @@
 
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Rata-rata Masa Tunggu Mendapatkan Pekerjaan</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.rata_masa_tunggu')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-striped table-sm text-center" id="tableMasaTunggu">
             <thead class="table-light">
                 <tr>
-                    <th>Program Studi</th>
-                    <th>Rata-rata Masa Tunggu (Bulan)</th>
+                    <th>@lang('dashboard.tabel_header.program_studi')</th>
+                    <th>@lang('dashboard.tabel_header.rata_masa_tunggu')</th>
                 </tr>
             </thead>
             <tbody>
@@ -249,7 +249,7 @@
 
                     </tr>
                 @empty
-                    <tr><td colspan="2">Data tidak tersedia</td></tr>
+                    <tr><td colspan="2">@lang('dashboard.pesan.data_tidak_tersedia')</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -259,22 +259,22 @@
 <div class="card">
     <div class="row">
         <div class="col-md-12">
-            <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Lulusan</h5>
+            <h5 class="card-title judul-tengah">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
             <p class="card-category text-center">Skala Penilaian</p>
         </div>
     </div>
 
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Penilaian Kepuasan Pengguna Lulusan</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-striped table-sm text-center" id="tableKepuasanPengguna">
             <thead class="table-light">
                 <tr>
-                    <th>Kriteria</th>
-                    <th>Nilai Rata-rata</th>
-                    <th>Keterangan</th>
+                    <th>@lang('dashboard.tabel_header.kriteria')</th>
+                    <th>@lang('dashboard.tabel_header.nilai_rata')</th>
+                    <th>@lang('dashboard.tabel_header.keterangan')</th>
                 </tr>
             </thead>
             <tbody>
@@ -285,7 +285,7 @@
                         <td>{{ $nilai['keterangan'] ?? '-' }}</td>
                     </tr>
                 @empty
-                    <tr><td colspan="3">Data tidak tersedia</td></tr>
+                    <tr><td colspan="3">@lang('dashboard.pesan.data_tidak_tersedia')</td></tr>
                 @endforelse
             </tbody>
         </table>
