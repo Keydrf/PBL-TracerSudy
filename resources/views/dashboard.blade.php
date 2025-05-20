@@ -70,6 +70,8 @@
             margin-bottom: 1rem;
             /* Tambahkan margin bawah agar tidak terlalu dekat dengan grafik */
         }
+
+        
     </style>
 
 {{-- FILTER --}}
@@ -194,38 +196,80 @@
         <h5 class="mb-0">Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom</h5>
     </div>
     <div class="card-body">
-        <table class="table table-bordered table-striped table-sm text-center" id="tableLingkupTempatKerja">
-            <thead class="table-light">
-                <tr>
-                    <th>Tahun Lulus</th>
-                    <th>Jumlah Lulusan</th>
-                    <th>Jumlah Lulusan yang Terlacak</th>
-                    <th>Profesi Kerja Bidang Infokom</th>
-                    <th>Profesi Kerja Bidang Non Infokom</th>
-                    <th>Lingkup Tempat Kerja</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($lingkupTempatKerjaData ?? [] as $item)
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
+                <thead class="table-primary">
                     <tr>
-                        <td>{{ $item['tahun_lulus'] }}</td>
-                        <td>{{ $item['jumlah_lulusan'] }}</td>
-                        <td>{{ $item['lulusan_terlacak'] }}</td>
-                        <td>{{ $item['profesi_infokom'] }}</td>
-                        <td>{{ $item['profesi_non_infokom'] }}</td>
-                        <td>
-                            <ul class="list-unstyled mb-0">
-                                <li>Multinasional/Internasional: {{ $item['multinasional'] }}</li>
-                                <li>Nasional: {{ $item['nasional'] }}</li>
-                                <li>Wirausaha: {{ $item['wirausaha'] }}</li>
-                            </ul>
-                        </td>
+                        <th rowspan="2">Tahun Lulus</th>
+                        <th rowspan="2">Jumlah Lulusan</th>
+                        <th rowspan="2">Jumlah Lulusan yang terlacak</th>
+                        <th rowspan="2">Profesi Kerja Bidang Infokom</th>
+                        <th rowspan="2">Profesi Kerja Bidang Non Infokom</th>
+                        <th colspan="4">Lingkup Tempat Kerja</th>
                     </tr>
-                @empty
-                    <tr><td colspan="6">Data tidak tersedia</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+                    <tr>
+                        <th>Multinasional/Internasional</th>
+                        <th>Nasional</th>
+                        <th>Wirausaha</th>
+                        <th>Lokal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $total = [
+                            'jumlah_lulusan' => 0,
+                            'jumlah_terlacak' => 0,
+                            'profesi_infokom' => 0,
+                            'profesi_non_infokom' => 0,
+                            'multinasional' => 0,
+                            'nasional' => 0,
+                            'wirausaha' => 0,
+                            'lokal' => 0
+                        ];
+                    @endphp
+
+                    @forelse($lingkupTempatKerjaData ?? [] as $item)
+                        <tr>
+                            <td>{{ $item->tahun_lulus }}</td>
+                            <td>{{ $item->jumlah_lulusan }}</td>
+                            <td>{{ $item->jumlah_terlacak }}</td>
+                            <td>{{ $item->profesi_infokom }}</td>
+                            <td>{{ $item->profesi_non_infokom }}</td>
+                            <td>{{ $item->multinasional }}</td>
+                            <td>{{ $item->nasional }}</td>
+                            <td>{{ $item->wirausaha }}</td>
+                            <td>{{ $item->lokal }}</td>
+                        </tr>
+
+                        @php
+                            $total['jumlah_lulusan'] += $item->jumlah_lulusan;
+                            $total['jumlah_terlacak'] += $item->jumlah_terlacak;
+                            $total['profesi_infokom'] += $item->profesi_infokom;
+                            $total['profesi_non_infokom'] += $item->profesi_non_infokom;
+                            $total['multinasional'] += $item->multinasional;
+                            $total['nasional'] += $item->nasional;
+                            $total['wirausaha'] += $item->wirausaha;
+                            $total['lokal'] += $item->lokal;
+                        @endphp
+                    @empty
+                        <tr><td colspan="9">Data tidak tersedia</td></tr>
+                    @endforelse
+                </tbody>
+                <tfoot style="background-color: #848484; font-weight: bold;">
+                    <tr>
+                        <td>Jumlah</td>
+                        <td>{{ $total['jumlah_lulusan'] }}</td>
+                        <td>{{ $total['jumlah_terlacak'] }}</td>
+                        <td>{{ $total['profesi_infokom'] }}</td>
+                        <td>{{ $total['profesi_non_infokom'] }}</td>
+                        <td>{{ $total['multinasional'] }}</td>
+                        <td>{{ $total['nasional'] }}</td>
+                        <td>{{ $total['wirausaha'] }}</td>
+                        <td>{{ $total['lokal'] }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -234,24 +278,35 @@
         <h5 class="mb-0">Rata-rata Masa Tunggu Mendapatkan Pekerjaan</h5>
     </div>
     <div class="card-body">
-        <table class="table table-bordered table-striped table-sm text-center" id="tableMasaTunggu">
-            <thead class="table-light">
+        <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
+            <thead class="table-primary">
                 <tr>
-                    <th>Program Studi</th>
+                    <th>Tahun Lulus</th>
+                    <th>Jumlah Lulusan</th>
+                    <th>Jumlah lulusan yang terlacak</th>
                     <th>Rata-rata Masa Tunggu (Bulan)</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($masaTungguData ?? [] as $item)
                     <tr>
-                        <td>{{ $item->program_studi }}</td>
-                        <td>{{ number_format($item->rata_rata_bulan, 2) }}</td>
-
-                    </tr>
+                    <td>{{ $item->tahun_lulus }}</td>
+                    <td>{{ $item->jumlah_lulusan }}</td>
+                    <td>{{ $item->jumlah_terlacak }}</td>
+                    <td>{{ number_format($item->rata_rata_bulan, 2) }}</td>
+                </tr>
                 @empty
-                    <tr><td colspan="2">Data tidak tersedia</td></tr>
+                    <tr><td colspan="4">Data tidak tersedia</td></tr>
                 @endforelse
             </tbody>
+                <tfoot>
+                    <tr class="fw-bold">
+                        <td>Total</td>
+                        <td>{{ $totalMasaTunggu['jumlah_lulusan'] }}</td>
+                        <td>{{ $totalMasaTunggu['jumlah_terlacak'] }}</td>
+                        <td>{{ number_format($totalMasaTunggu['rata_rata_bulan'], 2) }}</td>
+                    </tr>
+            </tfoot>
         </table>
     </div>
 </div>
@@ -263,34 +318,72 @@
             <p class="card-category text-center">Skala Penilaian</p>
         </div>
     </div>
-
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
         <h5 class="mb-0">Penilaian Kepuasan Pengguna Lulusan</h5>
     </div>
     <div class="card-body">
-        <table class="table table-bordered table-striped table-sm text-center" id="tableKepuasanPengguna">
-            <thead class="table-light">
+        <table class="table table-bordered table-sm text-center" id="tableKepuasanPengguna">
+            <thead class="table-primary">
                 <tr>
-                    <th>Kriteria</th>
-                    <th>Nilai Rata-rata</th>
-                    <th>Keterangan</th>
+                    <th rowspan="2" scope="col">No</th>
+                    <th rowspan="2" scope="col">Jenis Kemampuan</th>
+                    <th colspan="4" scope="colgroup">Tingkat Kepuasan Pengguna (%)</th>
+                </tr>
+                <tr>
+                    <th scope="col">Sangat Baik</th>
+                    <th scope="col">Baik</th>
+                    <th scope="col">Cukup</th>
+                    <th scope="col">Kurang</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($nilaiKepuasan ?? [] as $kriteria => $nilai)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ ucwords(str_replace('_', ' ', $kriteria)) }}</td>
-                        <td>{{ number_format($nilai['rata_rata'], 2) }}</td>
-                        <td>{{ $nilai['keterangan'] ?? '-' }}</td>
+                        <td>{{ number_format($nilai['sangat_baik'] ?? 0, 2) }}%</td>
+                        <td>{{ number_format($nilai['baik'] ?? 0, 2) }}%</td>
+                        <td>{{ number_format($nilai['cukup'] ?? 0, 2) }}%</td>
+                        <td>{{ number_format($nilai['kurang'] ?? 0, 2) }}%</td>
                     </tr>
                 @empty
-                    <tr><td colspan="3">Data tidak tersedia</td></tr>
+                    <tr>
+                        <td colspan="6" class="text-center">Data tidak tersedia</td>
+                    </tr>
                 @endforelse
+
+                @if (!empty($nilaiKepuasan))
+                    @php
+                        $totalKriteria = count($nilaiKepuasan);
+                        $totalSangatBaik = $totalBaik = $totalCukup = $totalKurang = 0;
+
+                        foreach ($nilaiKepuasan as $nilai) {
+                            $totalSangatBaik += $nilai['sangat_baik'];
+                            $totalBaik       += $nilai['baik'];
+                            $totalCukup      += $nilai['cukup'];
+                            $totalKurang     += $nilai['kurang'];
+                        }
+
+                        $avgSangatBaik = $totalSangatBaik / $totalKriteria;
+                        $avgBaik       = $totalBaik / $totalKriteria;
+                        $avgCukup      = $totalCukup / $totalKriteria;
+                        $avgKurang     = $totalKurang / $totalKriteria;
+                    @endphp
+                    <tr style="background-color: #d3d3d3; font-weight: bold;">
+                        <td colspan="2" class="text-center">Jumlah</td>
+                        <td>{{ number_format($avgSangatBaik, 2) }}%</td>
+                        <td>{{ number_format($avgBaik, 2) }}%</td>
+                        <td>{{ number_format($avgCukup, 2) }}%</td>
+                        <td>{{ number_format($avgKurang, 2) }}%</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
 </div>
+
+
 
     <div class="card">
         <div class="row">

@@ -88,47 +88,91 @@ class DashboardController extends Controller
                 'series' => $seriesKepuasan,
             ];
         }
-         // 1. Sebaran Lingkup Tempat Kerja & Kesesuaian Profesi
-        $lingkupTempatKerjaData = SurveiAlumniModel::select(
-                'lokasi_instansi as lingkup_tempat_kerja',
-                DB::raw('COUNT(*) as jumlah'),
-                DB::raw('SUM(CASE WHEN kategori_id IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as kesesuaian_infokom')
-            )
-            ->groupBy('lokasi_instansi')
-            ->get();
+         // 1. Tabel Sebaran Lingkup Tempat Kerja
+        $lingkupTempatKerjaData = DB::table('survei_alumni')
+        ->select(
+            'tahun_lulus',
+            DB::raw('COUNT(*) as jumlah_lulusan'),
+            DB::raw('COUNT(tanggal_pertama_kerja) as jumlah_terlacak'),
+            DB::raw('SUM(CASE WHEN p.kategori_id = 1 THEN 1 ELSE 0 END) as profesi_infokom'),
+            DB::raw('SUM(CASE WHEN p.kategori_id != 1 THEN 1 ELSE 0 END) as profesi_non_infokom'),
+            DB::raw('SUM(CASE WHEN skala = "Multinasional/Internasional" THEN 1 ELSE 0 END) as multinasional'),
+            DB::raw('SUM(CASE WHEN skala = "Nasional" THEN 1 ELSE 0 END) as nasional'),
+            DB::raw('SUM(CASE WHEN skala = "Wirausaha" THEN 1 ELSE 0 END) as wirausaha'),
+            DB::raw('SUM(CASE WHEN skala = "Lokal" THEN 1 ELSE 0 END) as lokal')
+        )
+        ->leftJoin('profesi as p', 'survei_alumni.profesi_id', '=', 'p.profesi_id')
+        ->groupBy('tahun_lulus')
+        ->orderBy('tahun_lulus')
+        ->get();
 
-        // 2. Rata-rata Masa Tunggu Per Prodi
-        $masaTungguData = DB::table('tracer_study.survei_alumni')
-            ->join('tracer_study.alumni', 'survei_alumni.survei_alumni_id', '=', 'alumni.alumni_id')
-            ->select(
-                'alumni.program_studi',
-                DB::raw('AVG(survei_alumni.masa_tunggu) as rata_rata_bulan')
-            )
-            ->groupBy('alumni.program_studi')
-            ->get();
+        $total = [
+            'jumlah_lulusan' => $lingkupTempatKerjaData->sum('jumlah_lulusan'),
+            'jumlah_terlacak' => $lingkupTempatKerjaData->sum('jumlah_terlacak'),
+            'profesi_infokom' => $lingkupTempatKerjaData->sum('profesi_infokom'),
+            'profesi_non_infokom' => $lingkupTempatKerjaData->sum('profesi_non_infokom'),
+            'multinasional' => $lingkupTempatKerjaData->sum('multinasional'),
+            'nasional' => $lingkupTempatKerjaData->sum('nasional'),
+            'wirausaha' => $lingkupTempatKerjaData->sum('wirausaha'),
+            'lokal' => $lingkupTempatKerjaData->sum('lokal'),
+        ];
+
+        // 2. Tabel Rata-rata Masa Tunggu Per Prodi
+       $masaTungguData = DB::table('survei_alumni')
+        ->select(
+            'tahun_lulus',
+            DB::raw('COUNT(*) as jumlah_lulusan'),
+            DB::raw('COUNT(masa_tunggu) as jumlah_terlacak'),
+            DB::raw('AVG(masa_tunggu) as rata_rata_bulan')
+        )
+        ->groupBy('tahun_lulus')
+        ->orderBy('tahun_lulus')
+        ->get();
+
+        $totalMasaTunggu = [
+            'jumlah_lulusan' => $masaTungguData->sum('jumlah_lulusan'),
+            'jumlah_terlacak' => $masaTungguData->sum('jumlah_terlacak'),
+            'rata_rata_bulan' => round($masaTungguData->avg('rata_rata_bulan'), 2),
+        ];
 
         // 3. Penilaian Kepuasan Pengguna Lulusan (ambil dari survei_perusahaan)
-        $kepuasan = DB::table('tracer_study.survei_perusahaan')
-            ->select([
-                DB::raw('AVG(kerjasama) as kerjasama'),
-                DB::raw('AVG(keahlian) as keahlian'),
-                DB::raw('AVG(kemampuan_basing) as kemampuan_basing'),
-                DB::raw('AVG(kemampuan_komunikasi) as komunikasi'),
-                DB::raw('AVG(pengembangan_diri) as pengembangan'),
-                DB::raw('AVG(kepemimpinan) as kepemimpinan'),
-                DB::raw('AVG(etoskerja) as etoskerja')
-            ])
-            ->first();
-
-        $nilaiKepuasan = [
-            'kerjasama' => ['rata_rata' => $kepuasan->kerjasama, 'keterangan' => ''],
-            'keahlian' => ['rata_rata' => $kepuasan->keahlian, 'keterangan' => ''],
-            'kemampuan_basing' => ['rata_rata' => $kepuasan->kemampuan_basing, 'keterangan' => ''],
-            'komunikasi' => ['rata_rata' => $kepuasan->komunikasi, 'keterangan' => ''],
-            'pengembangan_diri' => ['rata_rata' => $kepuasan->pengembangan, 'keterangan' => ''],
-            'kepemimpinan' => ['rata_rata' => $kepuasan->kepemimpinan, 'keterangan' => ''],
-            'etoskerja' => ['rata_rata' => $kepuasan->etoskerja, 'keterangan' => ''],
+$columns = [
+            'kerjasama', 'keahlian', 'kemampuan_basing',
+            'kemampuan_komunikasi', 'pengembangan_diri',
+            'kepemimpinan', 'etoskerja'
         ];
+
+        $nilaiKepuasan = [];
+
+        foreach ($columns as $column) {
+            $total = DB::table('tracer_study.survei_perusahaan')->whereNotNull($column)->count();
+
+            if ($total == 0) {
+                $nilaiKepuasan[$column] = [
+                    'sangat_baik' => 0,
+                    'baik' => 0,
+                    'cukup' => 0,
+                    'kurang' => 0,
+                ];
+                continue;
+            }
+
+            $kategori = DB::table('tracer_study.survei_perusahaan')
+                ->select(
+                    DB::raw("SUM(CASE WHEN $column = 4 THEN 1 ELSE 0 END) as sangat_baik"),
+                    DB::raw("SUM(CASE WHEN $column = 3 THEN 1 ELSE 0 END) as baik"),
+                    DB::raw("SUM(CASE WHEN $column = 2 THEN 1 ELSE 0 END) as cukup"),
+                    DB::raw("SUM(CASE WHEN $column = 1 THEN 1 ELSE 0 END) as kurang")
+                )
+                ->first();
+
+            $nilaiKepuasan[$column] = [
+                'sangat_baik' => round(($kategori->sangat_baik / $total) * 100, 2),
+                'baik'        => round(($kategori->baik / $total) * 100, 2),
+                'cukup'       => round(($kategori->cukup / $total) * 100, 2),
+                'kurang'      => round(($kategori->kurang / $total) * 100, 2),
+            ];
+        }
 
         return view('dashboard', [
             'labelsProfesi' => $labelsProfesi,
@@ -139,7 +183,8 @@ class DashboardController extends Controller
             'kriteriaKepuasan' => $kriteriaKepuasan,
             'lingkupTempatKerjaData' => $lingkupTempatKerjaData,
             'masaTungguData' => $masaTungguData,
-            'nilaiKepuasan' => $nilaiKepuasan,
+            'totalMasaTunggu' => $totalMasaTunggu,
+            'nilaiKepuasan' => $nilaiKepuasan
         ]);
     }
 }
