@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Models\SurveiAlumni; // import model
@@ -9,13 +10,28 @@ use App\Models\SurveiAlumniModel;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $tahunAwal = $request->get('tahun_awal', date('Y') - 3);
+        $tahunAkhir = $request->get('tahun_akhir', date('Y'));
+
+        // // Data untuk Grafik Sebaran Profesi Lulusan
+        // $totalAlumniProfesi = DB::table('survei_alumni')->count();
+        // $profesi = DB::table('survei_alumni')
+        //     ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+        //     ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah'))
+        //     ->groupBy('profesi.nama_profesi')
+        //     ->orderBy('jumlah', 'desc')
+        //     ->get();
         // Data untuk Grafik Sebaran Profesi Lulusan
-        $totalAlumniProfesi = DB::table('survei_alumni')->count();
+        $totalAlumniProfesi = DB::table('survei_alumni')
+            ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+            ->count();
+
         $profesi = DB::table('survei_alumni')
             ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
             ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah'))
+            ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
             ->groupBy('profesi.nama_profesi')
             ->orderBy('jumlah', 'desc')
             ->get();
@@ -88,6 +104,8 @@ class DashboardController extends Controller
                 'series' => $seriesKepuasan,
             ];
         }
+        //filtering
+        
          // 1. Tabel Sebaran Lingkup Tempat Kerja
         $lingkupTempatKerjaData = DB::table('survei_alumni')
         ->select(
