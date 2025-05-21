@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class SurveiAlumniSeeder extends Seeder
 {
@@ -13,9 +12,6 @@ class SurveiAlumniSeeder extends Seeder
      */
     public function run(): void
     {
-        // Pastikan ada data alumni dengan NIM yang sesuai di database Anda sebelum menjalankan seeder ini
-        // Jika tidak, Anda akan mendapatkan error foreign key constraint.
-
         DB::table('survei_alumni')->insert([
             [
                 'nim' => '1234567890',
@@ -29,15 +25,16 @@ class SurveiAlumniSeeder extends Seeder
                 'nama_instansi' => 'PT. Maju Mundur',
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Jakarta',
-                'profesi_id' => 1, // Contoh: ID Profesi Software Engineer
+                'profesi_id' => 1,
                 'pendapatan' => 10000000,
                 'alamat_kantor' => 'Jln. Apel No. 5',
                 'kabupaten' => 'Kab. Buah',
-                'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
+                'kategori_id' => 1,
                 'nama_atasan' => 'Jane Smith',
                 'jabatan_atasan' => 'Project Manager',
                 'no_telepon_atasan' => '08987654321',
                 'email_atasan' => 'jane.smith@example.com',
+                'nama_ibu' => 'Maria Elisabeth',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -53,15 +50,16 @@ class SurveiAlumniSeeder extends Seeder
                 'nama_instansi' => 'Kementerian Pendidikan',
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Jakarta',
-                'profesi_id' => 9, // Contoh: ID Profesi Trainer / Guru / Dosen (IT)
+                'profesi_id' => 9,
                 'pendapatan' => 9000000,
                 'alamat_kantor' => 'Jln. Mangga No. 3',
                 'kabupaten' => 'Kab. Buah',
-                'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
+                'kategori_id' => 1,
                 'nama_atasan' => 'John Smith',
                 'jabatan_atasan' => 'Kepala Bagian',
                 'no_telepon_atasan' => '081122334455',
                 'email_atasan' => 'john.smith@kemenag.go.id',
+                'nama_ibu' => 'Siti Aminah',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -77,15 +75,16 @@ class SurveiAlumniSeeder extends Seeder
                 'nama_instansi' => 'PT. Telkom Indonesia',
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Bandung',
-                'profesi_id' => 2, // Contoh: ID Profesi IT Support / IT Administrator
+                'profesi_id' => 2,
                 'pendapatan' => 12000000,
                 'alamat_kantor' => 'Jln. Anggur No. 7',
                 'kabupaten' => 'Kab. Buah',
-                'kategori_id' => 1, // Contoh: ID Kategori Bidang Infokom
+                'kategori_id' => 1,
                 'nama_atasan' => 'Rini Sukaesih',
                 'jabatan_atasan' => 'Manager IT',
                 'no_telepon_atasan' => '082233445566',
                 'email_atasan' => 'rini.sukaesih@telkom.co.id',
+                'nama_ibu' => 'Yuniarti Dewi',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -101,15 +100,16 @@ class SurveiAlumniSeeder extends Seeder
                 'nama_instansi' => 'PT. Astra Internasional',
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Surabaya',
-                'profesi_id' => 11, // Contoh: ID Profesi Procurement & Operational Team
+                'profesi_id' => 11,
                 'pendapatan' => 15000000,
                 'alamat_kantor' => 'Jln. Manggis No. 9',
                 'kabupaten' => 'Kab. Buah',
-                'kategori_id' => 2, // Contoh: ID Kategori Bidang Non Infokom
+                'kategori_id' => 2,
                 'nama_atasan' => 'Budi Santoso',
                 'jabatan_atasan' => 'Supervisor Procurement',
                 'no_telepon_atasan' => '083344556677',
                 'email_atasan' => 'budi.santoso@astra.co.id',
+                'nama_ibu' => 'Nur Aisyah',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -125,15 +125,16 @@ class SurveiAlumniSeeder extends Seeder
                 'nama_instansi' => 'PT. Gojek Indonesia',
                 'skala' => 'Nasional',
                 'lokasi_instansi' => 'Yogyakarta',
-                'profesi_id' => 4, // Contoh: ID Profesi Digital Marketing Specialist
+                'profesi_id' => 4,
                 'pendapatan' => 20000000,
                 'alamat_kantor' => 'Jln. Duren No. 12',
                 'kabupaten' => 'Kab. Buah',
-                'kategori_id' => 1, // Kategori Infokom
+                'kategori_id' => 1,
                 'nama_atasan' => 'Nadiem Makarim',
                 'jabatan_atasan' => 'CEO',
                 'no_telepon_atasan' => '089988776655',
                 'email_atasan' => 'nadiem.makarim@gojek.com',
+                'nama_ibu' => 'Sri Wahyuni',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

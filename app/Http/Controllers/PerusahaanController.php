@@ -13,6 +13,16 @@ class PerusahaanController extends Controller
     // Tampilkan semua data perusahaan beserta data survei_alumni-nya
     public function populate()
     {
+        // Fungsi helper untuk generate kode 4 digit unik
+        function generateUniqueCode()
+        {
+            do {
+                $code = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // generate angka 0000 - 9999
+                $exists = \App\Models\PerusahaanModel::where('kode_perusahaan', $code)->exists();
+            } while ($exists);
+            return $code;
+        }
+
         // Ambil ID survei_alumni yang sudah ada di tabel perusahaan
         $existingSurveiIds = PerusahaanModel::pluck('survei_alumni_id')->toArray();
 
@@ -40,15 +50,20 @@ class PerusahaanController extends Controller
                     'nama_alumni' => $alumni ? $alumni->nama : null,
                     'program_studi' => $alumni ? $alumni->program_studi : null,
                     'tahun_lulus' => $alumni ? $alumni->tahun_lulus : null,
+                    'kode_perusahaan' => generateUniqueCode(), // Tambahan kolom kode_perusahaan 4 digit unik
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
 
-                // Gunakan insertOrIgnore untuk menghindari duplikasi
-                PerusahaanModel::insertOrIgnore($perusahaanData);
+                // Gunakan insert untuk setiap baris karena insertOrIgnore bulk insert tidak cocok di sini
+                PerusahaanModel::insert($perusahaanData);
             }
         });
 
         return redirect()->route('perusahaan.index')->with('success', 'Tabel perusahaan berhasil diisi dengan data survei alumni terbaru.');
     }
+
+
 
     public function index()
     {
@@ -80,7 +95,7 @@ class PerusahaanController extends Controller
             ->make(true);
     }
 
-    
+
 
     // Form tambah data perusahaan
     public function create()

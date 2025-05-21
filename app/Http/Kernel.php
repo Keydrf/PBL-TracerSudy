@@ -70,10 +70,6 @@ class Kernel extends HttpKernel
     ];
     protected function schedule(Schedule $schedule)
     {
-        // Jalankan command setiap detik
-        $schedule->command('perusahaan:populate')->everyMinute();
-
-        // Contoh lain: Jalankan setiap minggu pada hari Senin pukul 02:00 pagi
-        // $schedule->command('perusahaan:populate')->weeklyOn(1, '02:00');
+        $schedule->command('perusahaan:sync')->hourly();
     }
 }

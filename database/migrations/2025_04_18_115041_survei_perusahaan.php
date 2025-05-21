@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('survei_perusahaan', function (Blueprint $table) {
             $table->id('survei_perusahaan_id');
+            $table->string('kode_perusahaan', 4)->unique(); // Tambahan kolom kode perusahaan
             $table->string('nama', 100);
             $table->string('instansi', 100);
             $table->string('jabatan', 100);
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('kompetensi_yang_belum_dipenuhi', 255);
             $table->string('saran', 255);
             
-            // Tambahkan foreign key ke perusahaan
+            // Foreign keys
             $table->unsignedBigInteger('perusahaan_id');
 
             $table->timestamps();

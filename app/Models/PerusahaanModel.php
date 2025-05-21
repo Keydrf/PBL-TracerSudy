@@ -9,47 +9,19 @@ class PerusahaanModel extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'perusahaan';
 
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
     protected $primaryKey = 'perusahaan_id';
 
-    /**
-     * Indicates if the primary key is auto-incrementing.
-     *
-     * @var bool
-     */
     public $incrementing = true;
 
-    /**
-     * The data type of the auto-incrementing ID.
-     *
-     * @var string
-     */
     protected $keyType = 'integer';
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
     public $timestamps = true;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Tambahkan survei_alumni_id ke fillable karena wajib diisi saat insert/update
     protected $fillable = [
+        'survei_alumni_id',  // HARUS ADA supaya bisa mass assignable
         'nama_atasan',
         'instansi',
         'nama_instansi',
@@ -60,17 +32,13 @@ class PerusahaanModel extends Model
         'tahun_lulus',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'tahun_lulus' => 'datetime',
     ];
 
     public function surveiAlumni()
     {
-        return $this->belongsTo(SurveiAlumniModel::class, 'survei_alumni_id');
+        // Relasi ke model SurveiAlumniModel dengan foreign key survei_alumni_id
+        return $this->belongsTo(SurveiAlumniModel::class, 'survei_alumni_id', 'survei_alumni_id');
     }
 }

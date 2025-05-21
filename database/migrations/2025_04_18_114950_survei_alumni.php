@@ -24,22 +24,26 @@ return new class extends Migration
             $table->string('nama_instansi', 100)->nullable();
             $table->string('skala', 100)->nullable();
             $table->string('lokasi_instansi', 255)->nullable();
-        
-            // Tambahkan foreign key untuk menghubungkan dengan tabel profesi dan kategori profesi
+
             $table->unsignedBigInteger('profesi_id')->nullable();
             $table->foreign('profesi_id')->references('profesi_id')->on('profesi');
+
             $table->integer('pendapatan');
             $table->string('alamat_kantor', 255);
             $table->string('kabupaten', 255);
-            $table->unsignedBigInteger('kategori_id')->nullable(); // Tambahkan kolom kategori_id
-            $table->foreign('kategori_id')->references('kategori_id')->on('kategori_profesi'); // Definisikan foreign key
-        
+
+            $table->unsignedBigInteger('kategori_id')->nullable();
+            $table->foreign('kategori_id')->references('kategori_id')->on('kategori_profesi');
+
             $table->string('nama_atasan', 100)->nullable();
             $table->string('jabatan_atasan', 100)->nullable();
             $table->string('no_telepon_atasan', 100)->nullable();
             $table->string('email_atasan', 100)->nullable();
+
+            $table->string('nama_ibu', 100)->nullable(); // dipindah ke bagian bawah agar tidak error
+
             $table->timestamps();
-        
+
             $table->foreign('nim')->references('nim')->on('alumni');
         });
     }
