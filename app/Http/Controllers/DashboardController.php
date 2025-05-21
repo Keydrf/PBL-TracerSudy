@@ -14,6 +14,7 @@ class DashboardController extends Controller
     {
         $tahunAwal = $request->get('tahun_awal', date('Y') - 3);
         $tahunAkhir = $request->get('tahun_akhir', date('Y'));
+        // $programStudi = $request->get('program_studi', 'Teknik Informatika');
 
         // // Data untuk Grafik Sebaran Profesi Lulusan
         // $totalAlumniProfesi = DB::table('survei_alumni')->count();
@@ -26,12 +27,14 @@ class DashboardController extends Controller
         // Data untuk Grafik Sebaran Profesi Lulusan
         $totalAlumniProfesi = DB::table('survei_alumni')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
             ->count();
 
         $profesi = DB::table('survei_alumni')
             ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
             ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah'))
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
+            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
             ->groupBy('profesi.nama_profesi')
             ->orderBy('jumlah', 'desc')
             ->get();
@@ -59,6 +62,8 @@ class DashboardController extends Controller
 
         // Data untuk Grafik Sebaran Jenis Instansi
         $jenisInstansiData = DB::table('survei_alumni')
+            ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
             ->select('jenis_instansi', DB::raw('count(*) as jumlah'))
             ->groupBy('jenis_instansi')
             ->pluck('jumlah', 'jenis_instansi')
@@ -104,10 +109,11 @@ class DashboardController extends Controller
                 'series' => $seriesKepuasan,
             ];
         }
-        //filtering
         
          // 1. Tabel Sebaran Lingkup Tempat Kerja
         $lingkupTempatKerjaData = DB::table('survei_alumni')
+        ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+        // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
         ->select(
             'tahun_lulus',
             DB::raw('COUNT(*) as jumlah_lulusan'),
@@ -137,6 +143,8 @@ class DashboardController extends Controller
 
         // 2. Tabel Rata-rata Masa Tunggu Per Prodi
        $masaTungguData = DB::table('survei_alumni')
+       ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+    //    ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
         ->select(
             'tahun_lulus',
             DB::raw('COUNT(*) as jumlah_lulusan'),
@@ -154,13 +162,13 @@ class DashboardController extends Controller
         ];
 
         // 3. Penilaian Kepuasan Pengguna Lulusan (ambil dari survei_perusahaan)
-$columns = [
+        $nilaiKepuasan = [];
+
+        $columns = [
             'kerjasama', 'keahlian', 'kemampuan_basing',
             'kemampuan_komunikasi', 'pengembangan_diri',
             'kepemimpinan', 'etoskerja'
         ];
-
-        $nilaiKepuasan = [];
 
         foreach ($columns as $column) {
             $total = DB::table('tracer_study.survei_perusahaan')->whereNotNull($column)->count();
@@ -191,6 +199,7 @@ $columns = [
                 'kurang'      => round(($kategori->kurang / $total) * 100, 2),
             ];
         }
+
 
         return view('dashboard', [
             'labelsProfesi' => $labelsProfesi,
