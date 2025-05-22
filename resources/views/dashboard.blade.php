@@ -87,14 +87,14 @@
                     <select name="program_studi" id="program_studi" class="form-select">
                         @php
                             $programStudiOptions = [
-                                'D4 TI' => 'D4 TI',
-                                'D4 SIB' => 'D4 SIB',
+                                'Teknik Informatika' => 'Teknik Informatika',
+                                'Sistem Informasi bisnis' => 'Sistem Informasi bisnis',
                                 'D2 PPLS' => 'D2 PPLS',
                                 'S2 MRTI' => 'S2 MRTI'
                             ];
                         @endphp
                         @foreach($programStudiOptions as $key => $val)
-                            <option value="{{ $key }}" {{ request('program_studi', 'D4 TI') == $key ? 'selected' : '' }}>{{ $val }}</option>
+                            <option value="{{ $key }}" {{ request('program_studi', 'Teknik Informatika') == $key ? 'selected' : '' }}>{{ $val }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -418,7 +418,7 @@
         window.addEventListener("DOMContentLoaded", function() {
             // Data Alumni Berdasarkan Program Studi (Dummy)
             const dataChart1 = {
-                labels: ['TI', 'S', 'PPL Situs'],
+                labels: ['Teknik Informatika', 'Sistem Informasi Bisnis', 'PPL Situs'],
                 series: [1, 1, 1]
             };
 
