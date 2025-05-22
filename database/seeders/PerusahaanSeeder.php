@@ -5,43 +5,52 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\SurveiAlumniModel;
 use App\Models\PerusahaanModel;
-use Carbon\Carbon;
+use App\Models\AlumniModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PerusahaanSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ambil semua data survei alumni
-        $surveiAlumnis = SurveiAlumniModel::all();
+        DB::beginTransaction();
 
-        foreach ($surveiAlumnis as $alumni) {
-            // Cek apakah data perusahaan dengan survei_alumni_id ini sudah ada
-            $exists = PerusahaanModel::where('survei_alumni_id', $alumni->survei_alumni_id)->exists();
+        try {
+            $surveiAlumnis = SurveiAlumniModel::all();
 
-            if (!$exists) {
+            foreach ($surveiAlumnis as $survei) {
+                if (PerusahaanModel::where('survei_alumni_id', $survei->survei_alumni_id)->exists()) {
+                    continue;
+                }
+
+                $alumni = AlumniModel::where('nim', $survei->nim)->first();
+
                 PerusahaanModel::create([
-                    'survei_alumni_id' => $alumni->survei_alumni_id,
+                    'survei_alumni_id' => $survei->survei_alumni_id,
                     'kode_perusahaan'  => $this->generateUniqueKodePerusahaan(),
-                    'nama_atasan'      => $alumni->nama_atasan ?? 'Atasan Default',
-                    'instansi'         => $alumni->jenis_instansi ?? 'Tidak Diketahui',
-                    'nama_instansi'    => $alumni->nama_instansi ?? 'Tidak Diketahui',
-                    'no_telepon'       => $alumni->no_telepon ?? '000000000',
-                    'email'            => $alumni->email ?? 'email@default.com',
-                    'nama_alumni'      => $alumni->nama_alumni ?? 'Alumni Tidak Dikenal',
+                    'nama_atasan'      => $survei->nama_atasan ?? 'Atasan Default',
+                    'instansi'         => $survei->jenis_instansi ?? 'Tidak Diketahui',
+                    'nama_instansi'    => $survei->nama_instansi ?? 'Tidak Diketahui',
+                    'no_telepon'       => $survei->no_telepon ?? '000000000',
+                    'email'            => $survei->email ?? 'email@default.com',
+                    'nama_alumni'      => $alumni->nama ?? 'Alumni Tidak Dikenal',
                     'program_studi'    => $alumni->program_studi ?? 'Program Studi Tidak Diketahui',
-                    'tahun_lulus'      => $alumni->tahun_lulus ?? Carbon::now()->subYears(rand(1, 5))->format('Y-m-d'),
+                    'tanggal_lulus'      => $alumni->tanggal_lulus ?? now(), // Langsung ambil tanggal lulus, default ke sekarang jika null
                 ]);
             }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error in PerusahaanSeeder: ' . $e->getMessage());
+            $this->command->error('Error seeding perusahaan data: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Generate kode_perusahaan unik 4 digit angka.
-     */
     private function generateUniqueKodePerusahaan(): string
     {
         do {
-            $kode = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+            $kode = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
         } while (PerusahaanModel::where('kode_perusahaan', $kode)->exists());
 
         return $kode;

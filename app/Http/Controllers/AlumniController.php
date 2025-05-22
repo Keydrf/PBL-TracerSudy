@@ -23,6 +23,9 @@ class AlumniController extends Controller
 
         return DataTables::of($alumni)
             ->addIndexColumn()
+            ->editColumn('tanggal_lulus', function ($alumni) {
+                return Carbon::parse($alumni->tanggal_lulus)->format('d/m/Y');
+            })
             ->addColumn('aksi', function ($alumni) {
                 $btn = '<a href="' . url('/alumni/' . $alumni->alumni_id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
                 $btn .= '<button onclick="modalAction(\'' . url('/alumni/' . $alumni->alumni_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button> ';
@@ -201,7 +204,6 @@ class AlumniController extends Controller
                     'status' => true,
                     'message' => $message
                 ]);
-
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => false,
@@ -212,5 +214,4 @@ class AlumniController extends Controller
 
         return redirect('/alumni');
     }
-
 }

@@ -37,7 +37,7 @@
                                 <th>@lang('company.table.headers.alumni_name')</th>
                                 <th>@lang('company.table.headers.program_study')</th>
                                 <th>@lang('company.table.headers.graduation_year')</th>
-                                <th>@lang('company.table.headers.action')</th>
+                                {{-- <th>@lang('company.table.headers.action')</th> --}}
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -88,8 +88,8 @@
                 { data: "email", name: "email" },
                 { data: "nama_alumni", name: "nama_alumni" },
                 { data: "program_studi", name: "program_studi" },
-                { data: "tahun_lulus", name: "tahun_lulus" },
-                { data: "aksi", orderable: false, searchable: false }
+                { data: "tanggal_lulus", name: "tanggal_lulus" },
+                // { data: "aksi", orderable: false, searchable: false }
             ],
             order: [[1, 'asc']], // Default sorting (opsional)
             responsive: true

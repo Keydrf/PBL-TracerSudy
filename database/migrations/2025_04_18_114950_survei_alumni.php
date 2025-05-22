@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('no_telepon_atasan', 100)->nullable();
             $table->string('email_atasan', 100)->nullable();
 
-            $table->string('nama_ibu', 100)->nullable(); // dipindah ke bagian bawah agar tidak error
+            $table->string('kode_otp', 4)->nullable(); // dipindah ke bagian bawah agar tidak error
 
             $table->timestamps();
 

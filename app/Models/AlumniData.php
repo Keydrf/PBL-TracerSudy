@@ -9,5 +9,5 @@ class AlumniData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['prodi', 'kategori_profesi', 'profesi'];
+    protected $fillable = ['prodi', 'kategori_profesi', 'profesi', 'kode_otp'];
 }

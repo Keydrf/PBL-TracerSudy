@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('nama_alumni', 100);
             $table->string('program_studi', 100);
-            $table->dateTime('tahun_lulus');
+            $table->dateTime('tanggal_lulus'); 
             $table->timestamps();
         
             // foreign key constraint

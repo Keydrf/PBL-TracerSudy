@@ -29,19 +29,22 @@ class PopulatePerusahaanCommand extends Command
     public function handle()
     {
         // Contoh ambil data survei alumni (ganti dengan query sesuai kebutuhanmu)
-        $dataSurvei = DB::table('survei_alumni')
+        $dataSurvei = DB::table('survei_alumni as s')
+            ->leftJoin('alumni as a', 's.nim', '=', 'a.nim')
             ->select(
-                'survei_alumni_id',
-                'nama_atasan',
-                'instansi',
-                'nama_instansi',
-                'no_telepon',
-                'email',
-                'nama_alumni',
-                'program_studi',
-                'tahun_lulus'
+                's.survei_alumni_id',
+                's.nama_atasan',
+                's.jenis_instansi',
+                's.nama_instansi',
+                's.no_telepon',
+                's.email',
+                'a.nama as nama_alumni',          // Ambil dari tabel alumni
+                'a.program_studi',                // Ambil dari tabel alumni
+                // 'a.program_studi',
+                DB::raw('YEAR(a.tanggal_lulus) as tanggal_lulus')                  // Ambil dari tabel alumni
             )
             ->get();
+
 
         foreach ($dataSurvei as $data) {
             $perusahaan = PerusahaanModel::where('survei_alumni_id', $data->survei_alumni_id)->first();
@@ -50,13 +53,13 @@ class PopulatePerusahaanCommand extends Command
                 // Update data jika sudah ada
                 $perusahaan->update([
                     'nama_atasan'   => $data->nama_atasan,
-                    'instansi'      => $data->instansi,
+                    'instansi'      => $data->jenis_instansi,
                     'nama_instansi' => $data->nama_instansi,
                     'no_telepon'    => $data->no_telepon,
                     'email'         => $data->email,
                     'nama_alumni'   => $data->nama_alumni,
                     'program_studi' => $data->program_studi,
-                    'tahun_lulus'   => $data->tahun_lulus,
+                    'tanggal_lulus'   => $data->tanggal_lulus,
                 ]);
             } else {
                 // Buat data baru dengan kode_perusahaan unik 4 digit
@@ -64,13 +67,13 @@ class PopulatePerusahaanCommand extends Command
                     'survei_alumni_id' => $data->survei_alumni_id,
                     'kode_perusahaan'  => $this->generateUniqueKodePerusahaan(),
                     'nama_atasan'      => $data->nama_atasan,
-                    'instansi'         => $data->instansi,
+                    'instansi'         => $data->jenis_instansi,
                     'nama_instansi'    => $data->nama_instansi,
                     'no_telepon'       => $data->no_telepon,
                     'email'            => $data->email,
                     'nama_alumni'      => $data->nama_alumni,
                     'program_studi'    => $data->program_studi,
-                    'tahun_lulus'      => $data->tahun_lulus,
+                    'tanggal_lulus'      => $data->tanggal_lulus,
                 ]);
             }
         }

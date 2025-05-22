@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\PerusahaanModel;
 use App\Models\SurveiAlumniModel;
+use App\Models\AlumniModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
 
 class PerusahaanController extends Controller
 {
@@ -17,8 +19,8 @@ class PerusahaanController extends Controller
         function generateUniqueCode()
         {
             do {
-                $code = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // generate angka 0000 - 9999
-                $exists = \App\Models\PerusahaanModel::where('kode_perusahaan', $code)->exists();
+                $code = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+                $exists = PerusahaanModel::where('kode_perusahaan', $code)->exists();
             } while ($exists);
             return $code;
         }
@@ -26,41 +28,47 @@ class PerusahaanController extends Controller
         // Ambil ID survei_alumni yang sudah ada di tabel perusahaan
         $existingSurveiIds = PerusahaanModel::pluck('survei_alumni_id')->toArray();
 
-        // Ambil data survei_alumni yang ID-nya belum ada di tabel perusahaan
+        // Ambil data survei_alumni yang belum ada di tabel perusahaan
         $surveiAlumnis = SurveiAlumniModel::whereNotIn('survei_alumni_id', $existingSurveiIds)->latest()->get();
 
-        // Jika tidak ada data baru, kembalikan pesan
         if ($surveiAlumnis->isEmpty()) {
-            return redirect()->route('perusahaan.index')->with('success', 'Tidak ada data survei alumni baru untuk ditambahkan ke tabel perusahaan.');
+            return redirect()->route('perusahaan.index')
+                ->with('success', 'Tidak ada data survei alumni baru untuk ditambahkan ke tabel perusahaan.');
         }
 
-        // Gunakan transaksi untuk memastikan integritas data
+        // Transaksi DB untuk integritas data
         DB::transaction(function () use ($surveiAlumnis) {
             foreach ($surveiAlumnis as $survei) {
-                // Cari nama alumni di tabel alumni
-                $alumni = \App\Models\AlumniModel::where('nim', $survei->nim)->first();
+                // Cari data alumni berdasarkan NIM
+                $alumni = AlumniModel::where('nim', $survei->nim)->first();
 
+                // Jika tidak ditemukan, lanjutkan ke survei berikutnya
+                if (!$alumni) {
+                    continue;
+                }
+
+                // Siapkan data untuk insert
                 $perusahaanData = [
                     'survei_alumni_id' => $survei->survei_alumni_id,
-                    'nama_atasan' => $survei->nama_atasan,
-                    'instansi' => $survei->jenis_instansi,
-                    'nama_instansi' => $survei->nama_instansi,
-                    'no_telepon' => $survei->no_telepon,
-                    'email' => $survei->email,
-                    'nama_alumni' => $alumni ? $alumni->nama : null,
-                    'program_studi' => $alumni ? $alumni->program_studi : null,
-                    'tahun_lulus' => $alumni ? $alumni->tahun_lulus : null,
-                    'kode_perusahaan' => generateUniqueCode(), // Tambahan kolom kode_perusahaan 4 digit unik
+                    'nama_atasan' => $survei->nama_atasan ?? 'Atasan Tidak Diketahui',
+                    'instansi' => $survei->jenis_instansi ?? 'Instansi Tidak Diketahui',
+                    'nama_instansi' => $survei->nama_instansi ?? 'Nama Instansi Tidak Diketahui',
+                    'no_telepon' => $survei->no_telepon ?? '0000000000',
+                    'email' => $survei->email ?? 'default@email.com',
+                    'nama_alumni' => $alumni->nama,
+                    'program_studi' => $alumni->program_studi,
+                    'tanggal_lulus' => $alumni->tanggal_lulus, // Pastikan ini disimpan dalam format tanggal jika perlu
+                    'kode_perusahaan' => generateUniqueCode(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
 
-                // Gunakan insert untuk setiap baris karena insertOrIgnore bulk insert tidak cocok di sini
                 PerusahaanModel::insert($perusahaanData);
             }
         });
 
-        return redirect()->route('perusahaan.index')->with('success', 'Tabel perusahaan berhasil diisi dengan data survei alumni terbaru.');
+        return redirect()->route('perusahaan.index')
+            ->with('success', 'Tabel perusahaan berhasil diisi dengan data survei alumni terbaru.');
     }
 
 
@@ -73,7 +81,6 @@ class PerusahaanController extends Controller
     public function list(Request $request)
     {
         $perusahaan = PerusahaanModel::select(
-
             'nama_atasan',
             'instansi',
             'nama_instansi',
@@ -81,17 +88,14 @@ class PerusahaanController extends Controller
             'email',
             'nama_alumni',
             'program_studi',
-            'tahun_lulus'
+            'tanggal_lulus'
         );
 
         return DataTables::of($perusahaan)
             ->addIndexColumn()
-            ->addColumn('aksi', function ($perusahaan) {
-                $btn = '<a href="' . url('/perusahaan/' . $perusahaan->id . '/edit') . '" class="btn btn-warning btn-sm"><i class="mdi mdi-pencil"></i></a>';
-                $btn .= '<button onclick="modalAction(\'' . url('/perusahaan/' . $perusahaan->id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm"><i class="mdi mdi-delete"></i></button>';
-                return $btn;
+            ->editColumn('tanggal_lulus', function ($row) {
+                return \Carbon\Carbon::parse($row->tanggal_lulus)->format('Y');
             })
-            ->rawColumns(['aksi'])
             ->make(true);
     }
 
@@ -117,7 +121,7 @@ class PerusahaanController extends Controller
             'email' => 'required|email|max:100',
             'nama_alumni' => 'required|string|max:100',
             'program_studi' => 'required|string|max:100',
-            'tahun_lulus' => 'required|date',
+            'tanggal_lulus' => 'required|date',
         ]);
 
         PerusahaanModel::create($request->all());
@@ -152,7 +156,7 @@ class PerusahaanController extends Controller
             'email' => 'required|email|max:100',
             'nama_alumni' => 'required|string|max:100',
             'program_studi' => 'required|string|max:100',
-            'tahun_lulus' => 'required|date',
+            'tanggal_lulus' => 'required|date',
         ]);
 
         $perusahaan = PerusahaanModel::findOrFail($id);

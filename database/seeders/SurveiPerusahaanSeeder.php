@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class SurveiPerusahaanSeeder extends Seeder
 {
@@ -15,8 +14,6 @@ class SurveiPerusahaanSeeder extends Seeder
     {
         $kepuasan = ['kurang', 'cukup', 'baik', 'sangat baik'];
 
-        $data = [];
-
         $perusahaanList = [
             [
                 'nama' => 'Kementerian Pendidikan',
@@ -24,7 +21,7 @@ class SurveiPerusahaanSeeder extends Seeder
                 'jabatan' => 'Manajer',
                 'no_telepon' => '081234567890',
                 'email' => 'abc@example.com',
-                'nim' => '4321098765', // Pastikan NIM ini ada di tabel alumni
+                'nim' => '2341760193',
                 'kompetensi_yang_belum_dipenuhi' => 'Sangat Baik',
                 'saran' => 'Pertahankan kualitas alumni.',
                 'perusahaan_id' => 1
@@ -35,12 +32,14 @@ class SurveiPerusahaanSeeder extends Seeder
                 'jabatan' => 'Supervisor',
                 'no_telepon' => '082234567891',
                 'email' => 'xyz@example.com',
-                'nim' => '6677889900', // Pastikan NIM ini ada di tabel alumni
+                'nim' => '2341760093',
                 'kompetensi_yang_belum_dipenuhi' => 'Baik',
                 'saran' => 'Tingkatkan kemampuan komunikasi.',
                 'perusahaan_id' => 1
             ]
         ];
+
+        $data = [];
 
         foreach ($perusahaanList as $index => $perusahaan) {
             $data[] = array_merge($perusahaan, [

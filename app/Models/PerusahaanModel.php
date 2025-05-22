@@ -21,7 +21,8 @@ class PerusahaanModel extends Model
 
     // Tambahkan survei_alumni_id ke fillable karena wajib diisi saat insert/update
     protected $fillable = [
-        'survei_alumni_id',  // HARUS ADA supaya bisa mass assignable
+        'survei_alumni_id',
+        'kode_perusahaan',  // HARUS ADA supaya bisa mass assignable
         'nama_atasan',
         'instansi',
         'nama_instansi',
@@ -29,11 +30,11 @@ class PerusahaanModel extends Model
         'email',
         'nama_alumni',
         'program_studi',
-        'tahun_lulus',
+        'tanggal_lulus',
     ];
 
     protected $casts = [
-        'tahun_lulus' => 'datetime',
+        'tanggal_lulus' => 'datetime',
     ];
 
     public function surveiAlumni()
