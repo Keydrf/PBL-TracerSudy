@@ -15,7 +15,7 @@ class AlumniSeeder extends Seeder
     {
         DB::table('alumni')->insert([
             [
-                'program_studi' => 'Teknik Informatika',
+                'program_studi' => 'D4 Teknik Informatika',
                 'nim' => '2341760193',
                 'nama' => 'Keysha Arindra Fabian',
                 'tanggal_lulus' => '2023-10-26',
@@ -24,7 +24,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'program_studi' => 'Sistem Informasi Bisnis',
+                'program_studi' => 'D4 Sistem Informasi Bisnis',
                 'nim' => '2341760093',
                 'nama' => 'Dinarul Lailil Mubarokah',
                 'tanggal_lulus' => '2023-12-01',
@@ -33,7 +33,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'program_studi' => 'Pengembangan Perangkat Lunak Situs',
+                'program_studi' => 'D2 Pengembangan Perangkat Lunak Situs',
                 'nim' => '2341760149',
                 'nama' => 'Adit Bagus Sadewa',
                 'tanggal_lulus' => '2022-07-01',
@@ -42,7 +42,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'program_studi' => 'Sistem Informasi Bisnis',
+                'program_studi' => 'D4 Sistem Informasi Bisnis',
                 'nim' => '2341760113',
                 'nama' => 'Satrio Dian Nugroho',
                 'tanggal_lulus' => '2024-05-15',
@@ -51,7 +51,7 @@ class AlumniSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'program_studi' => 'Teknik Informatika',
+                'program_studi' => 'D4 Teknik Informatika',
                 'nim' => '2341760056',
                 'nama' => 'Emily Brown',
                 'tanggal_lulus' => '2023-03-10',

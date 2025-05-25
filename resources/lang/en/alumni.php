@@ -10,6 +10,7 @@ return [
             'study_program' => 'Study Program',
             'nim' => 'NIM',
             'name' => 'Name',
+            'otp_codes' => 'OTP Codes',
             'graduation_date' => 'Graduation Date',
             'action' => 'Action'
         ],

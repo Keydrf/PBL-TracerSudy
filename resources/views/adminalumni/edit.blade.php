@@ -53,6 +53,17 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="col-md-2 control-label col-form-label">Kode OTP</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="kode_otp" name="kode_otp"
+                                value="{{ old('kode_otp', $alumni->kode_otp) }}" required>
+                            @error('kode_otp')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-md-2 control-label col-form-label">Tanggal Lulus</label>
                         <div class="col-md-10">
                             <input type="datetime-local" class="form-control" id="tanggal_lulus" name="tanggal_lulus"

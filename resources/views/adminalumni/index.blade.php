@@ -29,6 +29,7 @@
                                     <th>@lang('alumni.table.headers.study_program')</th>
                                     <th>@lang('alumni.table.headers.nim')</th>
                                     <th>@lang('alumni.table.headers.name')</th>
+                                    <th>@lang('alumni.table.headers.otp_codes')</th>
                                     <th>@lang('alumni.table.headers.graduation_date')</th>
                                     <th>@lang('alumni.table.headers.action')</th>
                                 </tr>
@@ -79,6 +80,7 @@
                     { data: "program_studi", className: "" },
                     { data: "nim", className: "" },
                     { data: "nama", className: "" },
+                    { data: "kode_otp", className: "" },
                     { data: "tanggal_lulus", className: "" },
                     {
                         data: "aksi",

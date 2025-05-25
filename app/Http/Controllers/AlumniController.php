@@ -19,7 +19,7 @@ class AlumniController extends Controller
 
     public function list(Request $request)
     {
-        $alumni = AlumniModel::select('alumni_id', 'program_studi', 'nim', 'nama', 'tanggal_lulus');
+        $alumni = AlumniModel::select('alumni_id', 'program_studi', 'nim', 'nama', 'kode_otp', 'tanggal_lulus');
 
         return DataTables::of($alumni)
             ->addIndexColumn()
@@ -46,6 +46,7 @@ class AlumniController extends Controller
             'program_studi' => 'required|string|max:100',
             'nim' => 'required|string|max:10|unique:alumni,nim',
             'nama' => 'required|string|unique:alumni,nama',
+            'kode_otp' => 'required|string|unique:alumni,kode_otp',
             'tanggal_lulus' => 'required|date_format:Y-m-d\TH:i',
         ]);
 
@@ -66,6 +67,7 @@ class AlumniController extends Controller
             'program_studi' => 'required|string|max:100',
             'nim' => 'required|string|max:10|unique:alumni,nim,' . $id . ',alumni_id',
             'nama' => 'required|string|unique:alumni,nama,' . $id . ',alumni_id',
+            'kode_otp' => 'required|string|unique:alumni,kode_otp,' . $id . ',alumni_id',
             'tanggal_lulus' => 'required|date_format:Y-m-d\TH:i',
         ]);
 
@@ -151,9 +153,10 @@ class AlumniController extends Controller
                     $programStudi = $row['A'] ?? null;
                     $nim = $row['B'] ?? null;
                     $nama = $row['C'] ?? null;
-                    $tanggalLulusExcel = $row['D'] ?? null; // Ambil nilai tanggal dari Excel
+                    $kode_otp = $row['D'] ?? null;
+                    $tanggalLulusExcel = $row['E'] ?? null; // Ambil nilai tanggal dari Excel
 
-                    if ($programStudi && $nim && $nama && $tanggalLulusExcel) {
+                    if ($programStudi && $nim && $nama && $kode_otp && $tanggalLulusExcel) {
                         $existing = AlumniModel::where('nim', $nim)->first();
                         if (!$existing) {
                             try {
@@ -182,6 +185,7 @@ class AlumniController extends Controller
                                         'program_studi' => $programStudi,
                                         'nim' => $nim,
                                         'nama' => $nama,
+                                        'kode_otp' => $kode_otp,
                                         'tanggal_lulus' => $tanggalLulusFormatted,
                                     ]);
                                     $inserted++;
@@ -190,7 +194,7 @@ class AlumniController extends Controller
                                 $errors[] = "Gagal memproses data pada baris ke-$key: " . $dateException->getMessage() . " (Nilai Tanggal: " . $tanggalLulusExcel . ")";
                             }
                         }
-                    } else if ($programStudi || $nim || $nama || $tanggalLulusExcel) {
+                    } else if ($programStudi || $nim || $nama || $kode_otp || $tanggalLulusExcel) {
                         $errors[] = "Data tidak lengkap pada baris ke-$key.";
                     }
                 }
