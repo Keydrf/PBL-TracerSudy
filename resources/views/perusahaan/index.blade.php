@@ -29,6 +29,7 @@
                         <thead>
                             <tr>
                                 <th>@lang('company.table.headers.number')</th>
+                                <th>@lang('company.table.headers.company_code')</th>
                                 <th>@lang('company.table.headers.supervisor_name')</th>
                                 <th>@lang('company.table.headers.agency_type')</th>
                                 <th>@lang('company.table.headers.agency_name')</th>
@@ -81,6 +82,7 @@
             },
             columns: [
                 { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
+                { data: "kode_perusahaan", name: "kode_perusahaan" },
                 { data: "nama_atasan", name: "nama_atasan" },
                 { data: "instansi", name: "instansi" },
                 { data: "nama_instansi", name: "nama_instansi" },

@@ -81,6 +81,7 @@ class PerusahaanController extends Controller
     public function list(Request $request)
     {
         $perusahaan = PerusahaanModel::select(
+            'kode_perusahaan',
             'nama_atasan',
             'instansi',
             'nama_instansi',
@@ -114,6 +115,7 @@ class PerusahaanController extends Controller
     {
         $request->validate([
             'survei_alumni_id' => 'required|exists:survei_alumni,survei_alumni_id',
+            'kode_perusahaan' => 'required|string|max:4',
             'nama_atasan' => 'required|string|max:100',
             'instansi' => 'required|string|max:100',
             'nama_instansi' => 'required|string|max:100',
@@ -149,6 +151,7 @@ class PerusahaanController extends Controller
     {
         $request->validate([
             'survei_alumni_id' => 'required|exists:survei_alumni,survei_alumni_id',
+            'kode_perusahaan' => 'required|string|max:4',
             'nama_atasan' => 'required|string|max:100',
             'instansi' => 'required|string|max:100',
             'nama_instansi' => 'required|string|max:100',

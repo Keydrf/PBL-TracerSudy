@@ -6,6 +6,7 @@ return [
     'table' => [
         'headers' => [
             'number' => 'No',
+            'company_code' => 'Kode Perusahaan',
             'supervisor_name' => 'Nama Atasan',
             'agency_type' => 'Instansi',
             'agency_name' => 'Nama Instansi',
