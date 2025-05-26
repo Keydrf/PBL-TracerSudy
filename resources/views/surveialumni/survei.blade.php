@@ -257,6 +257,7 @@
                             <option value="Lokal">Lokal</option>
                             <option value="Nasional">Nasional</option>
                             <option value="Internasional">Internasional</option>
+                            <option value="Wirausaha">Wirausaha</option>
                         </select>
                         @error('skala')
                             <div class="text-danger">{{ $message }}</div>
