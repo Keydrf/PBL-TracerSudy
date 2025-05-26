@@ -15,6 +15,7 @@ class AlumniSurveyController extends Controller
 
         return view('surveialumni.survei', compact('profesiList', 'kategoriList'));
     }
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -22,6 +23,17 @@ class AlumniSurveyController extends Controller
             'program_studi' => 'required|string|max:100',
             'tahun_lulus' => 'required|integer',
             'nim' => 'required|string|max:10|exists:alumni,nim',
+            'kode_otp' => [
+                'required',
+                'string',
+                'max:4',
+                function ($attribute, $value, $fail) use ($request) {
+                    $alumni = DB::table('alumni')->where('nim', $request->nim)->first();
+                    if (!$alumni || $alumni->kode_otp !== $value) {
+                        $fail('Kode OTP tidak valid untuk alumni yang dipilih.');
+                    }
+                },
+            ],
             'no_telepon' => 'required|string|max:100',
             'email' => 'required|email|max:100',
             'tanggal_pertama_kerja' => 'required|date',
@@ -50,13 +62,13 @@ class AlumniSurveyController extends Controller
 
         try {
             DB::insert('INSERT INTO survei_alumni (
-            nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja, 
-            masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi, 
-            nama_instansi, skala, lokasi_instansi, 
-            nama_atasan, jabatan_atasan, no_telepon_atasan, email_atasan,
-            profesi_id, pendapatan, alamat_kantor, kabupaten, kategori_id,
-            created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+                nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja, 
+                masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi, 
+                nama_instansi, skala, lokasi_instansi, 
+                nama_atasan, jabatan_atasan, no_telepon_atasan, email_atasan,
+                profesi_id, pendapatan, alamat_kantor, kabupaten, kategori_id,
+                kode_otp, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $request->nim,
                 $request->no_telepon,
                 $request->email,
@@ -77,6 +89,7 @@ class AlumniSurveyController extends Controller
                 $request->alamat_kantor,
                 $request->kabupaten,
                 $request->kategori_id,
+                $request->kode_otp,
                 now(),
                 now()
             ]);
@@ -87,7 +100,6 @@ class AlumniSurveyController extends Controller
         }
     }
 
-
     public function search(Request $request)
     {
         $term = $request->input('term');
@@ -97,12 +109,12 @@ class AlumniSurveyController extends Controller
         }
 
         $results = DB::select("
-        SELECT nim, nama, program_studi, YEAR(tanggal_lulus) as tahun_lulus 
-        FROM alumni 
-        WHERE nim LIKE ? OR nama LIKE ? 
-        ORDER BY nama ASC 
-        LIMIT 10
-    ", ["%{$term}%", "%{$term}%"]);
+            SELECT nim, nama, program_studi, YEAR(tanggal_lulus) as tahun_lulus 
+            FROM alumni 
+            WHERE nim LIKE ? OR nama LIKE ? 
+            ORDER BY nama ASC 
+            LIMIT 10
+        ", ["%{$term}%", "%{$term}%"]);
 
         return response()->json($results);
     }

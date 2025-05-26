@@ -128,7 +128,7 @@
                 @csrf
                 <div class="row gy-4">
                     <!-- Nama (Search) -->
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="alumni_search" class="pb-2">Nama <span class="text-danger">*</span></label>
                         <div class="position-relative">
                             <input type="text" class="form-control" id="alumni_search"
@@ -142,6 +142,14 @@
                                 <strong id="selected_alumni_text"></strong>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="kode_otp" class="pb-2">Kode OTP <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="kode_otp" name="kode_otp" maxlength="4" required>
+                        @error('kode_otp')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Program Studi -->
