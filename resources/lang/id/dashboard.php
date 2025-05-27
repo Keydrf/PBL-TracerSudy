@@ -12,12 +12,14 @@ return [
         'sebaran_lingkup_tempat_kerja' => 'Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom',
         'rata_masa_tunggu' => 'Rata-rata Masa Tunggu Mendapatkan Pekerjaan',
         'penilaian_kepuasan_pengguna' => 'Penilaian Kepuasan Pengguna Lulusan',
+        'sebaran_lingkup_tempat_kerja' => 'Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom',
     ],
     
     'deskripsi' => [
         'sebaran_profesi' => 'Sebaran lulusan berdasarkan profesi yang ditekuni',
         'sebaran_instansi' => 'Sebaran lulusan berdasarkan jenis instansi tempat bekerja',
-        'kepuasan_pengguna' => 'Hasil penilaian kepuasan pengguna terhadap kinerja lulusan'
+        'kepuasan_pengguna' => 'Hasil penilaian kepuasan pengguna terhadap kinerja lulusan',
+        'skala_penilaian' => 'Skala Penilaian',
     ],
     
     'label_chart' => [
@@ -30,13 +32,13 @@ return [
     ],
     
     'kriteria_kepuasan' => [
-        'etika' => 'Etika',
-        'keahlian' => 'Keahlian Bidang Ilmu',
-        'bahasa_inggris' => 'Kemampuan Bahasa Inggris',
-        'teknologi_informasi' => 'Kemampuan Teknologi Informasi',
-        'komunikasi' => 'Kemampuan Berkomunikasi',
-        'kerjasama_tim' => 'Kemampuan Kerjasama Tim',
-        'pengembangan_diri' => 'Pengembangan Diri'
+        'kerjasama' => 'Kerjasama',
+        'keahlian' => 'Keahlian',
+        'kemampuan_basing' => 'Kemampuan Bahasa',
+        'kemampuan_komunikasi' => 'Kemampuan Komunikasi',
+        'pengembangan_diri' => 'Pengembangan Diri',
+        'kepemimpinan' => 'Kepemimpinan',
+        'etoskerja' => 'Etos Kerja',
     ],
 
     'tabel_header' => [
@@ -55,10 +57,23 @@ return [
             'multinasional' => 'Multinasional/Internasional',
             'nasional' => 'Nasional',
             'wirausaha' => 'Wirausaha',
+            'lokal' => 'Lokal',
+        ],
+        'jenis_kemampuan' => 'Jenis Kemampuan',
+        'tingkat_kepuasan_pengguna' => 'Tingkat Kepuasan Pengguna (%)',
+        'skala_nilai' => [
+            'sangat_baik' => 'Sangat Baik',
+            'baik' => 'Baik',
+            'cukup' => 'Cukup',
+            'kurang' => 'Kurang',
         ],
     ],
 
     'pesan' => [
         'data_tidak_tersedia' => 'Data tidak tersedia',
+    ],
+
+    'tombol' => [
+        'filter' => 'Terapkan'
     ],
 ];

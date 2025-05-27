@@ -77,13 +77,13 @@
 {{-- FILTER --}}
 <div class="card mb-4">
     <div class="card-header">
-        <h5>Filter Data</h5>
+        <h5>@lang('dashboard.judul_kartu.filter_data')</h5>
     </div>
     <div class="card-body">
         <form id="filterForm" method="GET" action="{{ url()->current() }}">
             <div class="row">
                 <div class="col-md-4">
-                    <label for="program_studi" class="form-label">Program Studi</label>
+                    <label for="program_studi" class="form-label">@lang('dashboard.label_chart.prodi')</label>
                     <select name="program_studi" id="program_studi" class="form-select">
                         @php
                             $programStudiOptions = [
@@ -99,17 +99,17 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="tahun_awal" class="form-label">Tahun Awal</label>
+                    <label for="tahun_awal" class="form-label">@lang('dashboard.label_chart.tahun_awal')</label>
                     <input type="number" name="tahun_awal" id="tahun_awal" class="form-control"
                            value="{{ request('tahun_awal', \Carbon\Carbon::now()->year - 3) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
+                    <label for="tahun_akhir" class="form-label">@lang('dashboard.label_chart.tahun_akhir')</label>
                     <input type="number" name="tahun_akhir" id="tahun_akhir" class="form-control"
                            value="{{ request('tahun_akhir', \Carbon\Carbon::now()->year) }}" min="2000" max="{{ \Carbon\Carbon::now()->year }}">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <button type="submit" class="btn btn-primary w-100">@lang('dashboard.tombol.filter')</button>
                 </div>
             </div>
         </form>
@@ -193,25 +193,25 @@
 {{-- tabel-tabel --}}
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Sebaran Lingkup Tempat Kerja dan Kesesuaian Profesi dengan Infokom</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')</h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
                 <thead class="table-primary">
                     <tr>
-                        <th rowspan="2">Tahun Lulus</th>
-                        <th rowspan="2">Jumlah Alumni</th>
-                        <th rowspan="2">Jumlah Alumni yang terlacak</th>
-                        <th rowspan="2">Profesi Kerja Bidang Infokom</th>
-                        <th rowspan="2">Profesi Kerja Bidang Non Infokom</th>
-                        <th colspan="4">Lingkup Tempat Kerja</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.tahun_lulus')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.jumlah_lulusan')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.lulusan_terlacak')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_infokom')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_non_infokom')</th>
+                        <th colspan="4">@lang('dashboard.tabel_header.lingkup_tempat_kerja')</th>
                     </tr>
                     <tr>
-                        <th>Multinasional/Internasional</th>
-                        <th>Nasional</th>
-                        <th>Wirausaha</th>
-                        <th>Lokal</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.multinasional')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.nasional')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.wirausaha')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.lokal')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -252,12 +252,12 @@
                             $total['lokal'] += $item->lokal;
                         @endphp
                     @empty
-                        <tr><td colspan="9">Data tidak tersedia</td></tr>
+                        <tr><td colspan="9">@lang('dashboard.pesan.data_tidak_tersedia')</td></tr>
                     @endforelse
                 </tbody>
                 <tfoot style="background-color: #848484; font-weight: bold;">
                     <tr>
-                        <td>Jumlah</td>
+                        <td>@lang('dashboard.label_chart.jumlah')</td>
                         <td>{{ $total['jumlah_alumni'] }}</td>
                         <td>{{ $total['jumlah_terlacak'] }}</td>
                         <td>{{ $total['profesi_infokom'] }}</td>
@@ -275,16 +275,16 @@
 
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Rata-rata Masa Tunggu Mendapatkan Pekerjaan</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.rata_masa_tunggu')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
             <thead class="table-primary">
                 <tr>
-                    <th>Tahun Lulus</th>
-                    <th>Jumlah alumni</th>
-                    <th>Jumlah alumni yang terlacak</th>
-                    <th>Rata-rata Masa Tunggu (Bulan)</th>
+                    <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
+                    <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
+                    <th>@lang('dashboard.tabel_header.lulusan_terlacak')</th>
+                    <th>@lang('dashboard.tabel_header.rata_masa_tunggu')</th>
                 </tr>
             </thead>
             <tbody>
@@ -296,12 +296,12 @@
                     <td>{{ number_format($item->rata_rata_bulan, 2) }}</td>
                 </tr>
                 @empty
-                    <tr><td colspan="4">Data tidak tersedia</td></tr>
+                    <tr><td colspan="4">@lang('dashboard.pesan.data_tidak_tersedia')</td></tr>
                 @endforelse
             </tbody>
                 <tfoot>
                     <tr class="fw-bold">
-                        <td>Total</td>
+                        <td>@lang('dashboard.label_chart.jumlah')</td>
                         <td>{{ $totalMasaTunggu['jumlah_alumni'] }}</td>
                         <td>{{ $totalMasaTunggu['jumlah_terlacak'] }}</td>
                         <td>{{ number_format($totalMasaTunggu['rata_rata_bulan'], 2) }}</td>
@@ -314,34 +314,34 @@
 <div class="card">
     <div class="row">
         <div class="col-md-12">
-            <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Alumni</h5>
-            <p class="card-category text-center">Skala Penilaian</p>
+            <h5 class="card-title judul-tengah">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
+            <p class="card-category text-center">@lang('dashboard.deskripsi.skala_penilaian')</p>
         </div>
     </div>
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Penilaian Kepuasan Pengguna Alumni</h5>
+        <h5 class="mb-0">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableKepuasanPengguna">
             <thead class="table-primary">
                 <tr>
                     <th rowspan="2" scope="col">No</th>
-                    <th rowspan="2" scope="col">Jenis Kemampuan</th>
-                    <th colspan="4" scope="colgroup">Tingkat Kepuasan Pengguna (%)</th>
+                    <th rowspan="2" scope="col">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
+                    <th colspan="4" scope="colgroup">@lang('dashboard.tabel_header.tingkat_kepuasan_pengguna')</th>
                 </tr>
                 <tr>
-                    <th scope="col">Sangat Baik</th>
-                    <th scope="col">Baik</th>
-                    <th scope="col">Cukup</th>
-                    <th scope="col">Kurang</th>
+                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.sangat_baik')</th>
+                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.baik')</th>
+                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.cukup')</th>
+                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.kurang')</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($nilaiKepuasan ?? [] as $kriteria => $nilai)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ ucwords(str_replace('_', ' ', $kriteria)) }}</td>
+                        <td>@lang("dashboard.kriteria_kepuasan.$kriteria")</td>
                         <td>{{ number_format($nilai['sangat_baik'] ?? 0, 2) }}%</td>
                         <td>{{ number_format($nilai['baik'] ?? 0, 2) }}%</td>
                         <td>{{ number_format($nilai['cukup'] ?? 0, 2) }}%</td>
@@ -349,7 +349,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Data tidak tersedia</td>
+                        <td colspan="6" class="text-center">@lang('dashboard.pesan.data_tidak_tersedia')</td>
                     </tr>
                 @endforelse
 
@@ -371,7 +371,7 @@
                         $avgKurang     = $totalKurang / $totalKriteria;
                     @endphp
                     <tr style="background-color: #d3d3d3; font-weight: bold;">
-                        <td colspan="2" class="text-center">Jumlah</td>
+                        <td colspan="2" class="text-center">@lang('dashboard.label_chart.jumlah')</td>
                         <td>{{ number_format($avgSangatBaik, 2) }}%</td>
                         <td>{{ number_format($avgBaik, 2) }}%</td>
                         <td>{{ number_format($avgCukup, 2) }}%</td>
@@ -398,7 +398,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">{{ ucwords(str_replace('_', ' ', $kriteria)) }}</h5>
+                        <h5 class="card-title">@lang("dashboard.kriteria_kepuasan.$kriteria")</h5>
                     </div>
                     <div class="card-body">
                         <div id="kepuasan_{{ $loop->index }}" class="chart-container">
@@ -418,7 +418,7 @@
         window.addEventListener("DOMContentLoaded", function() {
             // Data Alumni Berdasarkan Program Studi (Dummy)
             const dataChart1 = {
-                labels: ['Teknik Informatika', 'Sistem Informasi Bisnis', 'PPL Situs'],
+                labels: ['Teknik Informatika', 'Sistem Informasi Bisnis', 'Pengembangan Piranti Lunak Situs'],
                 series: [1, 1, 1]
             };
 

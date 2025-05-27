@@ -96,9 +96,9 @@
       /* .glitch-container {
         position: relative;
         overflow: hidden;
-      }
+      } */
       
-      .glitch-container::after {
+      /* .glitch-container::after {
         content: "";
         position: absolute;
         top: 0;
@@ -142,15 +142,15 @@
                   </h1>
                 </div>
                 <div class="col-lg-6 text-lg-left pl-lg-4">
-                  <h2 class="fw-bold">FORBIDDEN</h2>
-                  <h5 class="fw-light fs-5">You don't have permission<br>to access this resource.</h5>
+                  <h2 class="fw-bold">@lang('forbiddenPage.forbidden')</h2>
+                  <h5 class="fw-light fs-5">@lang('forbiddenPage.message1')<br>@lang('forbiddenPage.message2')</h5>
                 </div>
               </div>
 
               <div class="row mt-4">
                 <div class="col-12 text-center">
                   <a href="{{ route('dashboard') }}" class="btn btn-rounded" style="background-color: white; color: #0d6efd; font-weight: 600;">
-                    <i class="fa fa-arrow-left me-2"></i> Back to Dashboard
+                    <i class="fa fa-arrow-left me-2"></i> @lang('forbiddenPage.dashboard')
                   </a>
                 </div>
               </div>                          
@@ -158,7 +158,7 @@
               <div class="row mt-4">
                 <div class="col-12">
                   <p class="text-white fw-medium fs-6 text-center">
-                    If you believe this is a mistake, please contact your administrator.
+                    @lang('forbiddenPage.message3')
                   </p>
                 </div>
               </div>

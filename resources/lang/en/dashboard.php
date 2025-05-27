@@ -12,12 +12,14 @@ return [
         'sebaran_lingkup_tempat_kerja' => 'Distribution of Work Environment Scope and Profession Relevance to Infokom',
         'rata_masa_tunggu' => 'Average Waiting Time to Get a Job',
         'penilaian_kepuasan_pengguna' => 'Graduate User Satisfaction Assessment',
+        'sebaran_lingkup_tempat_kerja' => 'Distribution of Workplace Scope and Suitability of Professions with Infocom',
     ],
     
     'deskripsi' => [
         'sebaran_profesi' => 'Distribution of graduates based on their professions',
         'sebaran_instansi' => 'Distribution of graduates based on institution types',
-        'kepuasan_pengguna' => 'User satisfaction assessment results for graduate performance'
+        'kepuasan_pengguna' => 'User satisfaction assessment results for graduate performance',
+        'skala_penilaian' => 'Rating Scale',
     ],
     
     'label_chart' => [
@@ -30,19 +32,19 @@ return [
     ],
     
     'kriteria_kepuasan' => [
-        'etika' => 'Ethics',
+        'kerjasama' => 'Teamwork',
         'keahlian' => 'Expertise',
-        'bahasa_inggris' => 'English Proficiency',
-        'teknologi_informasi' => 'IT Skills',
-        'komunikasi' => 'Communication',
-        'kerjasama_tim' => 'Teamwork',
-        'pengembangan_diri' => 'Self Development'
+        'kemampuan_basing' => 'Language Skills',
+        'kemampuan_komunikasi' => 'Communication Skills',
+        'pengembangan_diri' => 'Self Development',
+        'kepemimpinan' => 'Leadership',
+        'etoskerja' => 'Work Ethic',
     ],
     
     'tabel_header' => [
         'tahun_lulus' => 'Graduation Year',
         'jumlah_lulusan' => 'Number of Graduates',
-        'lulusan_terlacak' => 'Tracked Graduates',
+        'lulusan_terlacak' => 'Number of Tracked Graduates',
         'profesi_infokom' => 'Professions in Infokom Field',
         'profesi_non_infokom' => 'Professions in Non-Infokom Field',
         'lingkup_tempat_kerja' => 'Work Environment Scope',
@@ -55,10 +57,23 @@ return [
             'multinasional' => 'Multinational/International',
             'nasional' => 'National',
             'wirausaha' => 'Entrepreneurship',
+            'lokal' => 'Local',
+        ],
+        'jenis_kemampuan' => 'Ability Type',
+        'tingkat_kepuasan_pengguna' => 'User Satisfaction Rate (%)',
+        'skala_nilai' => [
+            'sangat_baik' => 'Excellent',
+            'baik' => 'Good',
+            'cukup' => 'Fair',
+            'kurang' => 'Poor',
         ],
     ],
 
     'pesan' => [
         'data_tidak_tersedia' => 'Data not available',
+    ],
+
+    'tombol' => [
+        'filter' => 'Apply'
     ],
 ];

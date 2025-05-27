@@ -22,7 +22,7 @@ class PenggunaAlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
                 'perusahaan.email',                                     // Email 
                 'perusahaan.nama_alumni',                               // Nama Alumni
                 'perusahaan.program_studi',                             // Program Studi
-                DB::raw('YEAR(perusahaan.tahun_lulus) AS tahun_lulus')  // Hanya mengambil tahun
+                DB::raw('YEAR(perusahaan.tanggal_lulus) AS tahun_lulus')  // Hanya mengambil tahun
             )
             ->get();
     }
