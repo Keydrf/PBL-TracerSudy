@@ -201,8 +201,8 @@
                 <thead class="table-primary">
                     <tr>
                         <th rowspan="2">Tahun Lulus</th>
-                        <th rowspan="2">Jumlah Lulusan</th>
-                        <th rowspan="2">Jumlah Lulusan yang terlacak</th>
+                        <th rowspan="2">Jumlah Alumni</th>
+                        <th rowspan="2">Jumlah Alumni yang terlacak</th>
                         <th rowspan="2">Profesi Kerja Bidang Infokom</th>
                         <th rowspan="2">Profesi Kerja Bidang Non Infokom</th>
                         <th colspan="4">Lingkup Tempat Kerja</th>
@@ -217,7 +217,7 @@
                 <tbody>
                     @php
                         $total = [
-                            'jumlah_lulusan' => 0,
+                            'jumlah_alumni' => 0,
                             'jumlah_terlacak' => 0,
                             'profesi_infokom' => 0,
                             'profesi_non_infokom' => 0,
@@ -231,7 +231,7 @@
                     @forelse($lingkupTempatKerjaData ?? [] as $item)
                         <tr>
                             <td>{{ $item->tahun_lulus }}</td>
-                            <td>{{ $item->jumlah_lulusan }}</td>
+                            <td>{{ $item->jumlah_alumni }}</td>
                             <td>{{ $item->jumlah_terlacak }}</td>
                             <td>{{ $item->profesi_infokom }}</td>
                             <td>{{ $item->profesi_non_infokom }}</td>
@@ -242,7 +242,7 @@
                         </tr>
 
                         @php
-                            $total['jumlah_lulusan'] += $item->jumlah_lulusan;
+                            $total['jumlah_alumni'] += $item->jumlah_alumni;
                             $total['jumlah_terlacak'] += $item->jumlah_terlacak;
                             $total['profesi_infokom'] += $item->profesi_infokom;
                             $total['profesi_non_infokom'] += $item->profesi_non_infokom;
@@ -258,7 +258,7 @@
                 <tfoot style="background-color: #848484; font-weight: bold;">
                     <tr>
                         <td>Jumlah</td>
-                        <td>{{ $total['jumlah_lulusan'] }}</td>
+                        <td>{{ $total['jumlah_alumni'] }}</td>
                         <td>{{ $total['jumlah_terlacak'] }}</td>
                         <td>{{ $total['profesi_infokom'] }}</td>
                         <td>{{ $total['profesi_non_infokom'] }}</td>
@@ -282,8 +282,8 @@
             <thead class="table-primary">
                 <tr>
                     <th>Tahun Lulus</th>
-                    <th>Jumlah Lulusan</th>
-                    <th>Jumlah lulusan yang terlacak</th>
+                    <th>Jumlah alumni</th>
+                    <th>Jumlah alumni yang terlacak</th>
                     <th>Rata-rata Masa Tunggu (Bulan)</th>
                 </tr>
             </thead>
@@ -291,7 +291,7 @@
                 @forelse($masaTungguData ?? [] as $item)
                     <tr>
                     <td>{{ $item->tahun_lulus }}</td>
-                    <td>{{ $item->jumlah_lulusan }}</td>
+                    <td>{{ $item->jumlah_alumni }}</td>
                     <td>{{ $item->jumlah_terlacak }}</td>
                     <td>{{ number_format($item->rata_rata_bulan, 2) }}</td>
                 </tr>
@@ -302,7 +302,7 @@
                 <tfoot>
                     <tr class="fw-bold">
                         <td>Total</td>
-                        <td>{{ $totalMasaTunggu['jumlah_lulusan'] }}</td>
+                        <td>{{ $totalMasaTunggu['jumlah_alumni'] }}</td>
                         <td>{{ $totalMasaTunggu['jumlah_terlacak'] }}</td>
                         <td>{{ number_format($totalMasaTunggu['rata_rata_bulan'], 2) }}</td>
                     </tr>
@@ -314,13 +314,13 @@
 <div class="card">
     <div class="row">
         <div class="col-md-12">
-            <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Lulusan</h5>
+            <h5 class="card-title judul-tengah">Penilaian Kepuasan Pengguna Alumni</h5>
             <p class="card-category text-center">Skala Penilaian</p>
         </div>
     </div>
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Penilaian Kepuasan Pengguna Lulusan</h5>
+        <h5 class="mb-0">Penilaian Kepuasan Pengguna Alumni</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableKepuasanPengguna">
@@ -424,7 +424,7 @@
 
             // Data Alumni Berdasarkan Kategori Profesi (Dummy)
             const dataChart2 = {
-                labels: ['Bidang Infokom', 'Belum Bekerja'],
+                labels: ['Bidang Infokom', 'Non infokom'],
                 series: [2, 1]
             };
 
@@ -513,13 +513,13 @@
             createPieChart('jumlahProfesiPieChart', dataChart3, 'Jumlah Profesi per Kategori');
 
 
-            // Pie Chart Sebaran Profesi Lulusan
+            // Pie Chart Sebaran Profesi alumni
             const dataProfesiPie = {
                 labels: @json($labelsProfesi ?? []),
                 series: @json($dataProfesi ?? [])
             };
 
-            createPieChart('sebaranProfesiPieChart', dataProfesiPie, 'Sebaran Profesi Lulusan');
+            createPieChart('sebaranProfesiPieChart', dataProfesiPie, 'Sebaran Profesi Alumni');
 
 
             // Pie Chart Sebaran Jenis Instansi
@@ -529,7 +529,7 @@
             };
             createPieChart('jenisInstansiPieChart', dataInstansiPie, 'Sebaran Jenis Instansi');
 
-            // Pie Chart Penilaian Kepuasan Pengguna Lulusan
+            // Pie Chart Penilaian Kepuasan Pengguna Alumni
             const dataKepuasanPengguna = @json($dataKepuasan ?? []);
             const kriteriaKepuasan = @json($kriteriaKepuasan ?? []);
 

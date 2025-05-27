@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $tahunAkhir = $request->get('tahun_akhir', date('Y'));
         // $programStudi = $request->get('program_studi', 'Teknik Informatika');
 
-        // // Data untuk Grafik Sebaran Profesi Lulusan
+        // // Data untuk Grafik Sebaran Profesi Alumni
         // $totalAlumniProfesi = DB::table('survei_alumni')->count();
         // $profesi = DB::table('survei_alumni')
         //     ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
@@ -24,7 +24,7 @@ class DashboardController extends Controller
         //     ->groupBy('profesi.nama_profesi')
         //     ->orderBy('jumlah', 'desc')
         //     ->get();
-        // Data untuk Grafik Sebaran Profesi Lulusan
+        // Data untuk Grafik Sebaran Profesi Alumni
         $totalAlumniProfesi = DB::table('survei_alumni')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
             // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
@@ -77,7 +77,7 @@ class DashboardController extends Controller
             $jenisInstansiData['BUMN'] ?? 0,
         ];
 
-        // Data untuk Grafik Penilaian Kepuasan Pengguna Lulusan
+        // Data untuk Grafik Penilaian Kepuasan Pengguna Alumni
         $kriteriaKepuasan = [
             'kerjasama',
             'keahlian',
@@ -116,7 +116,7 @@ class DashboardController extends Controller
         // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
         ->select(
             'tahun_lulus',
-            DB::raw('COUNT(*) as jumlah_lulusan'),
+            DB::raw('COUNT(*) as jumlah_alumni'),
             DB::raw('COUNT(tanggal_pertama_kerja) as jumlah_terlacak'),
             DB::raw('SUM(CASE WHEN p.kategori_id = 1 THEN 1 ELSE 0 END) as profesi_infokom'),
             DB::raw('SUM(CASE WHEN p.kategori_id != 1 THEN 1 ELSE 0 END) as profesi_non_infokom'),
@@ -131,7 +131,7 @@ class DashboardController extends Controller
         ->get();
 
         $total = [
-            'jumlah_lulusan' => $lingkupTempatKerjaData->sum('jumlah_lulusan'),
+            'jumlah_alumni' => $lingkupTempatKerjaData->sum('jumlah_alumni'),
             'jumlah_terlacak' => $lingkupTempatKerjaData->sum('jumlah_terlacak'),
             'profesi_infokom' => $lingkupTempatKerjaData->sum('profesi_infokom'),
             'profesi_non_infokom' => $lingkupTempatKerjaData->sum('profesi_non_infokom'),
@@ -147,7 +147,7 @@ class DashboardController extends Controller
     //    ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
         ->select(
             'tahun_lulus',
-            DB::raw('COUNT(*) as jumlah_lulusan'),
+            DB::raw('COUNT(*) as jumlah_alumni'),
             DB::raw('COUNT(masa_tunggu) as jumlah_terlacak'),
             DB::raw('AVG(masa_tunggu) as rata_rata_bulan')
         )
@@ -156,12 +156,12 @@ class DashboardController extends Controller
         ->get();
 
         $totalMasaTunggu = [
-            'jumlah_lulusan' => $masaTungguData->sum('jumlah_lulusan'),
+            'jumlah_alumni' => $masaTungguData->sum('jumlah_alumni'),
             'jumlah_terlacak' => $masaTungguData->sum('jumlah_terlacak'),
             'rata_rata_bulan' => round($masaTungguData->avg('rata_rata_bulan'), 2),
         ];
 
-        // 3. Penilaian Kepuasan Pengguna Lulusan (ambil dari survei_perusahaan)
+        // 3. Penilaian Kepuasan Pengguna Alumni (ambil dari survei_perusahaan)
         $nilaiKepuasan = [];
 
         $columns = [
