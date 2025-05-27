@@ -14,8 +14,10 @@ use App\Http\Controllers\{
     LaporanController,
     AlumniSurveyController,
     SurveiPerusahaanController,
-    PerusahaanController
+    // PerusahaanController
 };
+use Illuminate\Support\Facades\Mail;
+use App\Mail\KirimEmail;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,7 @@ use App\Http\Controllers\{
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/populate', [PerusahaanController::class, 'populate'])->name('pop');
+// Route::get('/populate', [PerusahaanController::class, 'populate'])->name('pop');
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::controller(AlumniSurveyController::class)->group(function () {
     // Halaman utama survei alumni
@@ -47,7 +49,7 @@ Route::controller(AlumniSurveyController::class)->group(function () {
 // Survey Routes
 Route::get('/surveiperusahaan', [SurveiPerusahaanController::class, 'create'])->name('survei.perusahaan.create');
 Route::post('/surveiperusahaan', [SurveiPerusahaanController::class, 'store'])->name('survei.perusahaan.store');
-Route::resource('perusahaan', PerusahaanController::class);
+// Route::resource('perusahaan', PerusahaanController::class);
 
 // API Route for Alumni Search
 Route::get('/api/alumni/search-for-survey', [SurveiPerusahaanController::class, 'searchAlumni'])->name('api.alumni.search-for-survey');
@@ -125,13 +127,13 @@ Route::middleware(['auth'])->group(function () {
             });
         });
 
-        Route::controller(PerusahaanController::class)->group(function () {
-            Route::prefix('perusahaan')->group(function () {
-                Route::get('/', 'index')->name('perusahaan.index');
-                Route::post('/list', 'list');
-                // Route::get('/populate', 'populate');
-            });
-        });
+        // Route::controller(PerusahaanController::class)->group(function () {
+        //     Route::prefix('perusahaan')->group(function () {
+        //         Route::get('/', 'index')->name('perusahaan.index');
+        //         Route::post('/list', 'list');
+        //         // Route::get('/populate', 'populate');
+        //     });
+        // });
 
         Route::controller(AlumniController::class)->group(function () {
             Route::prefix('alumni')->group(function () {
@@ -176,4 +178,11 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     });
+    
+});
+
+
+Route::get('/kirim-email', function () {
+    Mail::to('arindrakeysha@gmail.com')->send(new \App\Mail\KirimEmail("Tes email dari localhost!"));
+    return "Email sudah dikirim!";
 });

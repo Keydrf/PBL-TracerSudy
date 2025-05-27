@@ -26,11 +26,11 @@
                 <span class="menu-title">@lang('sidebar.alumni')</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->is('perusahaan') ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ request()->is('perusahaan') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/perusahaan') }}">
                 <i class="mdi mdi-office-building menu-icon"></i> <span class="menu-title">@lang('sidebar.company')</span>
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item {{ request()->is('kategori') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/kategori') }}">
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>

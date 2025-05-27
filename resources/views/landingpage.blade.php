@@ -138,7 +138,7 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalPerusahaan }}"
+                        <span data-purecounter-start="0" data-purecounter-end="0"
                             data-purecounter-duration="1" class="purecounter"></span>
                         <p>Perusahaan Terdaftar</p>
                     </div>
@@ -149,11 +149,11 @@
     </section>
 
 
-    <section id="perusahaan" class="services section light-background">
+    {{-- <section id="perusahaan" class="services section light-background">
         <div class="container section-title" data-aos="fade-up">
             <span>Mitra Perusahaan</span>
             <h2>Perusahaan yang Bekerja Sama</h2>
-            {{-- <p>Berikut adalah daftar perusahaan yang telah bekerja sama atau memiliki alumni dari sistem tracer study.</p> --}}
+            
         </div>
 
         <div class="container">
@@ -181,7 +181,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
 

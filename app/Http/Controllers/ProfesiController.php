@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-
+use Illuminate\Database\QueryException;
 
 
 class ProfesiController extends Controller
@@ -122,15 +122,32 @@ class ProfesiController extends Controller
             $profesi = ProfesiModel::find($id);
 
             if ($profesi) {
-                $profesi->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    $profesi->delete();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data profesi berhasil dihapus.'
+                    ]);
+                } catch (QueryException $e) {
+                    // Periksa apakah exception disebabkan oleh foreign key constraint
+                    // Kode error SQL '23000' umumnya menunjukkan integrity constraint violation
+                    if ($e->getCode() === '23000') {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
+                        ]);
+                    } else {
+                        // Jika error lain, kembalikan pesan error umum
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()
+                        ]);
+                    }
+                }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Data profesi tidak ditemukan.'
                 ]);
             }
         }

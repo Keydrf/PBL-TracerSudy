@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KategoriProfesiModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\QueryException;
 
 class KategoriProfesiController extends Controller
 {
@@ -76,15 +77,32 @@ class KategoriProfesiController extends Controller
             $kategoriProfesi = KategoriProfesiModel::find($id);
 
             if ($kategoriProfesi) {
-                $kategoriProfesi->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    $kategoriProfesi->delete();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data kategori profesi berhasil dihapus.'
+                    ]);
+                } catch (QueryException $e) {
+                    // Periksa apakah exception disebabkan oleh foreign key constraint
+                    // Kode error SQL '23000' umumnya menunjukkan integrity constraint violation
+                    if ($e->getCode() === '23000') {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain'
+                        ]);
+                    } else {
+                        // Jika error lain, kembalikan pesan error umum
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()
+                        ]);
+                    }
+                }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Data kategori profesi tidak ditemukan.'
                 ]);
             }
         }

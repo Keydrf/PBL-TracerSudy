@@ -53,11 +53,11 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-2 control-label col-form-label">Kode OTP</label>
+                        <label class="col-md-2 control-label col-form-label">Email</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="kode_otp" name="kode_otp"
-                                value="{{ old('kode_otp', $alumni->kode_otp) }}" required>
-                            @error('kode_otp')
+                            <input type="text" class="form-control" id="email" name="email"
+                                value="{{ old('email', $alumni->email) }}" required>
+                            @error('email')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>

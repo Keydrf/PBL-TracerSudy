@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail; // Pastikan ini di-import
+use Illuminate\Support\Str; // Pastikan ini di-import untuk Str::random()
+use App\Mail\CompanyOtpMail;
 
 class AlumniSurveyController extends Controller
 {
@@ -18,19 +21,19 @@ class AlumniSurveyController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validasi data request
         $validator = Validator::make($request->all(), [
             'program_studi' => 'required|string|max:100',
             'tahun_lulus' => 'required|integer',
             'nim' => 'required|string|max:10|exists:alumni,nim',
-            'kode_otp' => [
+            'kode_otp_alumni' => [ // Diubah dari 'kode_otp' menjadi 'kode_otp_alumni'
                 'required',
                 'string',
                 'max:4',
                 function ($attribute, $value, $fail) use ($request) {
                     $alumni = DB::table('alumni')->where('nim', $request->nim)->first();
-                    if (!$alumni || $alumni->kode_otp !== $value) {
-                        $fail('Kode OTP tidak valid untuk alumni yang dipilih.');
+                    if (!$alumni || $alumni->kode_otp_alumni !== $value) { // Menggunakan kode_otp_alumni dari database
+                        $fail('Kode OTP alumni tidak valid untuk alumni yang dipilih.');
                     }
                 },
             ],
@@ -46,7 +49,7 @@ class AlumniSurveyController extends Controller
             'nama_atasan' => 'required|string|max:100',
             'jabatan_atasan' => 'required|string|max:100',
             'no_telepon_atasan' => 'required|string|max:100',
-            'email_atasan' => 'required|email|max:100',
+            'email_atasan' => 'required|email|max:100', // Pastikan ini ada dan divalidasi
             'profesi_id' => 'nullable|exists:profesi,profesi_id',
             'pendapatan' => 'required|integer',
             'alamat_kantor' => 'required|string|max:255',
@@ -61,14 +64,19 @@ class AlumniSurveyController extends Controller
         }
 
         try {
+            // Generate kode OTP untuk email perusahaan
+            // Ini adalah OTP yang berbeda dari OTP alumni
+            $companyOtp = Str::random(4); // Contoh: 4 karakter acak
+
+            // Memasukkan data survei ke database
             DB::insert('INSERT INTO survei_alumni (
-                nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja, 
-                masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi, 
-                nama_instansi, skala, lokasi_instansi, 
+                nim, no_telepon, email, tahun_lulus, tanggal_pertama_kerja,
+                masa_tunggu, tanggal_pertama_kerja_instansi_saat_ini, jenis_instansi,
+                nama_instansi, skala, lokasi_instansi,
                 nama_atasan, jabatan_atasan, no_telepon_atasan, email_atasan,
                 profesi_id, pendapatan, alamat_kantor, kabupaten, kategori_id,
-                kode_otp, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+                kode_otp_alumni, kode_otp_perusahaan, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ // Menambahkan satu placeholder untuk kode_otp_perusahaan
                 $request->nim,
                 $request->no_telepon,
                 $request->email,
@@ -89,12 +97,19 @@ class AlumniSurveyController extends Controller
                 $request->alamat_kantor,
                 $request->kabupaten,
                 $request->kategori_id,
-                $request->kode_otp,
+                $request->kode_otp_alumni, // Menggunakan kode_otp_alumni dari request
+                $companyOtp, // Menambahkan nilai kode_otp_perusahaan
                 now(),
                 now()
             ]);
 
-            return redirect()->back()->with('success', 'Survei berhasil disimpan.');
+            // Kirim OTP ke email atasan (perusahaan)
+            // Pastikan 'email_atasan' sudah divalidasi dan ada di request
+            if ($request->filled('email_atasan')) {
+                Mail::to($request->email_atasan)->send(new CompanyOtpMail($companyOtp));
+            }
+
+            return redirect()->back()->with('success', 'Survei berhasil disimpan dan OTP perusahaan telah dikirim.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }

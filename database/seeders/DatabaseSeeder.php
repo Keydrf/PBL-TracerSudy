@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             UserSeeder::class,
             SurveiAlumniSeeder::class,
-            PerusahaanSeeder::class,
+            // PerusahaanSeeder::class,
             SurveiPerusahaanSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();

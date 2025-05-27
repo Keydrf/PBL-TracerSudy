@@ -16,12 +16,12 @@ class LandingController extends Controller
 
     public function index()
     {
-        $perusahaanList = PerusahaanModel::with(['surveiAlumni.alumni'])->get();
+        // $perusahaanList = PerusahaanModel::with(['surveiAlumni.alumni'])->get();
         $totalAlumni = AlumniModel::count();
         $totalSurveiAlumni = SurveiAlumniModel::count();
         $totalProfesi = ProfesiModel::count();
-        $totalPerusahaan = PerusahaanModel::count();
+        // $totalPerusahaan = PerusahaanModel::count();
 
-        return view('landingpage', compact('totalAlumni', 'totalSurveiAlumni', 'totalProfesi', 'totalPerusahaan', 'perusahaanList'));
+        return view('landingpage', compact('totalAlumni', 'totalSurveiAlumni', 'totalProfesi'));
     }
 }

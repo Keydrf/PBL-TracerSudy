@@ -14,6 +14,12 @@ class SurveiPerusahaanSeeder extends Seeder
     {
         $kepuasan = ['kurang', 'cukup', 'baik', 'sangat baik'];
 
+        // Ambil mapping nim -> kode_otp_perusahaan dari survei_alumni
+        $kodeOtpMap = DB::table('survei_alumni')
+            ->select('nim', 'kode_otp_perusahaan')
+            ->get()
+            ->keyBy('nim');
+
         $perusahaanList = [
             [
                 'nama' => 'Kementerian Pendidikan',
@@ -24,7 +30,7 @@ class SurveiPerusahaanSeeder extends Seeder
                 'nim' => '2341760193',
                 'kompetensi_yang_belum_dipenuhi' => 'Sangat Baik',
                 'saran' => 'Pertahankan kualitas alumni.',
-                'perusahaan_id' => 1
+                // 'perusahaan_id' => 1
             ],
             [
                 'nama' => 'PT. Telkom Indonesia',
@@ -35,15 +41,22 @@ class SurveiPerusahaanSeeder extends Seeder
                 'nim' => '2341760093',
                 'kompetensi_yang_belum_dipenuhi' => 'Baik',
                 'saran' => 'Tingkatkan kemampuan komunikasi.',
-                'perusahaan_id' => 1
+                // 'perusahaan_id' => 1
             ]
         ];
 
         $data = [];
 
         foreach ($perusahaanList as $index => $perusahaan) {
+            $nim = $perusahaan['nim'];
+            $kodeOtpPerusahaan = $kodeOtpMap[$nim]->kode_otp_perusahaan ?? null;
+
+            if (!$kodeOtpPerusahaan) {
+                continue; // skip jika tidak ditemukan
+            }
+
             $data[] = array_merge($perusahaan, [
-                'kode_perusahaan' => str_pad($index + 1, 4, '0', STR_PAD_LEFT),
+                'kode_otp_perusahaan' => $kodeOtpPerusahaan,
                 'kerjasama' => $kepuasan[array_rand($kepuasan)],
                 'keahlian' => $kepuasan[array_rand($kepuasan)],
                 'kemampuan_basing' => $kepuasan[array_rand($kepuasan)],

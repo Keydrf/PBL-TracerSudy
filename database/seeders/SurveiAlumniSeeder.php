@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SurveiAlumniSeeder extends Seeder
 {
@@ -12,7 +13,11 @@ class SurveiAlumniSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('survei_alumni')->insert([
+        // Ambil data alumni untuk mapping kode_otp berdasarkan nim
+        $alumni = DB::table('alumni')->select('nim', 'kode_otp_alumni')->get()->keyBy('nim');
+
+        // Data survei alumni
+        $data = [
             [
                 'nim' => '2341760193',
                 'no_telepon' => '081234567891',
@@ -34,9 +39,6 @@ class SurveiAlumniSeeder extends Seeder
                 'jabatan_atasan' => 'CTO',
                 'no_telepon_atasan' => '081111111111',
                 'email_atasan' => 'agus.pramono@ptnusa.co.id',
-                'kode_otp' => 'KA93',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'nim' => '2341760093',
@@ -59,9 +61,6 @@ class SurveiAlumniSeeder extends Seeder
                 'jabatan_atasan' => 'Kepala Seksi',
                 'no_telepon_atasan' => '082222222222',
                 'email_atasan' => 'rina.hartati@kominfo.go.id',
-                'kode_otp' => 'DL93',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'nim' => '2341760149',
@@ -84,10 +83,19 @@ class SurveiAlumniSeeder extends Seeder
                 'jabatan_atasan' => 'Manajer Divisi',
                 'no_telepon_atasan' => '083333333333',
                 'email_atasan' => 'eko.santoso@telkom.co.id',
-                'kode_otp' => 'AB49',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
-        ]);
+        ];
+
+        // Loop dan tambahkan kode_otp dari alumni serta auto generate kode_otp_perusahaan
+        foreach ($data as &$item) {
+            $nim = $item['nim'];
+            $item['kode_otp_alumni'] = $alumni[$nim]->kode_otp_alumni ?? strtoupper(Str::random(4)); // fallback jika tidak ditemukan
+            $item['kode_otp_perusahaan'] = 'PR' . strtoupper(Str::random(2));
+            $item['created_at'] = now();
+            $item['updated_at'] = now();
+        }
+
+        // Insert ke tabel survei_alumni
+        DB::table('survei_alumni')->insert($data);
     }
 }

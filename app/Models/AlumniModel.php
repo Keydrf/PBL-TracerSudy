@@ -10,7 +10,7 @@ class AlumniModel extends Model
     protected $table = 'alumni';
     protected $primaryKey = 'alumni_id';
 
-    protected $fillable = ['program_studi', 'nim', 'nama', 'tanggal_lulus', 'kode_otp'];
+    protected $fillable = ['program_studi', 'nim', 'nama', 'tanggal_lulus', 'kode_otp_alumni', 'email'];
     protected $casts = [
         'tanggal_lulus' => 'date',  // atau 'datetime' jika ada jamnya
     ];

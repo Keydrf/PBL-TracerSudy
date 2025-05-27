@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('program_studi', 100);
             $table->string('nim', 10)->unique();
             $table->string('nama')->unique;
-            $table->string('kode_otp', 4)->unique();
+            $table->string('email', 100);
+            $table->string('kode_otp_alumni', 4)->unique();
             $table->dateTime('tanggal_lulus');
             $table->timestamps();
         });
