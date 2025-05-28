@@ -14,7 +14,12 @@ class DashboardController extends Controller
     {
         $tahunAwal = $request->get('tahun_awal', date('Y') - 3);
         $tahunAkhir = $request->get('tahun_akhir', date('Y'));
-        // $programStudi = $request->get('program_studi', 'Teknik Informatika');
+        $programStudi = $request->get('program_studi', null);
+
+        // Normalisasi dan pengecekan filter "semuanya"
+        if (empty($programStudi) || strtolower(trim($programStudi)) === 'semuanya') {
+            $programStudi = null;
+        }
 
         // // Data untuk Grafik Sebaran Profesi Alumni
         // $totalAlumniProfesi = DB::table('survei_alumni')->count();
@@ -26,18 +31,29 @@ class DashboardController extends Controller
         //     ->get();
         // Data untuk Grafik Sebaran Profesi Alumni
         $totalAlumniProfesi = DB::table('survei_alumni')
+            ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
-            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
+            ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
             ->count();
+
+        // Ambil semua kategori profesi
+        $allProfesi = DB::table('profesi')->pluck('nama_profesi')->toArray();
 
         $profesi = DB::table('survei_alumni')
             ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
             ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah'))
+            ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
-            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
+            ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
             ->groupBy('profesi.nama_profesi')
             ->orderBy('jumlah', 'desc')
             ->get();
+
+        // Buat mapping nama_profesi => jumlah
+        $profesiMap = [];
+        foreach ($profesi as $item) {
+            $profesiMap[$item->nama_profesi] = $item->jumlah;
+        }
 
         $labelsProfesi = [];
         $dataProfesi = [];
@@ -45,13 +61,14 @@ class DashboardController extends Controller
         $topCountProfesi = 0;
         $maxTopProfesi = 10;
 
-        foreach ($profesi as $item) {
+        // Pastikan semua kategori profesi tetap muncul (meskipun 0)
+        foreach ($allProfesi as $namaProfesi) {
             if ($topCountProfesi < $maxTopProfesi) {
-                $labelsProfesi[] = $item->nama_profesi;
-                $dataProfesi[] = $item->jumlah;
+                $labelsProfesi[] = $namaProfesi;
+                $dataProfesi[] = $profesiMap[$namaProfesi] ?? 0;
                 $topCountProfesi++;
             } else {
-                $lainnyaCountProfesi += $item->jumlah;
+                $lainnyaCountProfesi += $profesiMap[$namaProfesi] ?? 0;
             }
         }
 
@@ -62,8 +79,9 @@ class DashboardController extends Controller
 
         // Data untuk Grafik Sebaran Jenis Instansi
         $jenisInstansiData = DB::table('survei_alumni')
+            ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
-            // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
+            ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
             ->select('jenis_instansi', DB::raw('count(*) as jumlah'))
             ->groupBy('jenis_instansi')
             ->pluck('jumlah', 'jenis_instansi')
@@ -92,13 +110,17 @@ class DashboardController extends Controller
         $dataKepuasan = [];
         foreach ($kriteriaKepuasan as $kriteria) {
             $kepuasanData = DB::table('survei_perusahaan')
+                ->join('survei_alumni', 'survei_perusahaan.nim', '=', 'survei_alumni.nim')
+                ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
+                ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
+                ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
                 ->select($kriteria, DB::raw('count(*) as jumlah'))
                 ->groupBy($kriteria)
                 ->orderByRaw(sprintf("FIELD(%s, '%s')", $kriteria, implode("','", $kepuasanLabels))) // Order
                 ->pluck('jumlah', $kriteria)
                 ->toArray();
 
-             // Ensure all kepuasan levels are present with counts, default to 0 if missing
+            // Ensure all kepuasan levels are present with counts, default to 0 if missing
             $seriesKepuasan = [];
             foreach ($kepuasanLabels as $label) {
                 $seriesKepuasan[] = $kepuasanData[$label] ?? 0;
@@ -112,8 +134,9 @@ class DashboardController extends Controller
         
          // 1. Tabel Sebaran Lingkup Tempat Kerja
         $lingkupTempatKerjaData = DB::table('survei_alumni')
+        ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
         ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
-        // ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
+        ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
         ->select(
             'tahun_lulus',
             DB::raw('COUNT(*) as jumlah_alumni'),
@@ -142,9 +165,10 @@ class DashboardController extends Controller
         ];
 
         // 2. Tabel Rata-rata Masa Tunggu Per Prodi
-       $masaTungguData = DB::table('survei_alumni')
-       ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
-    //    ->when($programStudi, fn($q) => $q->where('program_studi', $programStudi))
+        $masaTungguData = DB::table('survei_alumni')
+        ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
+        ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))
+        ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
         ->select(
             'tahun_lulus',
             DB::raw('COUNT(*) as jumlah_alumni'),
@@ -171,7 +195,14 @@ class DashboardController extends Controller
         ];
 
         foreach ($columns as $column) {
-            $total = DB::table('tracer_study.survei_perusahaan')->whereNotNull($column)->count();
+            $query = DB::table('tracer_study.survei_perusahaan')
+                ->join('survei_alumni', 'survei_perusahaan.nim', '=', 'survei_alumni.nim')
+                ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
+                ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
+                ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
+                ->whereNotNull($column);
+
+            $total = $query->count();
 
             if ($total == 0) {
                 $nilaiKepuasan[$column] = [
@@ -184,11 +215,15 @@ class DashboardController extends Controller
             }
 
             $kategori = DB::table('tracer_study.survei_perusahaan')
+                ->join('survei_alumni', 'survei_perusahaan.nim', '=', 'survei_alumni.nim')
+                ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
+                ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('survei_alumni.tahun_lulus', [$tahunAwal, $tahunAkhir]))
+                ->when($programStudi, fn($q) => $q->where('alumni.program_studi', $programStudi))
                 ->select(
-                    DB::raw("SUM(CASE WHEN $column = 4 THEN 1 ELSE 0 END) as sangat_baik"),
-                    DB::raw("SUM(CASE WHEN $column = 3 THEN 1 ELSE 0 END) as baik"),
-                    DB::raw("SUM(CASE WHEN $column = 2 THEN 1 ELSE 0 END) as cukup"),
-                    DB::raw("SUM(CASE WHEN $column = 1 THEN 1 ELSE 0 END) as kurang")
+                    DB::raw("SUM(CASE WHEN $column = 'sangat baik' THEN 1 ELSE 0 END) as sangat_baik"),
+                    DB::raw("SUM(CASE WHEN $column = 'baik' THEN 1 ELSE 0 END) as baik"),
+                    DB::raw("SUM(CASE WHEN $column = 'cukup' THEN 1 ELSE 0 END) as cukup"),
+                    DB::raw("SUM(CASE WHEN $column = 'kurang' THEN 1 ELSE 0 END) as kurang")
                 )
                 ->first();
 
@@ -199,7 +234,6 @@ class DashboardController extends Controller
                 'kurang'      => round(($kategori->kurang / $total) * 100, 2),
             ];
         }
-
 
         return view('dashboard', [
             'labelsProfesi' => $labelsProfesi,

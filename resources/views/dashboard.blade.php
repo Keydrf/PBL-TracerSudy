@@ -87,10 +87,11 @@
                     <select name="program_studi" id="program_studi" class="form-select">
                         @php
                             $programStudiOptions = [
+                                'Semuanya' =>'Semuanya',
                                 'Teknik Informatika' => 'Teknik Informatika',
                                 'Sistem Informasi bisnis' => 'Sistem Informasi bisnis',
-                                'D2 PPLS' => 'D2 PPLS',
-                                'S2 MRTI' => 'S2 MRTI'
+                                'Pengembangan Perangkat Lunak Situs' => 'Pengembangan Perangkat Lunak Situs',
+                                'Magister Terapan Rekayasa Teknologi Informasi' => 'Magister Terapan Rekayasa Teknologi Informasi'
                             ];
                         @endphp
                         @foreach($programStudiOptions as $key => $val)
@@ -116,89 +117,104 @@
     </div>
 </div>
     
-    <div class="card">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_prodi')</h5>
-
-                    </div>
-                    <div class="card-body">
-                        <div id="prodiChartContainer" class="chart-container">
-                            <canvas id="prodiPieChart"></canvas>
-                        </div>
+<div class="card mb-4">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center py-2" style="background-color: #f0f0f0;">
+                   <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                        @lang("dashboard.judul_kartu.alumni_per_prodi")
+                    </h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="prodiChartContainer" class="chart-container" style="width: 100%; height: 200px;">
+                        <canvas id="prodiPieChart"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('dashboard.judul_kartu.alumni_per_kategori_profesi')</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="kategoriProfesiChartContainer" class="chart-container">
-                            <canvas id="kategoriProfesiPieChart"></canvas>
-                        </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center py-2" style="background-color: #f0f0f0;">
+                    <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                        @lang('dashboard.judul_kartu.alumni_per_kategori_profesi')
+                    </h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="kategoriProfesiChartContainer" class="chart-container" style="width: 100%; height: 200px;">
+                        <canvas id="kategoriProfesiPieChart"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('dashboard.judul_kartu.jumlah_profesi_per_kategori')</h5>
+        </div>
 
-                    </div>
-                    <div class="card-body">
-                        <div id="jumlahProfesiChartContainer" class="chart-container">
-                            <canvas id="jumlahProfesiPieChart"></canvas>
-                        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-center py-2" style="background-color: #f0f0f0;">
+                    <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                        @lang('dashboard.judul_kartu.jumlah_profesi_per_kategori')
+                    </h6>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="jumlahProfesiChartContainer" class="chart-container" style="width: 100%; height: 200px;">
+                        <canvas id="jumlahProfesiPieChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <div class="card">
-        <div class="row row-grafik">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('dashboard.judul_kartu.sebaran_profesi')</h5>
-                        <p class="card-category">@lang('dashboard.deskripsi.sebaran_profesi')</p>
-                    </div>
-                    <div class="card-body">
-                        <div id="sebaranProfesiChartContainer" class="chart-container">
-                            <canvas id="sebaranProfesiPieChart"></canvas>
-                        </div>
+</div>
+
+<div class="card mb-4">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-2 text-center" style="background-color: #f0f0f0;">
+                    <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                        @lang('dashboard.judul_kartu.sebaran_profesi')
+                    </h6>
+                    <p class="card-category text-muted mb-0" style="font-size: 13px;">
+                        @lang('dashboard.deskripsi.sebaran_profesi')
+                    </p>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="sebaranProfesiChartContainer" class="chart-container" style="width: 100%; height: 200px;">
+                        <canvas id="sebaranProfesiPieChart"></canvas>
                     </div>
                 </div>
-            </div><br>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('dashboard.judul_kartu.sebaran_instansi')</h5>
-                        <p class="card-category">@lang('dashboard.deskripsi.sebaran_instansi')</p>
-                    </div>
-                    <div class="card-body">
-                        <div id="jenisInstansiChartContainer" class="chart-container">
-                            <canvas id="jenisInstansiPieChart"></canvas>
-                        </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header py-2 text-center" style="background-color: #f0f0f0;">
+                    <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                        @lang('dashboard.judul_kartu.sebaran_instansi')
+                    </h6>
+                    <p class="card-category text-muted mb-0" style="font-size: 13px;">
+                        @lang('dashboard.deskripsi.sebaran_instansi')
+                    </p>
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <div id="jenisInstansiChartContainer" class="chart-container" style="width: 100%; height: 200px;">
+                        <canvas id="jenisInstansiPieChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br>
+</div>
+
 {{-- tabel-tabel --}}
 <div class="card mb-4">
-    <div class="card-header bg-primary text-white">
+    <div class="card-header">
         <h5 class="mb-0">@lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')</h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
-                <thead class="table-primary">
+                <thead class="table-light">
                     <tr>
                         <th rowspan="2">@lang('dashboard.tabel_header.tahun_lulus')</th>
                         <th rowspan="2">@lang('dashboard.tabel_header.jumlah_lulusan')</th>
@@ -274,12 +290,12 @@
 </div>
 
 <div class="card mb-4">
-    <div class="card-header bg-primary text-white">
+    <div class="card-header">
         <h5 class="mb-0">@lang('dashboard.judul_kartu.rata_masa_tunggu')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
-            <thead class="table-primary">
+            <thead class="table-light">
                 <tr>
                     <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
                     <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
@@ -311,30 +327,24 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="row">
-        <div class="col-md-12">
-            <h5 class="card-title judul-tengah">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
-            <p class="card-category text-center">@lang('dashboard.deskripsi.skala_penilaian')</p>
-        </div>
-    </div>
 <div class="card mb-4">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
+    <div class="card-header">
+        <h5 class="mb-0 text-center">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
+        <p class="card-category text-center mb-0">@lang('dashboard.deskripsi.skala_penilaian')</p>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableKepuasanPengguna">
-            <thead class="table-primary">
+            <thead class="table-light">
                 <tr>
-                    <th rowspan="2" scope="col">No</th>
-                    <th rowspan="2" scope="col">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
-                    <th colspan="4" scope="colgroup">@lang('dashboard.tabel_header.tingkat_kepuasan_pengguna')</th>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
+                    <th colspan="4">@lang('dashboard.tabel_header.tingkat_kepuasan_pengguna')</th>
                 </tr>
                 <tr>
-                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.sangat_baik')</th>
-                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.baik')</th>
-                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.cukup')</th>
-                    <th scope="col">@lang('dashboard.tabel_header.skala_nilai.kurang')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.sangat_baik')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.baik')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.cukup')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.kurang')</th>
                 </tr>
             </thead>
             <tbody>
@@ -371,7 +381,7 @@
                         $avgKurang     = $totalKurang / $totalKriteria;
                     @endphp
                     <tr style="background-color: #d3d3d3; font-weight: bold;">
-                        <td colspan="2" class="text-center">@lang('dashboard.label_chart.jumlah')</td>
+                        <td colspan="2">@lang('dashboard.label_chart.jumlah')</td>
                         <td>{{ number_format($avgSangatBaik, 2) }}%</td>
                         <td>{{ number_format($avgBaik, 2) }}%</td>
                         <td>{{ number_format($avgCukup, 2) }}%</td>
@@ -383,33 +393,39 @@
     </div>
 </div>
 
-
-
-    <div class="card">
-        <div class="row">
-            <div class="col-md-12">
-                <h5 class="card-title judul-tengah">@lang('dashboard.judul_kartu.kepuasan_pengguna')</h5>
-                <p class="card-category text-center">@lang('dashboard.deskripsi.kepuasan_pengguna')</p>
-            </div>
+<div class="card mb-4">
+    <div class="row">
+        <div class="col-md-12 text-center p-3">
+            <h5 class="card-title mb-1" style="font-weight: 600;">
+                @lang('dashboard.judul_kartu.kepuasan_pengguna')
+            </h5>
+            <p class="card-category text-muted mb-0" style="font-size: 14px;">
+                @lang('dashboard.deskripsi.kepuasan_pengguna')
+            </p>
         </div>
-<div class="card">
-    <div class="row row-grafik">
-        @foreach ($kriteriaKepuasan as $kriteria)
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang("dashboard.kriteria_kepuasan.$kriteria")</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="kepuasan_{{ $loop->index }}" class="chart-container">
-                            <canvas id="kepuasanPieChart_{{ $loop->index }}"></canvas>
+    </div>
+
+    <div class="card-body">
+        <div class="row row-grafik">
+            @foreach ($kriteriaKepuasan as $kriteria)
+                <div class="col-md-3 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header text-center py-2" style="background-color: #f0f0f0;">
+                            <h6 class="mb-0" style="font-weight: 600; font-size: 15px;">
+                                @lang("dashboard.kriteria_kepuasan.$kriteria")
+                            </h6>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <div id="kepuasan_{{ $loop->index }}" class="chart-container" style="width: 100%; height: 200px;">
+                                <canvas id="kepuasanPieChart_{{ $loop->index }}"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
     </div>
+</div>
 
     {{-- Chart.js CDN --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
