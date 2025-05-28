@@ -9,5 +9,5 @@ return [
     'profession_category' => 'Kategori Profesi',
     'profession' => 'Profesi',
     'report' => 'Laporan',
-    'logout' => 'Keluar'
+    'signout' => 'Keluar'
 ];

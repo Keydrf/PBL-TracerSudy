@@ -10,19 +10,19 @@ class PenggunaAlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return DB::table('perusahaan')
-            ->leftJoin('survei_perusahaan', 'perusahaan.perusahaan_id', '=', 'survei_perusahaan.perusahaan_id')
-            ->leftJoin('survei_alumni', 'perusahaan.survei_alumni_id', '=', 'survei_alumni.survei_alumni_id')
-            ->whereNull('survei_perusahaan.perusahaan_id')
+        return DB::table('survei_alumni')
+            ->leftJoin('survei_perusahaan', 'survei_alumni.nim', '=', 'survei_perusahaan.nim')
+            ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim') // Tambahkan join ke tabel alumni
+            ->whereNull('survei_perusahaan.survei_perusahaan_id') // Ubah kondisi untuk mengecek keberadaan di survei_perusahaan
             ->select(
-                'perusahaan.nama_atasan',                               // Nama 
-                'perusahaan.nama_instansi',                             // Instansi 
-                'survei_alumni.jabatan_atasan AS jabatan',              // Jabatan
-                'perusahaan.no_telepon',                                // No. HP 
-                'perusahaan.email',                                     // Email 
-                'perusahaan.nama_alumni',                               // Nama Alumni
-                'perusahaan.program_studi',                             // Program Studi
-                DB::raw('YEAR(perusahaan.tanggal_lulus) AS tahun_lulus')  // Hanya mengambil tahun
+                'survei_alumni.nama_atasan AS nama',              // Nama 
+                'survei_alumni.nama_instansi AS instansi',         // Instansi 
+                'survei_alumni.jabatan_atasan AS jabatan',         // Jabatan
+                'survei_alumni.no_telepon_atasan AS no_telepon',   // No. HP 
+                'survei_alumni.email_atasan AS email',             // Email 
+                'alumni.nama AS nama_alumni',                      // Nama Alumni
+                'alumni.program_studi',                            // Program Studi
+                'survei_alumni.tahun_lulus'                        // Tahun Lulus
             )
             ->get();
     }
