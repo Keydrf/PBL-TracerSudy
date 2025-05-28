@@ -67,15 +67,16 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                dataUser.ajax.reload();
+                                // Reload DataTable level
+                                if (window.tableLevel) {
+                                    window.tableLevel.ajax.reload();
+                                } else if ($.fn.DataTable.isDataTable('#table-level')) {
+                                    $('#table-level').DataTable().ajax.reload();
+                                }
                             } else {
-                                $('.error-text').text('');
-                                $.each(response.msgField, function (prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Terjadi Kesalahan',
+                                    title: 'Gagal Menghapus',
                                     text: response.message
                                 });
                             }

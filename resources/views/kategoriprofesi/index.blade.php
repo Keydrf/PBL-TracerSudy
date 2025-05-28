@@ -53,7 +53,7 @@
         }
 
         $(document).ready(function () {
-            const tableKategoriProfesi = $('#table-kategori').DataTable({
+            window.tableKategoriProfesi = $('#table-kategori').DataTable({ // Jadikan global
                 processing: true,
                 serverSide: true,
                 language: @json(__('professionCategory.datatable')),

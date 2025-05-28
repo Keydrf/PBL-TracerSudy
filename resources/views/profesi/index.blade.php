@@ -56,9 +56,8 @@
         });
     }
 
-    var dataProfesi;
     $(document).ready(function () {
-        dataProfesi = $('#table-profesi').DataTable({
+        window.dataProfesi = $('#table-profesi').DataTable({ // Jadikan global
             processing: true,
             serverSide: true,
             language: @json(__('profession.datatable')),
@@ -104,7 +103,7 @@
 
         if ($('#kategori_id').length) {
             $('#kategori_id').on('change', function () {
-                dataProfesi.ajax.reload();
+                window.dataProfesi.ajax.reload();
             });
         }
     });

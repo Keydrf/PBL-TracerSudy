@@ -1,4 +1,4 @@
-@empty($kategori_profesi)
+@empty($profesi)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,34 +11,38 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/kategori') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/profesi') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/kategori/' . $kategori_profesi->kategori_id . '/delete_ajax') }}" method="POST" id="form-delete">
+    <form action="{{ url('/profesi/' . $profesi->profesi_id . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data Kategori Profesi</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data Profesi</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-warning">
                         <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                        Apakah Anda ingin menghapus data kategori profesi di bawah ini?
+                        Apakah Anda ingin menghapus data profesi seperti di bawah ini?
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
-                            <th class="text-right col-3">Kode Kategori :</th>
-                            <td class="col-9">{{ $kategori_profesi->kode_kategori }}</td>
+                            <th class="text-right col-3">Kategori :</th>
+                            <td class="col-9">{{ $profesi->kategori_profesi }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Nama Kategori :</th>
-                            <td class="col-9">{{ $kategori_profesi->nama_kategori }}</td>
+                            <th class="text-right col-3">Nama Profesi :</th>
+                            <td class="col-9">{{ $profesi->nama_profesi }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Deskripsi :</th>
+                            <td class="col-9">{{ $profesi->deskripsi }}</td>
                         </tr>
                     </table>
                 </div>
@@ -66,11 +70,11 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                // Reload DataTable kategori profesi
-                                if (window.tableKategoriProfesi) {
-                                    window.tableKategoriProfesi.ajax.reload();
-                                } else if ($.fn.DataTable.isDataTable('#table-kategori')) {
-                                    $('#table-kategori').DataTable().ajax.reload();
+                                // Reload DataTable profesi
+                                if (window.dataProfesi) {
+                                    window.dataProfesi.ajax.reload();
+                                } else if ($.fn.DataTable.isDataTable('#table-profesi')) {
+                                    $('#table-profesi').DataTable().ajax.reload();
                                 }
                             } else {
                                 Swal.fire({

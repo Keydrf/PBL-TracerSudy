@@ -57,7 +57,7 @@
         }
 
         $(document).ready(function () {
-            const tableLulusan = $('#table-lulusan').DataTable({ // Menggunakan const dan nama variabel yang lebih deskriptif
+            window.tableLulusan = $('#table-lulusan').DataTable({ // Ubah ke window agar global
                 processing: true,
                 serverSide: true,
                 language: @json(__('alumni.datatable')),

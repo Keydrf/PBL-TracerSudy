@@ -53,7 +53,7 @@
         }
 
         $(document).ready(function () {
-            const tableAdmin = $('#table-level').DataTable({ // Menggunakan const dan nama variabel yang lebih deskriptif
+            window.tableLevel = $('#table-level').DataTable({ // Jadikan global
                 processing: true,
                 serverSide: true,
                 language: @json(__('level.datatable')),

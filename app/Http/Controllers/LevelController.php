@@ -115,11 +115,25 @@ class LevelController extends Controller
             $level = LevelModel::find($id);
 
             if ($level) {
-                $level->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    $level->delete();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil dihapus'
+                    ]);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    // Tangani error constraint (kode 23000 = integrity constraint violation)
+                    if ($e->getCode() === '23000') {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
+                        ]);
+                    }
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()
+                    ]);
+                }
             } else {
                 return response()->json([
                     'status' => false,

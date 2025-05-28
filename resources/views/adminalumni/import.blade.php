@@ -34,6 +34,17 @@
             submitHandler: function(form) { 
                 var formData = new FormData(form);  // Jadikan form ke FormData untuk menghandle file
 
+                // Tampilkan popup loading sebelum AJAX
+                Swal.fire({
+                    title: 'Memproses Import...',
+                    text: 'Mohon tunggu, data sedang diimport.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 $.ajax({
                     url: form.action,
                     type: form.method,
@@ -41,6 +52,8 @@
                     processData: false, // setting processData dan contentType ke false, untuk menghandle file
                     contentType: false,
                     success: function(response) {
+                        // Tutup popup loading setelah selesai
+                        Swal.close();
                         if(response.status){ // jika sukses
                             $('#myModal').modal('hide');
                             Swal.fire({
@@ -48,7 +61,12 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            tableAlumni.ajax.reload(); // reload datatable
+                            // Reload DataTable alumni
+                            if (window.tableLulusan) {
+                                window.tableLulusan.ajax.reload();
+                            } else if ($.fn.DataTable.isDataTable('#table-lulusan')) {
+                                $('#table-lulusan').DataTable().ajax.reload();
+                            }
                         }else{ // jika error
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {
@@ -60,6 +78,14 @@
                                 text: response.message
                             });
                         }
+                    },
+                    error: function() {
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Gagal memproses permintaan. Silakan coba lagi.'
+                        });
                     }
                 });
                 return false;
