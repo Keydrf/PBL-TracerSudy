@@ -18,29 +18,54 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function postlogin(Request $request)
+    public function postLogin(Request $request)
     {
         $credentials = $request->only('username', 'password');
-
-        if (Auth::attempt($credentials)) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Login Berhasil',
-                    'redirect' => url('/dashboard') // Pastikan redirect ke URL yang benar
-                ]);
-            }
-            return redirect('/dashboard');
-        }
-
-        if ($request->ajax() || $request->wantsJson()) {
+        
+        // Validasi input
+        $validator = Validator::make($credentials, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Username atau Password salah'
+                'message' => 'Validation error',
+                'msgField' => $validator->errors()
+            ], 422);
+        }
+    
+        // Cek apakah username ada
+        $user = UserModel::where('username', $credentials['username'])->first();
+    
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid credentials',
+                'msgField' => [
+                    'username' => ['username could not be found']
+                ]
             ], 401);
         }
-
-        return redirect('login')->with('error', 'Username atau Password salah');
+    
+        // Cek password
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid credentials',
+                'msgField' => [
+                    'password' => ['Incorrect password']
+                ]
+            ], 401);
+        }
+    
+        // Login berhasil
+        return response()->json([
+            'status' => true,
+            'message' => 'Login successful',
+            'redirect' => '/dashboard'
+        ]);
     }
 
     public function logout(Request $request)
