@@ -22,6 +22,14 @@ class DashboardController extends Controller
         }
 
         // // Data untuk Grafik Sebaran Profesi Alumni
+        // $totalAlumniProfesi = DB::table('survei_alumni')->count();
+        // $profesi = DB::table('survei_alumni')
+        //     ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+        //     ->select('profesi.nama_profesi', DB::raw('count(*) as jumlah'))
+        //     ->groupBy('profesi.nama_profesi')
+        //     ->orderBy('jumlah', 'desc')
+        //     ->get();
+        // Data untuk Grafik Sebaran Profesi Alumni
         $totalAlumniProfesi = DB::table('survei_alumni')
             ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
             ->when($tahunAwal && $tahunAkhir, fn($q) => $q->whereBetween('tahun_lulus', [$tahunAwal, $tahunAkhir]))

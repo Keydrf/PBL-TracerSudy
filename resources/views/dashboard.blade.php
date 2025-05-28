@@ -88,10 +88,10 @@
                         @php
                             $programStudiOptions = [
                                 'Semuanya' =>'Semuanya',
-                                'Teknik Informatika' => 'Teknik Informatika',
-                                'Sistem Informasi bisnis' => 'Sistem Informasi bisnis',
-                                'Pengembangan Perangkat Lunak Situs' => 'Pengembangan Perangkat Lunak Situs',
-                                'Magister Terapan Rekayasa Teknologi Informasi' => 'Magister Terapan Rekayasa Teknologi Informasi'
+                                'D4 Teknik Informatika' => 'D4 Teknik Informatika',
+                                'D4 Sistem Informasi bisnis' => 'D4 Sistem Informasi bisnis',
+                                'D2 Pengembangan Perangkat Lunak Situs' => 'D2 Pengembangan Perangkat Lunak Situs',
+                                'S2 Magister Terapan Rekayasa Teknologi Informasi' => 'S2 Magister Terapan Rekayasa Teknologi Informasi'
                             ];
                         @endphp
                         @foreach($programStudiOptions as $key => $val)
