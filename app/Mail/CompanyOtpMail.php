@@ -39,7 +39,7 @@ class CompanyOtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.otpPerusahaan', // Nama view Blade untuk email
+            view: 'mail.otpPerusahaan', // Nama view Blade untuk email
             with: [
                 'companyOtp' => $this->companyOtp, // Data yang akan diteruskan ke view
             ],

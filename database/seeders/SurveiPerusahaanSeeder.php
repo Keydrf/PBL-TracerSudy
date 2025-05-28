@@ -49,6 +49,7 @@ class SurveiPerusahaanSeeder extends Seeder
 
         foreach ($perusahaanList as $index => $perusahaan) {
             $nim = $perusahaan['nim'];
+            // Ambil kode OTP perusahaan dari survei_alumni (harus sama persis)
             $kodeOtpPerusahaan = $kodeOtpMap[$nim]->kode_otp_perusahaan ?? null;
 
             if (!$kodeOtpPerusahaan) {

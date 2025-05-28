@@ -90,7 +90,8 @@ class SurveiAlumniSeeder extends Seeder
         foreach ($data as &$item) {
             $nim = $item['nim'];
             $item['kode_otp_alumni'] = $alumni[$nim]->kode_otp_alumni ?? strtoupper(Str::random(4)); // fallback jika tidak ditemukan
-            $item['kode_otp_perusahaan'] = 'PR' . strtoupper(Str::random(2));
+            // Generate OTP perusahaan: 2 huruf kapital + 2 angka, sama seperti di controller
+            $item['kode_otp_perusahaan'] = strtoupper(Str::random(2)) . str_pad(strval(random_int(0, 99)), 2, '0', STR_PAD_LEFT);
             $item['created_at'] = now();
             $item['updated_at'] = now();
         }
