@@ -79,7 +79,7 @@
             <div class="row gy-4">
                 <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
                     <img src="{{asset('TemplateLP/assets/img/about.png')}}" class="img-fluid" alt="">
-                    <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+                    {{-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a> --}}
                 </div>
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
                     <h3>Menjalin Koneksi Alumni dan Meningkatkan Mutu Pendidikan</h3>
@@ -138,7 +138,7 @@
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item text-center w-100 h-100">
-                        <span data-purecounter-start="0" data-purecounter-end="0"
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalPerusahaan }}"
                             data-purecounter-duration="1" class="purecounter"></span>
                         <p>Perusahaan Terdaftar</p>
                     </div>
@@ -149,16 +149,15 @@
     </section>
 
 
-    {{-- <section id="perusahaan" class="services section light-background">
+    <section id="perusahaan" class="services section light-background">
         <div class="container section-title" data-aos="fade-up">
             <span>Mitra Perusahaan</span>
             <h2>Perusahaan yang Bekerja Sama</h2>
-            
         </div>
 
         <div class="container">
             <div class="row gy-4">
-                @foreach($perusahaanList as $perusahaan)
+                @foreach($perusahaanList->take(6) as $perusahaan)
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item position-relative">
                             <div class="icon">
@@ -166,12 +165,12 @@
                             </div>
                             <h3>{{ $perusahaan->nama_instansi }}</h3>
                             <p>
-                                Alamat: {{ $perusahaan->alamat_kantor }}<br>
-                                Kontak: {{ $perusahaan->email }} / {{ $perusahaan->no_telepon }}<br>
+                                Alamat: {{ $perusahaan->alamat_kantor ?? '-' }}<br>
+                                Kontak: {{ $perusahaan->email_atasan ?? '-' }} / {{ $perusahaan->no_telepon_atasan ?? '-' }}<br>
                                 Alumni:
-                                @if($perusahaan->surveiAlumni && $perusahaan->surveiAlumni->alumni)
-                                    {{ $perusahaan->surveiAlumni->alumni->nama }}
-                                    ({{ $perusahaan->surveiAlumni->alumni->program_studi }})
+                                @if($perusahaan->alumni)
+                                    {{ $perusahaan->alumni->nama }}
+                                    ({{ $perusahaan->alumni->program_studi }})
                                 @else
                                     -
                                 @endif
@@ -181,7 +180,9 @@
                 @endforeach
             </div>
         </div>
-    </section> --}}
+
+    </section>
+
 
 
 
@@ -201,30 +202,30 @@
             <div class="swiper init-swiper" data-speed="600" data-delay="5000"
                 data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
                 <script type="application/json" class="swiper-config">
-                    {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                        "delay": 5000
-                      },
-                      "slidesPerView": "auto",
-                      "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      },
-                      "breakpoints": {
-                        "320": {
-                          "slidesPerView": 1,
-                          "spaceBetween": 40
-                        },
-                        "1200": {
-                          "slidesPerView": 3,
-                          "spaceBetween": 20
-                        }
-                      }
-                    }
-                </script>
+                                {
+                                  "loop": true,
+                                  "speed": 600,
+                                  "autoplay": {
+                                    "delay": 5000
+                                  },
+                                  "slidesPerView": "auto",
+                                  "pagination": {
+                                    "el": ".swiper-pagination",
+                                    "type": "bullets",
+                                    "clickable": true
+                                  },
+                                  "breakpoints": {
+                                    "320": {
+                                      "slidesPerView": 1,
+                                      "spaceBetween": 40
+                                    },
+                                    "1200": {
+                                      "slidesPerView": 3,
+                                      "spaceBetween": 20
+                                    }
+                                  }
+                                }
+                            </script>
 
                 <div class="swiper-wrapper">
 
@@ -236,8 +237,7 @@
                                     beradaptasi di lingkungan kerja profesional.</span>
                                 <i class="bi bi-quote quote-icon-right"></i>
                             </p>
-                            <img src="{{asset('TemplateLP/male0.png')}}" class="testimonial-img"
-                                alt="">
+                            <img src="{{asset('TemplateLP/male0.png')}}" class="testimonial-img" alt="">
                             <h3>Dr. Budi Santoso</h3>
                             <h4>Dosen Teknik Informatika</h4>
                         </div>
@@ -251,8 +251,7 @@
                                     menjalankan tugas di perusahaan tempatnya bekerja.</span>
                                 <i class="bi bi-quote quote-icon-right"></i>
                             </p>
-                            <img src="{{asset('TemplateLP/female.png')}}" class="testimonial-img"
-                                alt="">
+                            <img src="{{asset('TemplateLP/female.png')}}" class="testimonial-img" alt="">
                             <h3>Prof. Siti Aminah</h3>
                             <h4>Dosen Sistem Informasi</h4>
                         </div>
@@ -266,8 +265,7 @@
                                     positif yang diberikan di tempat kerja.</span>
                                 <i class="bi bi-quote quote-icon-right"></i>
                             </p>
-                            <img src="{{asset('TemplateLP/male1.png')}}" class="testimonial-img"
-                                alt="">
+                            <img src="{{asset('TemplateLP/male1.png')}}" class="testimonial-img" alt="">
                             <h3>Ir. Andi Wijaya, M.T.</h3>
                             <h4>Dosen Teknik Elektro</h4>
                         </div>

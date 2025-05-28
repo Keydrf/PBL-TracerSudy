@@ -35,7 +35,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('nim')->references('nim')->on('alumni');
+            $table->foreign('nim')->references('nim')->on('survei_alumni')->onDelete('cascade');
             // $table->foreign('perusahaan_id')->references('perusahaan_id')->on('perusahaan')->onDelete('cascade');
         });
     }
