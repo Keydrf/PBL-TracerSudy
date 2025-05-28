@@ -208,13 +208,13 @@
 
 {{-- tabel-tabel --}}
 <div class="card mb-4">
-    <div class="card-header">
+    <div class="card-header bg-primary text-white"> {{--bagian judul tabel --}}
         <h5 class="mb-0">@lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')</h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
-                <thead class="table-light">
+                <thead class="table-primary">   
                     <tr>
                         <th rowspan="2">@lang('dashboard.tabel_header.tahun_lulus')</th>
                         <th rowspan="2">@lang('dashboard.tabel_header.jumlah_lulusan')</th>
@@ -290,12 +290,12 @@
 </div>
 
 <div class="card mb-4">
-    <div class="card-header">
+    <div class="card-header bg-primary text-white"> {{--bagian judul tabel --}}
         <h5 class="mb-0">@lang('dashboard.judul_kartu.rata_masa_tunggu')</h5>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
-            <thead class="table-light">
+            <thead class="table-primary">
                 <tr>
                     <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
                     <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
@@ -328,13 +328,13 @@
 </div>
 
 <div class="card mb-4">
-    <div class="card-header">
+    <div class="card-header bg-primary text-white"> {{--bagian judul tabel --}}
         <h5 class="mb-0 text-center">@lang('dashboard.judul_kartu.penilaian_kepuasan_pengguna')</h5>
         <p class="card-category text-center mb-0">@lang('dashboard.deskripsi.skala_penilaian')</p>
     </div>
     <div class="card-body">
         <table class="table table-bordered table-sm text-center" id="tableKepuasanPengguna">
-            <thead class="table-light">
+            <thead class="table-primary">
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="2">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
@@ -394,12 +394,12 @@
 </div>
 
 <div class="card mb-4">
-    <div class="row">
+    <div class="card-header bg-primary text-white">
         <div class="col-md-12 text-center p-3">
-            <h5 class="card-title mb-1" style="font-weight: 600;">
+            <h5 class="card-title mb-1 text-white" style="font-weight: 600;">
                 @lang('dashboard.judul_kartu.kepuasan_pengguna')
             </h5>
-            <p class="card-category text-muted mb-0" style="font-size: 14px;">
+            <p class="card-category text-white text-center mb-0" style="font-size: 14px;">
                 @lang('dashboard.deskripsi.kepuasan_pengguna')
             </p>
         </div>
