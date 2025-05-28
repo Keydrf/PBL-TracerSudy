@@ -9,7 +9,7 @@ return [
     ],
     'language' => [
         'current' => 'Bahasa',
-        'en' => 'Inggris',
+        'en' => 'English',
         'id' => 'Indonesia'
     ]
 ];

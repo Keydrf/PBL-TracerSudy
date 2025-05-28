@@ -10,6 +10,6 @@ return [
     'language' => [
         'current' => 'Language',
         'en' => 'English',
-        'id' => 'Indonesian'
+        'id' => 'Indonesia'
     ]
 ];
