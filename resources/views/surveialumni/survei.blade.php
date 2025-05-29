@@ -378,6 +378,7 @@
 
                     <div class="col-md-12 text-center">
                         <div class="error-message"></div>
+                        <div class="loading" style="display:none;">Menyimpan data dan mengirim kode OTP ke perusahaan, mohon tunggu...</div>
                         <button type="submit">Simpan Data</button>
                     </div>
                 </div>
@@ -592,6 +593,19 @@
                         }
                         if (sentMessage) {
                             sentMessage.style.display = 'none';
+                        }
+
+                        // Tambahkan pop up loading menggunakan SweetAlert2 jika tersedia
+                        if (window.Swal) {
+                            Swal.fire({
+                                title: 'Mohon Tunggu',
+                                text: 'Menyimpan data dan mengirim kode OTP ke perusahaan...',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
                         }
                     });
                 }

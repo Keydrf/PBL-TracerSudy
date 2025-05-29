@@ -11,7 +11,8 @@ use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Bus; // Tambahkan ini
+use Illuminate\Support\Facades\Queue; // Tambahkan ini
 use Illuminate\Database\QueryException;
 
 class AlumniController extends Controller
@@ -217,6 +218,8 @@ class AlumniController extends Controller
                     ]);
                 }
 
+                $otpMailJobs = []; // Kumpulan job email OTP
+
                 foreach ($data as $key => $row) {
                     if ($key === 1) continue; // Skip header (baris pertama)
 
@@ -310,9 +313,10 @@ class AlumniController extends Controller
                                 'kode_otp_alumni' => $kode_otp_alumni,
                             ]);
 
-                            // Kirim email OTP alumni
+                            // Kirim email OTP alumni secara asynchronous (queue)
                             try {
-                                Mail::to($email)->send(new OtpMail($kode_otp_alumni));
+                                // Gunakan queue agar pengiriman email tidak blocking
+                                Mail::to($email)->queue(new OtpMail($kode_otp_alumni));
                             } catch (\Exception $mailException) {
                                 $errors[] = "Gagal mengirim OTP ke email alumni ($email) pada baris ke-$key: " . $mailException->getMessage();
                                 // Data alumni tetap disimpan meskipun gagal kirim email

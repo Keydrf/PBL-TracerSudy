@@ -114,6 +114,7 @@ class AlumniSurveyController extends Controller
                 }
             }
 
+            // Tambahkan kode berikut untuk pop up loading di sisi client (lihat survei.blade.php)
             return redirect()->back()->with('success', 'Survei berhasil disimpan dan OTP perusahaan telah dikirim.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
