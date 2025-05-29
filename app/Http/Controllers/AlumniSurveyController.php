@@ -6,34 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use App\Mail\CompanyOtpMail; // Pastikan Anda memiliki Mailable ini
+use App\Mail\CompanyOtpMail;
 
 class AlumniSurveyController extends Controller
 {
-    /**
-     * Menampilkan formulir survei alumni.
-     * Mengambil daftar profesi dan kategori profesi dari database untuk mengisi dropdown.
-     */
     public function create()
     {
-        // Mengambil daftar profesi dari tabel 'profesi'
         $profesiList = DB::table('profesi')->select('profesi_id', 'nama_profesi')->get();
-        // Mengambil daftar kategori profesi dari tabel 'kategori_profesi'
         $kategoriList = DB::table('kategori_profesi')->select('kategori_id', 'nama_kategori')->get();
 
-        // Mengirimkan data ke view
         return view('surveialumni.survei', compact('profesiList', 'kategoriList'));
     }
 
-    /**
-     * Menyimpan data survei yang dikirimkan oleh alumni.
-     * Melakukan validasi data, memeriksa duplikasi, dan menyimpan ke database.
-     * Juga menghasilkan dan mengirim OTP ke email atasan.
-     */
     public function store(Request $request)
     {
-        // Aturan validasi untuk semua bidang yang wajib diisi (non-nullable) di database
         $validator = Validator::make($request->all(), [
             'nim' => 'required|string|max:10|exists:alumni,nim',
             'kode_otp_alumni' => [
@@ -47,8 +33,6 @@ class AlumniSurveyController extends Controller
                     }
                 },
             ],
-            // 'program_studi' => 'nullable|string|max:100', // JANGAN validasi/mengirim program_studi
-            // 'tahun_lulus' => 'nullable|integer', // JANGAN validasi/mengirim tahun_lulus
             'no_telepon' => 'required|string|max:100',
             'email' => 'required|email|max:100',
             'tanggal_pertama_kerja' => 'required|date',
@@ -69,32 +53,29 @@ class AlumniSurveyController extends Controller
             'kabupaten' => 'required|string|max:255',
         ]);
 
-        // Jika validasi gagal, kembali ke halaman sebelumnya dengan error dan input lama
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         try {
-            // Cek apakah alumni sudah mengisi survei sebelumnya untuk mencegah duplikasi
             $sudahIsi = DB::table('survei_alumni')->where('nim', $request->nim)->exists();
             if ($sudahIsi) {
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors(['nim' => 'Anda sudah mengisi survei ini sebelumnya. Anda tidak dapat mengisi survei lebih dari satu kali.']);
+                return redirect()->back()->withInput()
+                    ->withErrors(['nim' => 'Anda sudah mengisi survei ini sebelumnya.']);
             }
 
-            // Generate kode OTP untuk email perusahaan: 2 huruf kapital + 2 angka, total 4 digit
-            $companyOtp = strtoupper(Str::random(2)) . str_pad(strval(random_int(0, 99)), 2, '0', STR_PAD_LEFT);
-
-            // Ambil tahun_lulus dari request, jika tidak ada ambil dari alumni (YEAR(tanggal_lulus))
-            $tahunLulus = $request->tahun_lulus;
-            if (!$tahunLulus) {
-                $tahunLulus = DB::table('alumni')
-                    ->where('nim', $request->nim)
-                    ->value(DB::raw('YEAR(tanggal_lulus)'));
+            // Generate kode OTP perusahaan
+            $namaAtasanParts = explode(' ', $request->nama_atasan);
+            $inisial = strtoupper(substr($namaAtasanParts[0], 0, 1));
+            if (count($namaAtasanParts) > 1) {
+                $inisial .= strtoupper(substr(end($namaAtasanParts), 0, 1));
             }
+            $nim_suffix = substr($request->nim, -2);
+            $companyOtp = $inisial . $nim_suffix;
+
+            $tahunLulus = $request->tahun_lulus ?? DB::table('alumni')
+                ->where('nim', $request->nim)
+                ->value(DB::raw('YEAR(tanggal_lulus)'));
 
             DB::table('survei_alumni')->insert([
                 'nim' => $request->nim,
@@ -123,32 +104,30 @@ class AlumniSurveyController extends Controller
                 'updated_at' => now()
             ]);
 
-            // Kirim OTP ke email atasan (perusahaan) jika email tersedia
+            // Kirim OTP ke email atasan (perusahaan) menggunakan Mailable class
             if ($request->filled('email_atasan')) {
-                Mail::to($request->email_atasan)->send(new CompanyOtpMail($companyOtp));
+                try {
+                    // Samakan cara pengiriman dengan OTP alumni: tanpa set header tambahan, cukup gunakan Mailable
+                    Mail::to($request->email_atasan)->send(new CompanyOtpMail($companyOtp));
+                } catch (\Exception $e) {
+                    // Email gagal dikirim, log jika perlu
+                }
             }
 
             return redirect()->back()->with('success', 'Survei berhasil disimpan dan OTP perusahaan telah dikirim.');
         } catch (\Exception $e) {
-            // Tangani kesalahan dan kembalikan pesan error
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
 
-    /**
-     * Mencari alumni berdasarkan NIM atau nama.
-     * Digunakan oleh fitur pencarian di formulir.
-     */
     public function search(Request $request)
     {
         $term = $request->input('term');
 
-        // Hanya melakukan pencarian jika term memiliki minimal 3 karakter
         if (strlen($term) < 3) {
             return response()->json([]);
         }
 
-        // Mengambil alumni dari tabel 'alumni' yang cocok dengan term pencarian
         $results = DB::table('alumni')
             ->select('nim', 'nama', 'program_studi', DB::raw('YEAR(tanggal_lulus) as tahun_lulus'))
             ->where('nim', 'LIKE', "%{$term}%")

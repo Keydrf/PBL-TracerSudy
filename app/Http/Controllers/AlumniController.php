@@ -56,9 +56,10 @@ class AlumniController extends Controller
 
         // Generate kode OTP
         $nama_parts = explode(' ', $request->nama);
-        $inisial = Str::upper(substr($nama_parts[0], 0, 1));
         if (count($nama_parts) > 1) {
-            $inisial .= Str::upper(substr(end($nama_parts), 0, 1));
+            $inisial = strtoupper(substr($nama_parts[0], 0, 1) . substr(end($nama_parts), 0, 1));
+        } else {
+            $inisial = strtoupper(substr($nama_parts[0], 0, 1) . 'X');
         }
         $nim_suffix = substr($request->nim, -2);
         $kode_otp = $inisial . $nim_suffix;
@@ -99,10 +100,11 @@ class AlumniController extends Controller
         $alumni = AlumniModel::findOrFail($id);
 
         // Generate kode_otp_alumni berdasarkan nama dan nim (logika seperti di store/seeder)
-        $inisial = strtoupper(substr($request->nama, 0, 1));
         $nama_parts = explode(' ', $request->nama);
         if (count($nama_parts) > 1) {
             $inisial = strtoupper(substr($nama_parts[0], 0, 1) . substr(end($nama_parts), 0, 1));
+        } else {
+            $inisial = strtoupper(substr($nama_parts[0], 0, 1) . 'X');
         }
         $nim_suffix = substr($request->nim, -2);
         $kodeOtp = $inisial . $nim_suffix;
@@ -291,9 +293,10 @@ class AlumniController extends Controller
                         if ($tanggalLulusFormatted) {
                             // Generate kode OTP alumni
                             $nama_parts = explode(' ', $nama);
-                            $inisial = Str::upper(substr($nama_parts[0], 0, 1));
                             if (count($nama_parts) > 1) {
-                                $inisial .= Str::upper(substr(end($nama_parts), 0, 1));
+                                $inisial = strtoupper(substr($nama_parts[0], 0, 1) . substr(end($nama_parts), 0, 1));
+                            } else {
+                                $inisial = strtoupper(substr($nama_parts[0], 0, 1) . 'X');
                             }
                             $nim_suffix = substr($nim, -2);
                             $kode_otp_alumni = $inisial . $nim_suffix;

@@ -13,46 +13,18 @@ class CompanyOtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $companyOtp; // Properti publik untuk menyimpan kode OTP
+    public $companyOtp;
 
-    /**
-     * Buat instance pesan baru.
-     */
     public function __construct($companyOtp)
     {
         $this->companyOtp = $companyOtp;
     }
 
-    /**
-     * Dapatkan amplop pesan.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Kode OTP untuk Perusahaan Anda', // Subjek email
-        );
-    }
-
-    /**
-     * Dapatkan definisi konten pesan.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'mail.otpPerusahaan', // Nama view Blade untuk email
-            with: [
-                'companyOtp' => $this->companyOtp, // Data yang akan diteruskan ke view
-            ],
-        );
-    }
-
-    /**
-     * Dapatkan lampiran untuk pesan.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Kode OTP untuk Perusahaan Anda') // Samakan subject dengan OtpMail
+            ->view('mail.otpPerusahaan')
+            ->with(['companyOtp' => $this->companyOtp]);
     }
 }
+
