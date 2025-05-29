@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Professional Category Data',
-    'add_button' => 'Add',
     'table' => [
         'headers' => [
             'number' => 'No',
@@ -26,5 +25,19 @@ return [
             'next' => 'Next',
             'previous' => 'Previous'
         ]
-    ]
+    ],
+    'edit_alert' => [
+        'error' => 'Error!',
+        'data_not_found' => 'The data you are looking for was not found.',
+    ],
+    'edit_title' => 'Profession Category Data Edit',
+    'edit_field' => [
+        'category_code' => 'Category Code',
+        'category_name' => 'Category Name',
+    ],
+    'button' => [
+        'tambah' => 'Add',
+        'simpan' => 'Save',
+        'kembali' => 'Back'
+    ],
 ];

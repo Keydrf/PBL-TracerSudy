@@ -11,7 +11,7 @@
             <div class="card-header">
                 <h4 class="card-title">@lang('profession.title')</h4>
                 <a href="{{ url('/profesi/create') }}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-plus me-2"></i>@lang('profession.add_button')
+                    <i class="fas fa-plus me-2"></i>@lang('profession.button.tambah')
                 </a>
             </div>
 

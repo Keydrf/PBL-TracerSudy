@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <h4 class="card-title">@lang('alumni.page_title')</h4>
                     <a href="{{ url('/alumni/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-2"></i>@lang('alumni.add_button')
+                        <i class="fas fa-plus me-2"></i>@lang('alumni.button.tambah')
                     </a>
                     <button onclick="modalAction('{{ url('/alumni/import') }}')" class="btn btn-sm btn-primary"><i class="mdi mdi-file-import me-2"></i>@lang('alumni.import_button')</button>
                 </div>

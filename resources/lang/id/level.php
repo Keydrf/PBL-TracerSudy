@@ -1,13 +1,12 @@
 <?php
 
 return [
-    'page_title' => 'Data Level',
-    'add_button' => 'Tambah',
+    'page_title' => 'Data Tingkat',
     'table' => [
         'headers' => [
             'number' => 'No',
-            'code' => 'Kode Level',
-            'name' => 'Nama Level',
+            'code' => 'Kode Tingkat',
+            'name' => 'Nama Tingkat',
             'action' => 'Aksi'
         ],
     ],
@@ -26,5 +25,19 @@ return [
             'next' => 'Selanjutnya',
             'previous' => 'Sebelumnya'
         ]
-    ]
+    ],
+    'edit_alert' => [
+        'error' => 'Kesalahan!',
+        'data_not_found' => 'Data yang Anda cari tidak ditemukan.',
+    ],
+    'edit_title' => 'Sunting Data Level',
+    'edit_field' => [
+        'kode' => 'Kode Tingkat',
+        'nama' => 'Nama Tingkat',
+    ],
+    'button' => [
+        'tambah' => 'Tambah',
+        'simpan' => 'Simpan',
+        'kembali' => 'Kembali'
+    ],
 ];

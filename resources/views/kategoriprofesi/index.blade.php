@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <h4 class="card-title">@lang('professionCategory.page_title')</h4>
                     <a href="{{ url('/kategori/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-2"></i>@lang('professionCategory.add_button')
+                        <i class="fas fa-plus me-2"></i>@lang('professionCategory.button.tambah')
                     </a>
                 </div>
 

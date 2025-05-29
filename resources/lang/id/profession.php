@@ -28,4 +28,19 @@ return [
             'previous' => 'Sebelumnya',
         ],
     ],
+    'edit_alert' => [
+        'error' => 'Kesalahan!',
+        'data_not_found' => 'Data yang Anda cari tidak ditemukan.',
+    ],
+    'edit_title' => 'Sunting Data Profesi',
+    'edit_field' => [
+        'profession_category' => 'Kategori Profesi',
+        'profession_name' => 'Nama Profesi',
+        'description' => 'Deskripsi',
+    ],
+    'button' => [
+        'tambah' => 'Tambah',
+        'simpan' => 'Simpan',
+        'kembali' => 'Kembali'
+    ],
 ];

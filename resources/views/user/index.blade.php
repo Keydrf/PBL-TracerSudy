@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h4 class="card-title">@lang('user.page_title')</h4>
                     <a href="{{ url('/user/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-2"></i>@lang('user.add_button')
+                        <i class="fas fa-plus me-2"></i>@lang('user.button.tambah')
                     </a>
                 </div>
                 

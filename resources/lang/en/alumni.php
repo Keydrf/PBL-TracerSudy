@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Graduate Data',
-    'add_button' => 'Add',
     'import_button' => 'Import Graduate',
     'table' => [
         'headers' => [
@@ -31,5 +30,22 @@ return [
             'next' => 'Next',
             'previous' => 'Previous'
         ]
-    ]
+    ],
+    'edit_title' => 'Alumni Data Edit',
+    'button' => [
+        'tambah' => 'Add',
+        'simpan' => 'Save',
+        'kembali' => 'Back'
+    ],
+    'edit_alert' => [
+        'error' => 'Error!',
+        'data_not_found' => 'The data you are looking for was not found.',
+    ],
+    'edit_field' => [
+        'prodi' => 'Study Program',
+        'nim' => 'Student ID Number',
+        'nama' => 'Name',
+        'email' => 'Email',
+        'tanggal_lulus' => 'Graduation Date'
+    ],
 ];

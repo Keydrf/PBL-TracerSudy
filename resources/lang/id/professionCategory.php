@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Data Kategori Profesi',
-    'add_button' => 'Tambah',
     'table' => [
         'headers' => [
             'number' => 'No',
@@ -26,5 +25,19 @@ return [
             'next' => 'Selanjutnya',
             'previous' => 'Sebelumnya'
         ]
-    ]
+    ],
+    'edit_alert' => [
+        'error' => 'Kesalahan!',
+        'data_not_found' => 'Data yang Anda cari tidak ditemukan.',
+    ],
+    'edit_title' => 'Sunting Data Kategori Profesi',
+    'edit_field' => [
+        'category_code' => 'Kode Kategori',
+        'category_name' => 'Nama Kategori',
+    ],
+    'button' => [
+        'tambah' => 'Tambah',
+        'simpan' => 'Simpan',
+        'kembali' => 'Kembali'
+    ],
 ];
