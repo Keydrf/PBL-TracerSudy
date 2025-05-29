@@ -51,6 +51,9 @@
         .swal-popup-error .swal-title {
             color: #dc3545 !important;
         }
+        .error-text {
+            color: #dc3545 !important;
+        }
     </style>
 </head>
 

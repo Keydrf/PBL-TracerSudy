@@ -44,7 +44,7 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => 'Invalid credentials',
                 'msgField' => [
-                    'username' => ['username could not be found']
+                    'username' => ['[Username could not be found]']
                 ]
             ], 401);
         }
@@ -55,7 +55,7 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => 'Invalid credentials',
                 'msgField' => [
-                    'password' => ['Incorrect password']
+                    'password' => ['[Incorrect password]']
                 ]
             ], 401);
         }
