@@ -28,4 +28,19 @@ return [
             'previous' => 'Previous',
         ],
     ],
+    'edit_alert' => [
+        'error' => 'Error!',
+        'data_not_found' => 'The data you are looking for was not found.',
+    ],
+    'edit_title' => 'Profession Data Edit',
+    'edit_field' => [
+        'profession_category' => 'Profession Category',
+        'profession_name' => 'Profession Name',
+        'description' => 'Description',
+    ],
+    'button' => [
+        'tambah' => 'Add',
+        'simpan' => 'Save',
+        'kembali' => 'Back'
+    ],
 ];

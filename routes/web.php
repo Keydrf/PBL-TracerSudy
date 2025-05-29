@@ -70,7 +70,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/check-username', 'checkUsername')->name('check.username');
     Route::get('/login', 'login')->name('login');
-    Route::post('/login', 'postlogin');
+    Route::post('/login', 'postLogin');
     Route::post('/logout', 'logout')->name('logout')->middleware('auth');
 });
 

@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Admin Data',
-    'add_button' => 'Add',
     'table' => [
         'headers' => [
             'number' => 'No',
@@ -27,5 +26,24 @@ return [
             'next' => 'Next',
             'previous' => 'Previous'
         ]
-    ]
+    ],
+    'edit_alert' => [
+        'error' => 'Error!',
+        'data_not_found' => 'The data you are looking for was not found.',
+    ],
+    'edit_title' => 'User Data Edit',
+    'button' => [
+        'tambah' => 'Add',
+        'simpan' => 'Save',
+        'kembali' => 'Back'
+    ],
+    'edit_field' => [
+        'level' => 'Level',
+        'username' => 'Username',
+        'name' => 'Name',
+        'password' => [
+            'field' => 'Password',
+            'message' => 'Ignore (don\'t fill in) if you don\'t want to change the user password.',
+        ],
+    ],
 ];

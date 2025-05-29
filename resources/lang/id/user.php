@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Data Admin',
-    'add_button' => 'Tambah',
     'table' => [
         'headers' => [
             'number' => 'No',
@@ -27,5 +26,24 @@ return [
             'next' => 'Selanjutnya',
             'previous' => 'Sebelumnya'
         ]
-    ]
+    ],
+    'edit_alert' => [
+        'error' => 'Kesalahan!',
+        'data_not_found' => 'Data yang Anda cari tidak ditemukan.',
+    ],
+    'edit_title' => 'Sunting Data Pengguna',
+    'button' => [
+        'tambah' => 'Tambah',
+        'simpan' => 'Simpan',
+        'kembali' => 'Kembali'
+    ],
+    'edit_field' => [
+        'level' => 'Tingkat',
+        'username' => 'Nama Pengguna',
+        'name' => 'Nama',
+        'password' => [
+            'field' => 'Kata Sandi',
+            'message' => 'Abaikan (jangan diisi) jika tidak ingin mengganti kata sandi pengguna.',
+        ],
+    ],
 ];

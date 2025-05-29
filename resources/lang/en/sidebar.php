@@ -9,5 +9,5 @@ return [
     'profession_category' => 'Profession Category',
     'profession' => 'Profession',
     'report' => 'Report',
-    'logout' => 'Logout'
+    'signout' => 'Sign Out'
 ];

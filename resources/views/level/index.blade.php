@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h4 class="card-title">@lang('level.page_title')</h4>
                     <a href="{{ url('/level/create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-2"></i>@lang('level.add_button')
+                        <i class="fas fa-plus me-2"></i>@lang('level.button.tambah')
                     </a>
                 </div>
                 

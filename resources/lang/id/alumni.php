@@ -2,7 +2,6 @@
 
 return [
     'page_title' => 'Data Lulusan',
-    'add_button' => 'Tambah',
     'import_button' => 'Import Lulusan',
     'table' => [
         'headers' => [
@@ -31,5 +30,22 @@ return [
             'next' => 'Selanjutnya',
             'previous' => 'Sebelumnya'
         ]
-    ]
+    ],
+    'edit_title' => 'Sunting Data Alumni',
+    'button' => [
+        'tambah' => 'Tambah',
+        'simpan' => 'Simpan',
+        'kembali' => 'Kembali'
+    ],
+    'edit_alert' => [
+        'error' => 'Kesalahan!',
+        'data_not_found' => 'Data yang Anda cari tidak ditemukan.',
+    ],
+    'edit_field' => [
+        'prodi' => 'Program Studi',
+        'nim' => 'Nomor Induk Mahasiswa',
+        'nama' => 'Nama',
+        'email' => 'Email',
+        'tanggal_lulus' => 'Tanggal Lulus'
+    ],
 ];
