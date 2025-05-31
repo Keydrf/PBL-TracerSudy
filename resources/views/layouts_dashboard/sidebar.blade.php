@@ -61,6 +61,11 @@
         </li>
     </ul>
 </nav>
+<style>
+    .swal-actions-spacing button {
+        margin: 0 5px;
+    }
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Konfirmasi logout
@@ -76,8 +81,9 @@
                 cancelButtonText: '{!! __('confirmation.tombol.batal') !!}',
                 customClass: {
                     popup: 'swal-popup-theme',
-                    confirmButton: 'btn btn-rounded btn-primary',
-                    cancelButton: 'btn btn-rounded btn-light'
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-light',
+                    actions: 'swal-actions-spacing',
                 },
                 buttonsStyling: false
             }).then((result) => {
