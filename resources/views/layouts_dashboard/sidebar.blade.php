@@ -8,12 +8,12 @@
         </li>
         @if (Auth::user() && Auth::user()->level_id === 1)
             {{-- Asumsi 1 adalah level_id untuk SUPADM --}}
-            <li class="nav-item {{ request()->is('level') ? 'active' : '' }}">
+            {{-- <li class="nav-item {{ request()->is('level') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/level') }}">
                     <i class="menu-icon mdi mdi-layers-outline"></i>
                     <span class="menu-title">@lang('sidebar.level')</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item {{ request()->is('user') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/user') }}">
                     <i class="menu-icon mdi mdi-account-circle-outline"></i>

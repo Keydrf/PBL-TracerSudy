@@ -149,6 +149,17 @@
                 </div>
             @endif
 
+            {{-- Tampilkan error validasi field satu per satu --}}
+            @if ($errors->any())
+                <div class="alert alert-danger" data-aos="fade-up">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('survei.perusahaan.store') }}" method="post" class="survey-form" data-aos="fade-up"
                 data-aos-delay="200">
                 @csrf
@@ -169,13 +180,14 @@
                             @foreach ($alumniList as $alumni)
                                 @if(!empty($alumni->nama_instansi) && !in_array(strtolower(trim($alumni->nama_instansi)), $uniqueInstansi))
                                     <option value="{{ $alumni->nama_instansi }}"
-                                        {{ old('nama_instansi_penilai') == $alumni->nama_instansi ? 'selected' : '' }}>
+                                        {{ old('nama_instansi_penilai', old('selected_perusahaan_display')) == $alumni->nama_instansi ? 'selected' : '' }}>
                                         {{ $alumni->nama_instansi }}
                                     </option>
                                     @php $uniqueInstansi[] = strtolower(trim($alumni->nama_instansi)); @endphp
                                 @endif
                             @endforeach
                         </select>
+                        <input type="hidden" id="selected_perusahaan_display" name="selected_perusahaan_display" value="{{ old('selected_perusahaan_display', old('nama_instansi_penilai')) }}">
                         @error('nama_instansi_penilai')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -244,14 +256,20 @@
                         <label for="alumni_search" class="pb-2">Nama Alumni <span class="text-danger">*</span></label>
                         <div class="position-relative">
                             <input type="text" class="form-control @error('nim') is-invalid @enderror" id="alumni_search"
-                                placeholder="Cari alumni berdasarkan nama" autocomplete="off">
+                                placeholder="Cari alumni berdasarkan nama" autocomplete="off"
+                                value="{{ old('alumni_search', old('nama_alumni_display', '')) }}">
                             <div id="search_results" class="search-results d-none"></div>
-                            <input type="hidden" id="nim" name="nim" required>
+                            <input type="hidden" id="nim" name="nim" required value="{{ old('nim') }}">
+                            <input type="hidden" id="nama_alumni_display" name="nama_alumni_display" value="{{ old('nama_alumni_display') }}">
                             @error('nim')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                            <div id="selected_alumni" class="selected-alumni-info d-none">
-                                <strong id="selected_alumni_text"></strong>
+                            <div id="selected_alumni" class="selected-alumni-info {{ old('nim') ? '' : 'd-none' }}">
+                                <strong id="selected_alumni_text">
+                                    @if(old('nim') && old('nama_alumni_display'))
+                                        {{ old('nim') }} - {{ old('nama_alumni_display') }}
+                                    @endif
+                                </strong>
                             </div>
                         </div>
                     </div>
@@ -261,45 +279,39 @@
                             <div class="card-body">
                                 <h4 class="mb-2" style="color:#04182d;">
                                     <i class="bi bi-star-fill text-warning"></i>
-                                    Penilaian Kinerja <span style="font-size:0.8em;" class="text-muted">(1-5)</span>
+                                    Penilaian Kinerja Alumni <span style="font-size:0.8em;" class="text-muted">(Skala 1-5)</span>
                                 </h4>
                                 <div class="d-flex align-items-center mb-2 flex-wrap">
                                     <span class="badge pastel-danger me-2" style="font-size:1em;">
                                         1
-                                        <span class="emote-anim" style="margin-left:6px;">😡</span>
                                     </span>
                                     <span class="me-3">Sangat Kurang</span>
                                     <span class="badge pastel-warning me-2" style="font-size:1em;">
                                         2
-                                        <span class="emote-anim" style="margin-left:6px;">😕</span>
                                     </span>
                                     <span class="me-3">Kurang</span>
                                     <span class="badge pastel-secondary me-2" style="font-size:1em;">
                                         3
-                                        <span class="emote-anim" style="margin-left:6px;">😐</span>
                                     </span>
                                     <span class="me-3">Cukup</span>
                                     <span class="badge pastel-info me-2" style="font-size:1em;">
                                         4
-                                        <span class="emote-anim" style="margin-left:6px;">🙂</span>
                                     </span>
                                     <span class="me-3">Baik</span>
                                     <span class="badge pastel-success me-2" style="font-size:1em;">
                                         5
-                                        <span class="emote-anim" style="margin-left:6px;">😃</span>
                                     </span>
                                     <span>Sangat Baik</span>
                                 </div>
                                 <p class="text-muted mb-0" style="font-size:0.95em;">
-                                    Pilih nilai untuk setiap aspek di bawah ini dengan klik bintang atau angka sesuai penilaian Anda.
+                                    Silakan berikan penilaian terhadap kinerja alumni pada setiap aspek di bawah ini dengan memilih angka sesuai skala yang tersedia. Penilaian ini akan sangat membantu kami dalam meningkatkan kualitas lulusan di masa mendatang.
                                 </p>
                             </div>
                         </div>
                     </div>
                     <style>
                         .emote-anim {
-                            display: inline-block;
-                            animation: emote-bounce 1.2s infinite;
+                            display: none;
                         }
                         .pastel-danger {
                             background-color: #ffd6d6 !important;
@@ -320,18 +332,6 @@
                         .pastel-success {
                             background-color: #d6ffe6 !important;
                             color: #3c763d !important;
-                        }
-                        .badge.pastel-danger .emote-anim { animation-delay: 0s; }
-                        .badge.pastel-warning .emote-anim { animation-delay: 0.1s; }
-                        .badge.pastel-secondary .emote-anim { animation-delay: 0.2s; }
-                        .badge.pastel-info .emote-anim { animation-delay: 0.3s; }
-                        .badge.pastel-success .emote-anim { animation-delay: 0.4s; }
-                        @keyframes emote-bounce {
-                            0%, 100% { transform: translateY(0); }
-                            20% { transform: translateY(-6px); }
-                            40% { transform: translateY(0); }
-                            60% { transform: translateY(-3px); }
-                            80% { transform: translateY(0); }
                         }
                     </style>
 
@@ -583,6 +583,7 @@
                 const selectedAlumni = document.getElementById('selected_alumni');
                 const selectedAlumniText = document.getElementById('selected_alumni_text');
                 const surveyForm = document.querySelector('.php-email-form');
+                const perusahaanSelect = document.getElementById('nama_instansi_penilai');
 
                 // Function to search alumni
                 function searchAlumni() {
@@ -643,8 +644,36 @@
                     selectedAlumniText.textContent = `${alumni.program_studi} - ${alumni.tahun_lulus} - ${alumni.nama}`;
                     selectedAlumni.classList.remove('d-none');
                     searchResults.classList.add('d-none');
-                    searchInput.value = '';
+                    searchInput.value = alumni.nama;
+
+                    // Simpan nama alumni ke input hidden agar tetap ada saat validasi error
+                    let namaAlumniDisplay = document.getElementById('nama_alumni_display');
+                    if (!namaAlumniDisplay) {
+                        namaAlumniDisplay = document.createElement('input');
+                        namaAlumniDisplay.type = 'hidden';
+                        namaAlumniDisplay.id = 'nama_alumni_display';
+                        namaAlumniDisplay.name = 'nama_alumni_display';
+                        surveyForm.appendChild(namaAlumniDisplay);
+                    }
+                    namaAlumniDisplay.value = alumni.nama;
                 }
+
+                // Saat halaman dimuat, jika ada old value, tampilkan default value pada dropdown perusahaan
+                @if(old('nama_instansi_penilai', old('selected_perusahaan_display')))
+                    perusahaanSelect.value = "{{ old('nama_instansi_penilai', old('selected_perusahaan_display')) }}";
+                @endif
+
+                // Simpan nama perusahaan ke input hidden agar tetap ada saat validasi error
+                perusahaanSelect.addEventListener('change', function() {
+                    document.getElementById('selected_perusahaan_display').value = perusahaanSelect.value;
+                });
+
+                // Alumni search default value
+                @if(old('nim') && old('nama_alumni_display'))
+                    document.getElementById('alumni_search').value = "{{ old('nama_alumni_display') }}";
+                    document.getElementById('selected_alumni').classList.remove('d-none');
+                    document.getElementById('selected_alumni_text').textContent = "{{ old('nim') }} - {{ old('nama_alumni_display') }}";
+                @endif
 
                 // Event listeners
                 let searchTimeout;
