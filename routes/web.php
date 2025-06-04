@@ -34,7 +34,9 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::controller(AlumniSurveyController::class)->group(function () {
     // Halaman utama survei alumni
     Route::get('/surveialumni', 'create')->name('alumni.survey.create');
-    
+    Route::get('/surveibiodata', 'biodataVerifikasi')->name('alumni.survey.biodata');
+    Route::post('/surveiverifikasi', 'verifikasi')->name('alumni.survey.verifikasi');
+    Route::get('/surveiprofesi', 'profesi')->name('alumni.survey.profesi');
     // Menyimpan data survei alumni
     Route::post('/surveialumni', 'store')->name('alumni.survey.store');
     

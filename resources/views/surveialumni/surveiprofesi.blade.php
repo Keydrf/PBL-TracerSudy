@@ -205,7 +205,11 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-12">
+                        <h4 class="mt-4 mb-3">Informasi Profesi Anda</h4>
+                    </div>
 
+                    
                     <div class="col-md-6">
                         <label for="tanggal_pertama_kerja" class="pb-2">Tanggal Pertama Kerja <span
                                 class="text-danger">*</span></label>
@@ -310,6 +314,39 @@
                     </div>
 
                     <div class="col-md-12">
+                        <label for="alamat_kantor" class="pb-2">Alamat Kantor <span class="text-danger">*</span></label>
+                        <textarea 
+                            class="form-control" 
+                            id="alamat_kantor" 
+                            name="alamat_kantor" 
+                            rows="3" 
+                            required>{{ old('alamat_kantor') }}</textarea>
+                        @error('alamat_kantor')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    
+                    <div class="col-md-6 form-group">
+                        <label for="kabupaten">Kabupaten <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="kabupaten" name="kabupaten" required value="{{ old('kabupaten') }}">
+                        @error('kabupaten')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="pendapatan">Pendapatan <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" min="0" step="1" name="pendapatan" id="pendapatan" class="form-control" value="{{ old('pendapatan') }}" required>
+                        </div>
+                        @error('pendapatan')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-12">
                         <h4 class="mt-4 mb-3">Informasi Atasan Langsung</h4>
                     </div>
 
@@ -349,46 +386,11 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-12">
-                        <h4 class="mt-4 mb-3">Informasi Profesi Anda</h4>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="alamat_kantor" class="pb-2">Alamat Kantor <span class="text-danger">*</span></label>
-                        <textarea 
-                            class="form-control" 
-                            id="alamat_kantor" 
-                            name="alamat_kantor" 
-                            rows="3" 
-                            required>{{ old('alamat_kantor') }}</textarea>
-                        @error('alamat_kantor')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     
-                    <div class="col-md-6 form-group">
-                        <label for="kabupaten">Kabupaten <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="kabupaten" name="kabupaten" required value="{{ old('kabupaten') }}">
-                        @error('kabupaten')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 form-group">
-                        <label for="pendapatan">Pendapatan <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <span class="input-group-text">Rp</span>
-                            <input type="number" min="0" step="1" name="pendapatan" id="pendapatan" class="form-control" value="{{ old('pendapatan') }}" required>
-                        </div>
-                        @error('pendapatan')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="col-md-12 text-center">
                         <div class="error-message"></div>
-                        <div class="loading" style="display:none;">Menyimpan data, mohon tunggu...</div>
+                        <div class="loading" style="display:none;">Menyimpan data dan mengirim kode OTP ke perusahaan, mohon tunggu...</div>
                         <button type="submit">Simpan Data</button>
                     </div>
                 </div>
@@ -490,7 +492,7 @@
                     document.getElementById('tahun_lulus').value = "{{ old('tahun_lulus', old('tahun_lulus_hidden', '')) }}";
                 @endif
 
-                // Fungsi untuk memilih alumni dari hasil pencarian
+                // Saat memilih alumni, simpan nama alumni, program studi, dan tahun lulus ke input hidden agar tetap ada saat error/validasi
                 function selectAlumni(alumni) {
                     nimInput.value = alumni.nim;
                     selectedAlumniText.textContent = `${alumni.nim} - ${alumni.nama}`;
@@ -646,6 +648,19 @@
                         if (sentMessage) {
                             sentMessage.style.display = 'none';
                         }
+
+                        // Tambahkan pop up loading menggunakan SweetAlert2 jika tersedia
+                        if (window.Swal) {
+                            Swal.fire({
+                                title: 'Mohon Tunggu',
+                                text: 'Menyimpan data dan mengirim kode OTP ke perusahaan...',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        }
                     });
                 }
 
@@ -663,7 +678,6 @@
                 @if($errors->has('kode_otp_alumni'))
                     document.getElementById('kode_otp').focus();
                 @endif
-                
 
                 // Inisialisasi Select2 untuk dropdown profesi
                 $('select[name="profesi_id"]').select2({

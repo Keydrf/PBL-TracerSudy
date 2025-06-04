@@ -14,17 +14,22 @@ class CompanyOtpMail extends Mailable
     use Queueable, SerializesModels;
 
     public $companyOtp;
+    public $alumniName; // Tambah properti untuk nama alumni
 
-    public function __construct($companyOtp)
+    public function __construct($companyOtp, $alumniName = null)
     {
         $this->companyOtp = $companyOtp;
+        $this->alumniName = $alumniName;
     }
 
     public function build()
     {
-        return $this->subject('Kode OTP untuk Perusahaan Anda') // Samakan subject dengan OtpMail
+        return $this->subject('Kode OTP untuk Perusahaan Anda')
             ->view('mail.otpPerusahaan')
-            ->with(['companyOtp' => $this->companyOtp]);
+            ->with([
+                'companyOtp' => $this->companyOtp,
+                'alumniName' => $this->alumniName // Kirim ke view
+            ]);
     }
 }
 
