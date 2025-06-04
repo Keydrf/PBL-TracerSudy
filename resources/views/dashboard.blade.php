@@ -7,8 +7,12 @@
     <style>
         /* Gaya Dasar untuk Grafik */
         .chart-container {
-            width: 100%;
-            height: 300px;
+            width: 220px;
+            height: 220px;
+            min-width: 220px;
+            min-height: 220px;
+            max-width: 220px;
+            max-height: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -93,9 +97,11 @@
                                 'D2 Pengembangan Perangkat Lunak Situs' => 'D2 Pengembangan Perangkat Lunak Situs',
                                 'S2 Magister Terapan Rekayasa Teknologi Informasi' => 'S2 Magister Terapan Rekayasa Teknologi Informasi'
                             ];
+                            // Set default filter ke D4 Teknik Informatika
+                            $defaultProdi = 'D4 Teknik Informatika';
                         @endphp
                         @foreach($programStudiOptions as $key => $val)
-                            <option value="{{ $key }}" {{ request('program_studi', 'Teknik Informatika') == $key ? 'selected' : '' }}>{{ $val }}</option>
+                            <option value="{{ $key }}" {{ request('program_studi', $defaultProdi) == $key ? 'selected' : '' }}>{{ $val }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -208,26 +214,28 @@
 
 {{-- tabel-tabel --}}
 <div class="card mb-4">
-    <div class="card-header bg-primary text-white"> {{--bagian judul tabel --}}
-        <h5 class="mb-0">@lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')</h5>
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            @lang('dashboard.judul_kartu.sebaran_lingkup_tempat_kerja')
+        </h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
                 <thead class="table-primary">   
                     <tr>
-                        <th rowspan="2">@lang('dashboard.tabel_header.tahun_lulus')</th>
-                        <th rowspan="2">@lang('dashboard.tabel_header.jumlah_lulusan')</th>
-                        <th rowspan="2">@lang('dashboard.tabel_header.lulusan_terlacak')</th>
-                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_infokom')</th>
-                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_non_infokom')</th>
-                        <th colspan="4">@lang('dashboard.tabel_header.lingkup_tempat_kerja')</th>
+                        <th rowspan="2">Tahun<br>Lulus</th>
+                        <th rowspan="2">Jumlah<br>Lulusan</th>
+                        <th rowspan="2">Jumlah Lulusan<br>yang Terlacak</th>
+                        <th rowspan="2">Profesi Kerja<br>Bidang<br>Infokom</th>
+                        <th rowspan="2">Profesi Kerja<br>Bidang<br>Non Infokom</th>
+                        <th colspan="4">Lingkup Tempat Kerja</th>
                     </tr>
                     <tr>
-                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.multinasional')</th>
-                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.nasional')</th>
-                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.wirausaha')</th>
-                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.lokal')</th>
+                        <th>Multinasional</th>
+                        <th>Nasional</th>
+                        <th>Wirausaha</th>
+                        <th>Lokal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -297,10 +305,10 @@
         <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
             <thead class="table-primary">
                 <tr>
-                    <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
-                    <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
-                    <th>@lang('dashboard.tabel_header.lulusan_terlacak')</th>
-                    <th>@lang('dashboard.tabel_header.rata_masa_tunggu')</th>
+                    <th>Tahun Lulus</th>
+                    <th>Jumlah Lulusan</th>
+                    <th>Jumlah Lulusan yang Terlacak</th>
+                    <th>Rata-rata Masa Tunggu (bulan)</th>
                 </tr>
             </thead>
             <tbody>
@@ -337,14 +345,14 @@
             <thead class="table-primary">
                 <tr>
                     <th rowspan="2">No</th>
-                    <th rowspan="2">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
-                    <th colspan="4">@lang('dashboard.tabel_header.tingkat_kepuasan_pengguna')</th>
+                    <th rowspan="2">Jenis Kemampuan</th>
+                    <th colspan="4">Tingkat Kepuasan Pengguna</th>
                 </tr>
                 <tr>
-                    <th>@lang('dashboard.tabel_header.skala_nilai.sangat_baik')</th>
-                    <th>@lang('dashboard.tabel_header.skala_nilai.baik')</th>
-                    <th>@lang('dashboard.tabel_header.skala_nilai.cukup')</th>
-                    <th>@lang('dashboard.tabel_header.skala_nilai.kurang')</th>
+                    <th>Sangat Baik</th>
+                    <th>Baik</th>
+                    <th>Cukup</th>
+                    <th>Kurang</th>
                 </tr>
             </thead>
             <tbody>
@@ -452,17 +460,42 @@
 
             function createPieChart(canvasId, data, title) {
                 const ctx = document.getElementById(canvasId).getContext('2d');
-                return new Chart(ctx, {
+                const defaultColors = [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                    '#FF8E72', '#64B5F6', '#81C784', '#A1887F', '#D4E157'
+                ];
+
+                // Custom legend logic for sebaranProfesiPieChart: top 3 + "Lainnya"
+                let legendLabels = data.labels || [];
+                let legendData = data.series || [];
+                let legendColors = defaultColors.slice(0, legendLabels.length);
+
+                if (canvasId === 'sebaranProfesiPieChart' && legendLabels.length > 3) {
+                    // Ambil top 3
+                    let topLabels = legendLabels.slice(0, 3);
+                    let topData = legendData.slice(0, 3);
+                    let topColors = legendColors.slice(0, 3);
+                    // Gabungkan sisanya jadi "Lainnya"
+                    let lainnyaData = legendData.slice(3).reduce((a, b) => a + b, 0);
+                    if (lainnyaData > 0) {
+                        topLabels.push('Lainnya');
+                        topData.push(lainnyaData);
+                        topColors.push('#CED4DA');
+                    }
+                    legendLabels = topLabels;
+                    legendData = topData;
+                    legendColors = topColors;
+                }
+
+                // Buat chart
+                const chart = new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: data.labels,
+                        labels: legendLabels,
                         datasets: [{
                             label: title,
-                            data: data.series,
-                            backgroundColor: [
-                                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-                                '#FF8E72', '#64B5F6', '#81C784', '#A1887F', '#D4E157'
-                            ],
+                            data: legendData,
+                            backgroundColor: legendColors,
                             borderWidth: 2,
                             borderColor: '#fff'
                         }]
@@ -472,6 +505,7 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
+                                display: true,
                                 position: 'top',
                                 labels: {
                                     fontColor: '#000',
@@ -521,6 +555,8 @@
                         }
                     }
                 });
+
+                return chart;
             }
 
             // Buat Pie Chart Dummy
