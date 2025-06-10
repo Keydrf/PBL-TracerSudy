@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-filter me-2"></i>@lang("laporan.table.filter.apply")
+                                    @lang("laporan.table.filter.apply")
                                 </button>
                             </div>
                         </div>
@@ -48,7 +48,6 @@
                             </thead>
                             <tbody>
                                 @php
-                                    // Kode ini ditempatkan di sini
                                     $filterParams = [
                                         'start_date' => request('start_date'),
                                         'end_date' => request('end_date'),

@@ -79,7 +79,6 @@ class LaporanController extends Controller
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
 
-        // Gunakan trans() untuk mendapatkan nama file dalam bahasa aktif
         $fileName = __('laporan.table.reports.satisfaction_survey') . '.xlsx';
 
         return Excel::download(
