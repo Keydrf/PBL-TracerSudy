@@ -201,16 +201,15 @@ class AlumniController extends Controller
             $file = $request->file('file_alumni');
 
             try {
-                $reader = IOFactory::createReader('Xlsx');
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
                 $reader->setReadDataOnly(true);
                 $spreadsheet = $reader->load($file->getRealPath());
                 $sheet = $spreadsheet->getActiveSheet();
-                $data = $sheet->toArray(null, false, true, true); // Kolom A, B, C, D, E
+                $data = $sheet->toArray(null, false, true, true);
 
                 $inserted = 0;
-                $errors = []; // Untuk menyimpan error per baris
+                $errors = [];
 
-                // Periksa apakah file kosong atau hanya berisi header
                 if (count($data) <= 1) {
                     return response()->json([
                         'status' => false,
@@ -218,12 +217,9 @@ class AlumniController extends Controller
                     ]);
                 }
 
-                $otpMailJobs = []; // Kumpulan job email OTP
-
                 foreach ($data as $key => $row) {
-                    if ($key === 1) continue; // Skip header (baris pertama)
+                    if ($key === 1) continue;
 
-                    // Pastikan baris tidak sepenuhnya kosong
                     $isEmptyRow = true;
                     foreach ($row as $cellValue) {
                         if (!empty($cellValue)) {
@@ -232,34 +228,31 @@ class AlumniController extends Controller
                         }
                     }
                     if ($isEmptyRow) {
-                        continue; // Lewati baris yang kosong
+                        continue;
                     }
 
                     $programStudi = $row['A'] ?? null;
                     $nim = $row['B'] ?? null;
                     $nama = $row['C'] ?? null;
-                    $email = $row['D'] ?? null; // Email di kolom D
-                    $tanggalLulusExcel = $row['E'] ?? null; // Tanggal lulus di kolom E
+                    $email = $row['D'] ?? null;
+                    $tanggalLulusExcel = $row['E'] ?? null;
 
-                    // Validasi dasar untuk memastikan data penting tidak kosong
                     if (!$programStudi || !$nim || !$nama || !$email || !$tanggalLulusExcel) {
                         $errors[] = "Data tidak lengkap pada baris ke-$key. Pastikan semua kolom (Program Studi, NIM, Nama, Email, Tanggal Lulus) terisi.";
                         continue;
                     }
 
-                    // Validasi data per baris secara lebih detail
                     $rowValidator = Validator::make([
                         'program_studi' => $programStudi,
                         'nim' => $nim,
                         'nama' => $nama,
                         'email' => $email,
-                        'tanggal_lulus' => $tanggalLulusExcel, // Akan dikonversi nanti
+                        'tanggal_lulus' => $tanggalLulusExcel,
                     ], [
                         'program_studi' => 'required|string|max:100',
                         'nim' => 'required|string|max:10|unique:alumni,nim',
                         'nama' => 'required|string|unique:alumni,nama',
                         'email' => 'required|email|unique:alumni,email',
-                        // tanggal_lulus tidak divalidasi format di sini karena akan dikonversi
                     ]);
 
                     if ($rowValidator->fails()) {
@@ -267,34 +260,31 @@ class AlumniController extends Controller
                         continue;
                     }
 
-                    // Cek duplikasi NIM atau Email sebelum mencoba membuat
-                    $existing = AlumniModel::where('nim', $nim)->orWhere('email', $email)->first();
+                    $existing = \App\Models\AlumniModel::where('nim', $nim)->orWhere('email', $email)->first();
                     if ($existing) {
                         $errors[] = "Data duplikat ditemukan (NIM: $nim atau Email: $email) pada baris ke-$key. Data ini akan dilewati.";
-                        continue; // Lewati baris duplikat
+                        continue;
                     }
 
                     try {
-                        // Konversi tanggal lulus
                         $tanggalLulusFormatted = null;
                         if (is_numeric($tanggalLulusExcel)) {
-                            $timestamp = ExcelDate::excelToTimestamp($tanggalLulusExcel);
-                            $tanggalLulusFormatted = Carbon::createFromTimestamp($timestamp)->format('Y-m-d H:i:s');
+                            $timestamp = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($tanggalLulusExcel);
+                            $tanggalLulusFormatted = \Carbon\Carbon::createFromTimestamp($timestamp)->format('Y-m-d H:i:s');
                         } else {
                             try {
-                                $tanggalLulusFormatted = Carbon::createFromFormat('d/m/Y', $tanggalLulusExcel)->format('Y-m-d H:i:s');
+                                $tanggalLulusFormatted = \Carbon\Carbon::createFromFormat('d/m/Y', $tanggalLulusExcel)->format('Y-m-d H:i:s');
                             } catch (\Exception $e) {
                                 try {
-                                    $tanggalLulusFormatted = Carbon::parse($tanggalLulusExcel)->format('Y-m-d H:i:s');
+                                    $tanggalLulusFormatted = \Carbon\Carbon::parse($tanggalLulusExcel)->format('Y-m-d H:i:s');
                                 } catch (\Exception $e2) {
                                     $errors[] = "Gagal memproses tanggal lulus pada baris ke-$key: Format tanggal tidak dikenali (Nilai: " . $tanggalLulusExcel . ").";
-                                    continue; // Lewati baris jika tanggal tidak valid
+                                    continue;
                                 }
                             }
                         }
 
                         if ($tanggalLulusFormatted) {
-                            // Generate kode OTP alumni
                             $nama_parts = explode(' ', $nama);
                             if (count($nama_parts) > 1) {
                                 $inisial = strtoupper(substr($nama_parts[0], 0, 1) . substr(end($nama_parts), 0, 1));
@@ -304,7 +294,7 @@ class AlumniController extends Controller
                             $nim_suffix = substr($nim, -2);
                             $kode_otp_alumni = $inisial . $nim_suffix;
 
-                            $alumni = AlumniModel::create([
+                            $alumni = \App\Models\AlumniModel::create([
                                 'program_studi' => $programStudi,
                                 'nim' => $nim,
                                 'nama' => $nama,
@@ -313,13 +303,11 @@ class AlumniController extends Controller
                                 'kode_otp_alumni' => $kode_otp_alumni,
                             ]);
 
-                            // Kirim email OTP alumni secara asynchronous (queue)
+                            // Kirim email OTP alumni secara langsung (bukan queue)
                             try {
-                                // Gunakan queue agar pengiriman email tidak blocking
-                                Mail::to($email)->queue(new OtpMail($kode_otp_alumni));
+                                \Mail::to($email)->send(new \App\Mail\OtpMail($kode_otp_alumni));
                             } catch (\Exception $mailException) {
                                 $errors[] = "Gagal mengirim OTP ke email alumni ($email) pada baris ke-$key: " . $mailException->getMessage();
-                                // Data alumni tetap disimpan meskipun gagal kirim email
                             }
 
                             $inserted++;
@@ -329,7 +317,6 @@ class AlumniController extends Controller
                     }
                 }
 
-                // Logika respons akhir berdasarkan hasil import
                 $status = true;
                 $message = '';
 
@@ -338,9 +325,9 @@ class AlumniController extends Controller
                 } elseif ($inserted > 0 && !empty($errors)) {
                     $message = "Import selesai dengan beberapa kesalahan. Sebanyak $inserted data alumni baru telah ditambahkan.\n\nDetail Kesalahan:\n" . implode("\n", $errors);
                 } elseif ($inserted === 0 && !empty($errors)) {
-                    $status = false; // Keseluruhan import dianggap gagal
+                    $status = false;
                     $message = "Import gagal. Tidak ada data alumni baru yang ditambahkan.\n\nDetail Kesalahan:\n" . implode("\n", $errors);
-                } else { // $inserted === 0 && empty($errors) - ini seharusnya sudah ditangani oleh pengecekan file kosong di awal
+                } else {
                     $message = "Import selesai. Tidak ada data alumni baru yang ditambahkan (mungkin semua data sudah ada atau file kosong).";
                 }
 
