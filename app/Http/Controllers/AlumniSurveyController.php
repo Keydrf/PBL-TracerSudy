@@ -10,8 +10,67 @@ use App\Mail\CompanyOtpMail;
 
 class AlumniSurveyController extends Controller
 {
+    public function verificationForm()
+    {
+        return view('surveialumni.verifikasi');
+    }
+
+    public function verify(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|string|max:10|exists:alumni,nim',
+            'kode_otp_alumni' => [
+                'required',
+                'string',
+                'max:4',
+                function ($attribute, $value, $fail) use ($request) {
+                    $alumni = DB::table('alumni')->where('nim', $request->nim)->first();
+                    if (!$alumni || $alumni->kode_otp_alumni !== $value) {
+                        $fail('Kode OTP alumni tidak valid untuk alumni yang dipilih.');
+                    }
+                },
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Check if alumni already filled the survey
+        $sudahIsi = DB::table('survei_alumni')->where('nim', $request->nim)->exists();
+        if ($sudahIsi) {
+            return redirect()->back()->withInput()
+                ->withErrors(['nim' => 'Anda sudah mengisi survei ini sebelumnya.']);
+        }
+
+        // Get alumni data
+        $alumni = DB::table('alumni')
+            ->select('nim', 'nama', 'program_studi', DB::raw('YEAR(tanggal_lulus) as tahun_lulus'))
+            ->where('nim', $request->nim)
+            ->first();
+
+        // Store verified alumni data in session
+        session([
+            'verified_alumni' => [
+                'nim' => $alumni->nim,
+                'nama' => $alumni->nama,
+                'program_studi' => $alumni->program_studi,
+                'tahun_lulus' => $alumni->tahun_lulus,
+                'kode_otp_alumni' => $request->kode_otp_alumni
+            ]
+        ]);
+
+        return redirect()->route('alumni.survey.form')->with('success', 'Verifikasi berhasil! Silakan lengkapi survei di bawah ini.');
+    }
+
     public function create()
     {
+        // Check if user has been verified
+        if (!session('verified_alumni')) {
+            return redirect()->route('alumni.survey.verification')
+                ->with('error', 'Silakan verifikasi identitas Anda terlebih dahulu.');
+        }
+
         $profesiList = DB::table('profesi')->select('profesi_id', 'nama_profesi')->get();
         $kategoriList = DB::table('kategori_profesi')->select('kategori_id', 'nama_kategori')->get();
 
@@ -36,6 +95,19 @@ class AlumniSurveyController extends Controller
      
     public function store(Request $request)
     {
+        // Check if user has been verified through session
+        if (!session('verified_alumni')) {
+            return redirect()->route('alumni.survey.verification')
+                ->with('error', 'Silakan verifikasi identitas Anda terlebih dahulu.');
+        }
+
+        // Use verified alumni data from session
+        $verifiedAlumni = session('verified_alumni');
+        $request->merge([
+            'nim' => $verifiedAlumni['nim'],
+            'kode_otp_alumni' => $verifiedAlumni['kode_otp_alumni']
+        ]);
+
         $kategoriBelumBekerja = false;
         $profesiBelumBekerja = false;
 
@@ -103,7 +175,7 @@ class AlumniSurveyController extends Controller
         }
 
         try {
-            $sudahIsi = DB::table('survei_alumni')->where('nim', $request->nim)->exists();
+            $sudahIsi = DB::table('survei_alumni')->where('nim', $verifiedAlumni['nim'])->exists();
             if ($sudahIsi) {
                 return redirect()->back()->withInput()
                     ->withErrors(['nim' => 'Anda sudah mengisi survei ini sebelumnya.']);
@@ -146,9 +218,9 @@ class AlumniSurveyController extends Controller
             }
 
             $data = [
-                'nim' => $request->nim,
-                'kode_otp_alumni' => $request->kode_otp_alumni,
-                'tahun_lulus' => $tahunLulus,
+                'nim' => $verifiedAlumni['nim'],
+                'kode_otp_alumni' => $verifiedAlumni['kode_otp_alumni'],
+                'tahun_lulus' => $verifiedAlumni['tahun_lulus'],
                 'kategori_id' => $request->kategori_id,
                 'profesi_id' => $request->profesi_id,
                 'no_telepon' => $request->no_telepon,
@@ -209,7 +281,10 @@ class AlumniSurveyController extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Survei berhasil disimpan' . 
+            // Clear verification session after successful submission
+            session()->forget('verified_alumni');
+
+            return redirect()->route('alumni.survey.verification')->with('success', 'Survei berhasil disimpan' . 
                 (($kategoriBelumBekerja && $profesiBelumBekerja) ? '' : ' dan OTP perusahaan telah dikirim.'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();

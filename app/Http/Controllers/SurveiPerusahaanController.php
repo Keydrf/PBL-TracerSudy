@@ -9,23 +9,104 @@ use Illuminate\Support\Facades\Validator;
 class SurveiPerusahaanController extends Controller
 {
     /**
-     * Menampilkan formulir survei kepuasan pengguna lulusan.
+     * Menampilkan halaman verifikasi perusahaan.
      */
-    public function create()
+    public function verificationForm()
     {
         // Ambil nama instansi unik yang sudah pernah mengisi survei_perusahaan
         $sudahIsiInstansi = DB::table('survei_perusahaan')
             ->distinct()
-            ->pluck('instansi') // Ambil kolom 'instansi' (nama perusahaan penilai)
+            ->pluck('instansi')
             ->toArray();
 
-        // Ambil daftar nama instansi unik dari survei_alumni yang belum pernah mengisi survei perusahaan.
-        // Ini akan digunakan untuk mengisi dropdown "Perusahaan (Penilai)".
+        // Ambil daftar nama instansi unik dari survei_alumni yang belum pernah mengisi survei perusahaan
         $alumniList = DB::table('survei_alumni')
-            ->select('nama_instansi') // Hanya pilih nama_instansi
+            ->select('nama_instansi')
             ->whereNotNull('nama_instansi')
             ->whereNotIn('nama_instansi', $sudahIsiInstansi)
-            ->distinct() // Pastikan hanya nama instansi yang unik
+            ->distinct()
+            ->get();
+
+        return view('surveiperusahaan.verifikasi', compact('alumniList'));
+    }
+
+    /**
+     * Memverifikasi data perusahaan dan OTP.
+     */
+    public function verify(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_instansi_penilai' => 'required|string|max:100',
+            'kode_otp_perusahaan' => [
+                'required',
+                'string',
+                'max:4',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Validasi OTP perusahaan berdasarkan nama instansi
+                    $survei = DB::table('survei_alumni')
+                        ->where('nama_instansi', $request->nama_instansi_penilai)
+                        ->where('kode_otp_perusahaan', $value)
+                        ->first();
+                    
+                    if (!$survei) {
+                        $fail('Kode OTP perusahaan tidak valid untuk perusahaan yang dipilih.');
+                    }
+                },
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Cek apakah perusahaan sudah pernah mengisi survei
+        $sudahIsi = DB::table('survei_perusahaan')
+            ->whereRaw('LOWER(TRIM(instansi)) = ?', [strtolower(trim($request->nama_instansi_penilai))])
+            ->exists();
+
+        if ($sudahIsi) {
+            return redirect()->back()->withInput()
+                ->withErrors(['nama_instansi_penilai' => 'Survei untuk perusahaan ini sudah pernah diisi sebelumnya.']);
+        }
+
+        // Cek apakah kode OTP sudah pernah digunakan
+        $otpUsed = DB::table('survei_perusahaan')
+            ->where('kode_otp_perusahaan', $request->kode_otp_perusahaan)
+            ->exists();
+
+        if ($otpUsed) {
+            return redirect()->back()->withInput()
+                ->withErrors(['kode_otp_perusahaan' => 'Kode OTP ini sudah pernah digunakan untuk mengisi survei.']);
+        }
+
+        // Store verified company data in session
+        session([
+            'verified_company' => [
+                'nama_instansi_penilai' => $request->nama_instansi_penilai,
+                'kode_otp_perusahaan' => $request->kode_otp_perusahaan
+            ]
+        ]);
+
+        return redirect()->route('survei.perusahaan.form')->with('success', 'Verifikasi berhasil! Silakan lengkapi survei di bawah ini.');
+    }
+
+    /**
+     * Menampilkan formulir survei kepuasan pengguna lulusan.
+     */
+    public function create()
+    {
+        // Check if company has been verified
+        if (!session('verified_company')) {
+            return redirect()->route('survei.perusahaan.verification')
+                ->with('error', 'Silakan verifikasi data perusahaan terlebih dahulu.');
+        }
+
+        // Get verified company data from session
+        $verifiedCompany = session('verified_company');
+
+        // Ambil data alumni yang bekerja di perusahaan yang terverifikasi
+        $alumniList = DB::table('survei_alumni')
+            ->where('nama_instansi', $verifiedCompany['nama_instansi_penilai'])
             ->get();
 
         return view('surveiperusahaan.survei', compact('alumniList'));
@@ -36,6 +117,19 @@ class SurveiPerusahaanController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if company has been verified through session
+        if (!session('verified_company')) {
+            return redirect()->route('survei.perusahaan.verification')
+                ->with('error', 'Silakan verifikasi data perusahaan terlebih dahulu.');
+        }
+
+        // Use verified company data from session
+        $verifiedCompany = session('verified_company');
+        $request->merge([
+            'nama_instansi_penilai' => $verifiedCompany['nama_instansi_penilai'],
+            'kode_otp_perusahaan' => $verifiedCompany['kode_otp_perusahaan']
+        ]);
+
         $validator = Validator::make($request->all(), [
             'nama_instansi_penilai' => 'required|string|max:100',
             'kode_otp_perusahaan' => [
@@ -45,12 +139,11 @@ class SurveiPerusahaanController extends Controller
                 function ($attribute, $value, $fail) use ($request) {
                     $survei = DB::table('survei_alumni')->where('nim', $request->nim)->first();
                     if (!$survei || $survei->kode_otp_perusahaan !== $value) {
-                        $fail('OTP perusahaan tidak valid untuk alumni yang dipilih. Silakan masukkan ulang kode OTP yang benar.');
+                        $fail('OTP perusahaan tidak valid untuk alumni yang dipilih.');
                     }
                 },
             ],
             'nama' => 'required|string|max:100',
-            'instansi' => 'required|string|max:100',
             'jabatan' => 'required|string|max:100',
             'no_telepon' => 'required|string|max:100',
             'email' => 'required|email|max:255',
@@ -72,18 +165,18 @@ class SurveiPerusahaanController extends Controller
             'exists' => 'Data tidak ditemukan.',
         ]);
 
-        // Cek apakah perusahaan penilai (dari dropdown 'instansi') sudah pernah mengisi survei
+        // Cek apakah perusahaan penilai sudah pernah mengisi survei
         $sudahIsi = DB::table('survei_perusahaan')
-            ->whereRaw('LOWER(TRIM(instansi)) = ?', [strtolower(trim($request->instansi))])
+            ->whereRaw('LOWER(TRIM(instansi)) = ?', [strtolower(trim($verifiedCompany['nama_instansi_penilai']))])
             ->exists();
 
         if ($sudahIsi) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['instansi' => 'Survei untuk perusahaan ini sudah pernah diisi. Data perusahaan yang sudah pernah diisi tidak akan muncul lagi di daftar pilihan.']);
+                ->withErrors(['instansi' => 'Survei untuk perusahaan ini sudah pernah diisi.']);
         }
 
-        // Cek apakah kode OTP perusahaan sudah pernah digunakan untuk survei ini (tidak boleh duplikat)
+        // Cek apakah kode OTP perusahaan sudah pernah digunakan
         $otpUsed = DB::table('survei_perusahaan')
             ->where('kode_otp_perusahaan', $request->kode_otp_perusahaan)
             ->exists();
@@ -91,7 +184,7 @@ class SurveiPerusahaanController extends Controller
         if ($otpUsed) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['kode_otp_perusahaan' => 'Kode OTP ini sudah pernah digunakan untuk mengisi survei. Anda tidak dapat mengisi survei lebih dari satu kali dengan kode OTP yang sama.']);
+                ->withErrors(['kode_otp_perusahaan' => 'Kode OTP ini sudah pernah digunakan untuk mengisi survei.']);
         }
 
         if ($validator->fails()) {
@@ -119,7 +212,7 @@ class SurveiPerusahaanController extends Controller
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $request->kode_otp_perusahaan,
                 $request->nama,
-                $request->instansi,
+                $verifiedCompany['nama_instansi_penilai'], // Ambil dari session, bukan dari input
                 $request->jabatan,
                 $request->no_telepon,
                 $request->email,
@@ -137,7 +230,10 @@ class SurveiPerusahaanController extends Controller
                 now()
             ]);
 
-            return redirect()->back()->with('success', 'Data survei berhasil disimpan! Terima kasih.');
+            // Clear verification session after successful submission
+            session()->forget('verified_company');
+
+            return redirect()->route('survei.perusahaan.verification')->with('success', 'Data survei berhasil disimpan! Terima kasih.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }

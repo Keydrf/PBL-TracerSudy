@@ -32,25 +32,29 @@ use App\Mail\KirimEmail;
 // Route::get('/populate', [PerusahaanController::class, 'populate'])->name('pop');
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::controller(AlumniSurveyController::class)->group(function () {
-    // Halaman utama survei alumni
+    // Two-step verification process for alumni survey
+    Route::get('/survei-alumni/verifikasi', 'verificationForm')->name('alumni.survey.verification');
+    Route::post('/survei-alumni/verifikasi', 'verify')->name('alumni.survey.verify');
+    Route::get('/survei-alumni', 'create')->name('alumni.survey.form');
+    Route::post('/survei-alumni', 'store')->name('alumni.survey.store');
+    
+    // Legacy routes (keep for backward compatibility if needed)
     Route::get('/surveialumni', 'create')->name('alumni.survey.create');
     Route::get('/surveibiodata', 'biodataVerifikasi')->name('alumni.survey.biodata');
     Route::post('/surveiverifikasi', 'verifikasi')->name('alumni.survey.verifikasi');
     Route::get('/surveiprofesi', 'profesi')->name('alumni.survey.profesi');
-    // Menyimpan data survei alumni
-    Route::post('/surveialumni', 'store')->name('alumni.survey.store');
     
     // API untuk pencarian alumni - Pastikan route ini benar
     Route::get('/api/alumni/search', 'search')->name('api.alumni.search');
 });
 
-
-
-
-
-// Survey Routes
-Route::get('/surveiperusahaan', [SurveiPerusahaanController::class, 'create'])->name('survei.perusahaan.create');
+// Company Survey Routes - Two-step verification process
+Route::get('/survei-perusahaan/verifikasi', [SurveiPerusahaanController::class, 'verificationForm'])->name('survei.perusahaan.verification');
+Route::post('/survei-perusahaan/verifikasi', [SurveiPerusahaanController::class, 'verify'])->name('survei.perusahaan.verify');
+Route::get('/surveiperusahaan', [SurveiPerusahaanController::class, 'create'])->name('survei.perusahaan.form');
 Route::post('/surveiperusahaan', [SurveiPerusahaanController::class, 'store'])->name('survei.perusahaan.store');
+
+
 // Route::resource('perusahaan', PerusahaanController::class);
 
 // API Route for Alumni Search

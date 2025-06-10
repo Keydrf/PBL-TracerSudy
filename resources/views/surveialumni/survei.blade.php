@@ -108,6 +108,27 @@
             margin-top: 5px;
             display: none; /* Sembunyikan secara default */
         }
+
+        .alumni-info-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .alumni-info-card .info-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .alumni-info-card .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .alumni-info-card .info-value {
+            color: #6c757d;
+        }
     </style>
 
     <div class="container" data-aos="fade-up">
@@ -129,67 +150,52 @@
                 </div>
             @endif
 
-            {{-- Hapus blok ini agar error validasi hanya muncul di bawah field --}}
-            {{-- 
-            @if ($errors->any())
-                <div class="alert alert-danger" data-aos="fade-up">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            <!-- Alumni Information Card -->
+            @if(session('verified_alumni'))
+                <div class="alumni-info-card" data-aos="fade-up">
+                    <h5 class="mb-3">Informasi Alumni</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <span class="info-label">NIM:</span>
+                                <span class="info-value">{{ session('verified_alumni.nim') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <span class="info-label">Nama:</span>
+                                <span class="info-value">{{ session('verified_alumni.nama') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <span class="info-label">Program Studi:</span>
+                                <span class="info-value">{{ session('verified_alumni.program_studi') ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <span class="info-label">Tahun Lulus:</span>
+                                <span class="info-value">{{ session('verified_alumni.tahun_lulus') ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            @endif 
-            --}}
+            @endif
 
             <form action="{{ route('alumni.survey.store') }}" method="post" class="survey-form" data-aos="fade-up"
                 data-aos-delay="200" novalidate>
                 @csrf
+                
+                <!-- Hidden fields for verified alumni data -->
+                @if(session('verified_alumni'))
+                    <input type="hidden" name="nim" value="{{ session('verified_alumni.nim') }}">
+                    <input type="hidden" name="nama_alumni_display" value="{{ session('verified_alumni.nama') }}">
+                    <input type="hidden" name="program_studi_hidden" value="{{ session('verified_alumni.program_studi') }}">
+                    <input type="hidden" name="tahun_lulus_hidden" value="{{ session('verified_alumni.tahun_lulus') }}">
+                @endif
+
                 <div class="row gy-4">
-                    <div class="col-md-6">
-                        <label for="alumni_search" class="pb-2">Nama <span class="text-danger">*</span></label>
-                        <div class="position-relative">
-                            <input type="text" class="form-control @error('nim') is-invalid @enderror" id="alumni_search"
-                                placeholder="Cari berdasarkan NIM atau Nama" autocomplete="off"
-                                value="{{ old('alumni_search', old('nama_alumni_display', '')) }}">
-                            <div id="search_results" class="search-results d-none"></div>
-                            <input type="hidden" id="nim_alumni_hidden" name="nim" required value="{{ old('nim') }}">
-                            <input type="hidden" id="nama_alumni_display" name="nama_alumni_display" value="{{ old('nama_alumni_display') }}">
-                            <input type="hidden" id="program_studi_hidden" name="program_studi_hidden" value="{{ old('program_studi_hidden') }}">
-                            <input type="hidden" id="tahun_lulus_hidden" name="tahun_lulus_hidden" value="{{ old('tahun_lulus_hidden') }}">
-                            @error('nim')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div id="selected_alumni" class="selected-alumni-info {{ old('nim') ? '' : 'd-none' }}">
-                                <strong id="selected_alumni_text">
-                                    @if(old('nim') && old('nama_alumni_display'))
-                                        {{ old('nim') }} - {{ old('nama_alumni_display') }}
-                                    @endif
-                                </strong>
-                            </div>
-                            <div id="search_validation_message" class="custom-validation-message"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="kode_otp" class="pb-2">Kode OTP <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('kode_otp_alumni') is-invalid @enderror" id="kode_otp" name="kode_otp_alumni" maxlength="4" required value="{{ old('kode_otp_alumni') }}">
-                        @error('kode_otp_alumni')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label for="program_studi" class="pb-2">Program Studi</label>
-                        <input type="text" class="form-control" id="program_studi" name="program_studi"
-                            readonly value="{{ old('program_studi', old('program_studi_hidden', '')) }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="tahun_lulus" class="pb-2">Tahun Lulus</label>
-                        <input type="text" class="form-control" id="tahun_lulus" name="tahun_lulus"
-                            readonly value="{{ old('tahun_lulus', old('tahun_lulus_hidden', '')) }}">
-                    </div>
-
                     <div class="col-md-6">
                         <label for="no_telepon" class="pb-2">No. HP <span class="text-danger">*</span></label>
                         <input type="number" class="form-control @error('no_telepon') is-invalid @enderror" id="no_telepon" name="no_telepon" required value="{{ old('no_telepon') }}">
@@ -401,234 +407,86 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const searchInput = document.getElementById('alumni_search');
-                const searchResults = document.getElementById('search_results');
-                // Mengubah ID nimInput agar sesuai dengan HTML
-                const nimInput = document.getElementById('nim_alumni_hidden');
-                const selectedAlumni = document.getElementById('selected_alumni');
-                const selectedAlumniText = document.getElementById('selected_alumni_text');
                 const tanggalPertamaKerja = document.getElementById('tanggal_pertama_kerja');
                 const tanggalPertamaKerjaInstansi = document.getElementById('tanggal_pertama_kerja_instansi_saat_ini');
                 const surveyForm = document.querySelector('.survey-form');
-                const searchValidationMessage = document.getElementById('search_validation_message');
                 const dateValidationMessage = document.getElementById('date_validation_message');
-
 
                 // Fungsi untuk menampilkan pesan validasi kustom
                 function showCustomValidationMessage(element, message) {
-                    element.textContent = message;
-                    element.style.display = 'block';
+                    if (element) {
+                        element.textContent = message;
+                        element.style.display = 'block';
+                    }
                 }
 
                 // Fungsi untuk menyembunyikan pesan validasi kustom
                 function hideCustomValidationMessage(element) {
-                    element.textContent = '';
-                    element.style.display = 'none';
+                    if (element) {
+                        element.textContent = '';
+                        element.style.display = 'none';
+                    }
                 }
-
-                // Fungsi untuk mencari alumni
-                function searchAlumni() {
-                    const searchTerm = searchInput.value.trim();
-                    if (searchTerm.length < 3) {
-                        showCustomValidationMessage(searchValidationMessage, 'Masukkan minimal 3 karakter untuk pencarian.');
-                        searchResults.classList.add('d-none');
-                        return;
-                    } else {
-                        hideCustomValidationMessage(searchValidationMessage);
-                    }
-
-                    // Tampilkan indikator loading
-                    searchResults.innerHTML = '<div class="p-2 text-center">Mencari...</div>';
-                    searchResults.classList.remove('d-none');
-
-                    // Menggunakan XMLHttpRequest untuk kompatibilitas yang lebih baik
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('GET', `/api/alumni/search?term=${encodeURIComponent(searchTerm)}`, true);
-                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            const data = JSON.parse(xhr.responseText);
-                            renderSearchResults(data);
-                        } else {
-                            searchResults.innerHTML = '<div class="p-2 text-center text-danger">Terjadi kesalahan saat mencari data</div>';
-                        }
-                    };
-                    xhr.onerror = function () {
-                        searchResults.innerHTML = '<div class="p-2 text-center text-danger">Terjadi kesalahan koneksi</div>';
-                    };
-                    xhr.send();
-                }
-
-                // Fungsi untuk merender hasil pencarian
-                function renderSearchResults(data) {
-                    searchResults.innerHTML = '';
-
-                    if (data.length === 0) {
-                        searchResults.innerHTML = '<div class="p-2 text-center">Tidak ada hasil ditemukan</div>';
-                        return;
-                    }
-
-                    data.forEach(alumni => {
-                        const item = document.createElement('div');
-                        item.className = 'search-item';
-                        item.textContent = `${alumni.nim} - ${alumni.nama}`;
-                        item.addEventListener('click', function () {
-                            selectAlumni(alumni);
-                        });
-                        searchResults.appendChild(item);
-                    });
-
-                    searchResults.classList.remove('d-none');
-                }
-
-                // Saat halaman dimuat, jika ada old('nim') dan old('nama_alumni_display'), tampilkan alumni terpilih dan isi default program studi & tahun lulus
-                @if(old('nim') && old('nama_alumni_display'))
-                    document.getElementById('alumni_search').value = "{{ old('nama_alumni_display') }}";
-                    document.getElementById('selected_alumni').classList.remove('d-none');
-                    document.getElementById('selected_alumni_text').textContent = "{{ old('nim') }} - {{ old('nama_alumni_display') }}";
-                    document.getElementById('program_studi').value = "{{ old('program_studi', old('program_studi_hidden', '')) }}";
-                    document.getElementById('tahun_lulus').value = "{{ old('tahun_lulus', old('tahun_lulus_hidden', '')) }}";
-                @endif
-
-                // Fungsi untuk memilih alumni dari hasil pencarian
-                function selectAlumni(alumni) {
-                    nimInput.value = alumni.nim;
-                    selectedAlumniText.textContent = `${alumni.nim} - ${alumni.nama}`;
-                    selectedAlumni.classList.remove('d-none');
-                    searchResults.classList.add('d-none');
-                    searchInput.value = alumni.nama;
-                    hideCustomValidationMessage(searchValidationMessage);
-
-                    // Simpan nama alumni ke input hidden agar tetap ada saat validasi error
-                    let namaAlumniDisplay = document.getElementById('nama_alumni_display');
-                    if (!namaAlumniDisplay) {
-                        namaAlumniDisplay = document.createElement('input');
-                        namaAlumniDisplay.type = 'hidden';
-                        namaAlumniDisplay.id = 'nama_alumni_display';
-                        namaAlumniDisplay.name = 'nama_alumni_display';
-                        surveyForm.appendChild(namaAlumniDisplay);
-                    }
-                    namaAlumniDisplay.value = alumni.nama;
-
-                    // Simpan program studi ke input hidden
-                    let programStudiHidden = document.getElementById('program_studi_hidden');
-                    if (!programStudiHidden) {
-                        programStudiHidden = document.createElement('input');
-                        programStudiHidden.type = 'hidden';
-                        programStudiHidden.id = 'program_studi_hidden';
-                        programStudiHidden.name = 'program_studi_hidden';
-                        surveyForm.appendChild(programStudiHidden);
-                    }
-                    programStudiHidden.value = alumni.program_studi || '';
-
-                    // Simpan tahun lulus ke input hidden
-                    let tahunLulusHidden = document.getElementById('tahun_lulus_hidden');
-                    if (!tahunLulusHidden) {
-                        tahunLulusHidden = document.createElement('input');
-                        tahunLulusHidden.type = 'hidden';
-                        tahunLulusHidden.id = 'tahun_lulus_hidden';
-                        tahunLulusHidden.name = 'tahun_lulus_hidden';
-                        surveyForm.appendChild(tahunLulusHidden);
-                    }
-                    tahunLulusHidden.value = alumni.tahun_lulus || '';
-
-                    // Isi otomatis program studi dan tahun lulus jika tersedia
-                    if (alumni.program_studi) {
-                        document.getElementById('program_studi').value = alumni.program_studi;
-                    }
-                    if (alumni.tahun_lulus) {
-                        document.getElementById('tahun_lulus').value = alumni.tahun_lulus;
-                    }
-                    calculateMasaTunggu();
-                }
-
-                // Event listener untuk input pencarian (dengan debounce)
-                let searchTimeout;
-                searchInput.addEventListener('input', function () {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(function () {
-                        searchAlumni();
-                    }, 300); // Debounce pencarian
-                });
-
-                // Event listener saat input pencarian mendapatkan fokus
-                searchInput.addEventListener('focus', function () {
-                    if (this.value.trim().length >= 3) {
-                        searchAlumni();
-                    }
-                });
-
-                // Sembunyikan hasil pencarian saat mengklik di luar area pencarian
-                document.addEventListener('click', function (e) {
-                    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                        searchResults.classList.add('d-none');
-                    }
-                });
-
-                // Hitung masa tunggu secara otomatis saat tanggal pertama kerja atau tahun lulus berubah
-                tanggalPertamaKerja.addEventListener('change', function () {
-                    calculateMasaTunggu();
-                });
-                document.getElementById('tahun_lulus').addEventListener('change', function() {
-                    calculateMasaTunggu();
-                });
-
 
                 // Pastikan tanggal kedua tidak sebelum tanggal pertama
-                tanggalPertamaKerjaInstansi.addEventListener('change', function () {
-                    const firstDateValue = tanggalPertamaKerja.value;
-                    const secondDateValue = tanggalPertamaKerjaInstansi.value;
+                if (tanggalPertamaKerjaInstansi) {
+                    tanggalPertamaKerjaInstansi.addEventListener('change', function () {
+                        const firstDateValue = tanggalPertamaKerja.value;
+                        const secondDateValue = tanggalPertamaKerjaInstansi.value;
 
-                    if (firstDateValue && secondDateValue) {
-                        const firstDate = new Date(firstDateValue);
-                        const secondDate = new Date(secondDateValue);
+                        if (firstDateValue && secondDateValue) {
+                            const firstDate = new Date(firstDateValue);
+                            const secondDate = new Date(secondDateValue);
 
-                        if (secondDate < firstDate) {
-                            // Mengganti alert() dengan pesan validasi kustom
-                            showCustomValidationMessage(dateValidationMessage, 'Tanggal mulai kerja pada instansi saat ini tidak boleh sebelum tanggal pertama kerja.');
-                            tanggalPertamaKerjaInstansi.value = ''; // Kosongkan tanggal yang tidak valid
-                        } else {
-                            hideCustomValidationMessage(dateValidationMessage);
+                            if (secondDate < firstDate) {
+                                showCustomValidationMessage(dateValidationMessage, 'Tanggal mulai kerja pada instansi saat ini tidak boleh sebelum tanggal pertama kerja.');
+                                tanggalPertamaKerjaInstansi.value = '';
+                            } else {
+                                hideCustomValidationMessage(dateValidationMessage);
+                            }
                         }
-                    }
-                });
-
-                // Fungsi untuk menghitung masa tunggu (dalam bulan)
-                function calculateMasaTunggu() {
-                    const tahunLulus = document.getElementById('tahun_lulus').value;
-                    const tanggalKerja = tanggalPertamaKerja.value;
-
-                    if (tahunLulus && tanggalKerja) {
-                        // Asumsi tanggal kelulusan adalah 30 Juni di tahun kelulusan
-                        const graduationDate = new Date(tahunLulus, 5, 30); // Bulan 0-indexed (5 = Juni)
-                        const workDate = new Date(tanggalKerja);
-
-                        let diffMonths = (workDate.getFullYear() - graduationDate.getFullYear()) * 12;
-                        diffMonths -= graduationDate.getMonth(); // Kurangi bulan dari tahun kelulusan
-                        diffMonths += workDate.getMonth(); // Tambahkan bulan dari tahun kerja
-
-                        // Sesuaikan untuk perbedaan hari jika tanggal kerja sebelum hari kelulusan di bulan yang sama
-                        if (workDate.getDate() < graduationDate.getDate() && workDate.getMonth() === graduationDate.getMonth()) {
-                            diffMonths--;
-                        }
-
-                        // Pastikan masa_tunggu tidak negatif
-                        const masaTungguValue = diffMonths > 0 ? diffMonths : 0;
-
-                        let masaTungguInput = document.getElementById('masa_tunggu');
-                        if (!masaTungguInput) {
-                            masaTungguInput = document.createElement('input');
-                            masaTungguInput.type = 'hidden';
-                            masaTungguInput.id = 'masa_tunggu';
-                            masaTungguInput.name = 'masa_tunggu';
-                            surveyForm.appendChild(masaTungguInput);
-                        }
-                        masaTungguInput.value = masaTungguValue;
-                    }
+                    });
                 }
 
-                // Perhitungan awal saat halaman dimuat jika ada nilai yang sudah terisi (misalnya dari old() helper)
-                calculateMasaTunggu();
+                // Auto-calculate masa tunggu using verified alumni data
+                @if(session('verified_alumni.tahun_lulus'))
+                    function calculateMasaTunggu() {
+                        const tahunLulus = {{ session('verified_alumni.tahun_lulus') }};
+                        const tanggalKerja = tanggalPertamaKerja ? tanggalPertamaKerja.value : '';
+
+                        if (tahunLulus && tanggalKerja) {
+                            const graduationDate = new Date(tahunLulus, 5, 30);
+                            const workDate = new Date(tanggalKerja);
+
+                            let diffMonths = (workDate.getFullYear() - graduationDate.getFullYear()) * 12;
+                            diffMonths -= graduationDate.getMonth();
+                            diffMonths += workDate.getMonth();
+
+                            if (workDate.getDate() < graduationDate.getDate() && workDate.getMonth() === graduationDate.getMonth()) {
+                                diffMonths--;
+                            }
+
+                            const masaTungguValue = diffMonths > 0 ? diffMonths : 0;
+                            
+                            let masaTungguInput = document.getElementById('masa_tunggu');
+                            if (!masaTungguInput) {
+                                masaTungguInput = document.createElement('input');
+                                masaTungguInput.type = 'hidden';
+                                masaTungguInput.id = 'masa_tunggu';
+                                masaTungguInput.name = 'masa_tunggu';
+                                if (surveyForm) {
+                                    surveyForm.appendChild(masaTungguInput);
+                                }
+                            }
+                            masaTungguInput.value = masaTungguValue;
+                        }
+                    }
+
+                    if (tanggalPertamaKerja) {
+                        tanggalPertamaKerja.addEventListener('change', calculateMasaTunggu);
+                        calculateMasaTunggu();
+                    }
+                @endif
 
                 // Penanganan form kustom untuk indikator loading
                 if (surveyForm) {
@@ -658,12 +516,6 @@
                         loadingElement.style.display = 'none';
                     }
                 }
-
-                // Autofokus ke input OTP jika ada error OTP
-                @if($errors->has('kode_otp_alumni'))
-                    document.getElementById('kode_otp').focus();
-                @endif
-                
 
                 // Inisialisasi Select2 untuk dropdown profesi
                 $('select[name="profesi_id"]').select2({
