@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CompanyOtpMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SurveiPerusahaanController extends Controller
@@ -42,12 +44,10 @@ class SurveiPerusahaanController extends Controller
                 'string',
                 'max:4',
                 function ($attribute, $value, $fail) use ($request) {
-                    // Validasi OTP perusahaan berdasarkan nama instansi
                     $survei = DB::table('survei_alumni')
                         ->where('nama_instansi', $request->nama_instansi_penilai)
                         ->where('kode_otp_perusahaan', $value)
                         ->first();
-                    
                     if (!$survei) {
                         $fail('Kode OTP perusahaan tidak valid untuk perusahaan yang dipilih.');
                     }
@@ -77,6 +77,24 @@ class SurveiPerusahaanController extends Controller
         if ($otpUsed) {
             return redirect()->back()->withInput()
                 ->withErrors(['kode_otp_perusahaan' => 'Kode OTP ini sudah pernah digunakan untuk mengisi survei.']);
+        }
+
+        // Kirim OTP perusahaan ke email atasan (mirip AlumniController)
+        $surveiAlumni = DB::table('survei_alumni')
+            ->where('nama_instansi', $request->nama_instansi_penilai)
+            ->where('kode_otp_perusahaan', $request->kode_otp_perusahaan)
+            ->first();
+
+        if ($surveiAlumni && !empty($surveiAlumni->email_atasan)) {
+            try {
+                $alumniName = DB::table('alumni')->where('nim', $surveiAlumni->nim)->value('nama');
+                // Gunakan Mail facade secara FQCN (Fully Qualified Class Name)
+                \Illuminate\Support\Facades\Mail::to($surveiAlumni->email_atasan)
+                    ->send(new \App\Mail\CompanyOtpMail($request->kode_otp_perusahaan, $alumniName));
+            } catch (\Exception $e) {
+                // Email gagal dikirim, log jika perlu
+                // Untuk debug: dd($e->getMessage());
+            }
         }
 
         // Store verified company data in session

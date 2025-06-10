@@ -89,7 +89,7 @@ class KategoriProfesiController extends Controller
                     if ($e->getCode() === '23000') {
                         return response()->json([
                             'status' => false,
-                            'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain'
+                            'message' => 'Data tidak dapat dihapus karena masih ada relasi dengan profesi.'
                         ]);
                     } else {
                         // Jika error lain, kembalikan pesan error umum

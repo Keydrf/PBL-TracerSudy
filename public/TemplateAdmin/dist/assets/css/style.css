@@ -25960,7 +25960,7 @@ select.tt-hint, .select2-container--default .select2-selection--single select.se
   padding: 0.4375rem 0.75rem;
   border: 0;
   outline: 1px solid #dee2e6;
-  color: #c9c8c8;
+  color: #000000;
   appearance: none;
   background: url("../../images/arrow-down.svg");
   background-repeat: no-repeat;
@@ -26069,7 +26069,7 @@ select.form-select {
   padding: 0.4375rem 0.75rem;
   border: 0;
   outline: 1px solid #dee2e6;
-  color: #c9c8c8;
+  color: #000000;
   appearance: none;
   background: url("../../images/arrow-down.svg");
   background-repeat: no-repeat;

@@ -38,7 +38,7 @@
     <p>Mohon untuk memasukkan kode tersebut pada halaman survei yang telah kami sediakan di bawah ini.</p>
 
     <p>
-        <a href="{{ route('survei.perusahaan.create') }}" class="survey-button">Isi Survei Sekarang</a>
+        <a href="{{ route('survei.perusahaan.verification') }}" class="survey-button">Isi Survei Sekarang</a>
     </p>
 
     <p>Atas perhatian dan partisipasi Bapak/Ibu, kami ucapkan terima kasih.</p>

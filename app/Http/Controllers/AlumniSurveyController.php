@@ -285,7 +285,7 @@ class AlumniSurveyController extends Controller
             session()->forget('verified_alumni');
 
             return redirect()->route('alumni.survey.verification')->with('success', 'Survei berhasil disimpan' . 
-                (($kategoriBelumBekerja && $profesiBelumBekerja) ? '' : ' dan OTP perusahaan telah dikirim.'));
+                (($kategoriBelumBekerja && $profesiBelumBekerja) ? '' : ' dan Kode OTP telah dikirim ke email atasan anda.'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }

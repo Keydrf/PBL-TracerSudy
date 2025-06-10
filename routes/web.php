@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
     });
     // Add the route for DashboardController
     // Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/api/alumni-data', [AlumniDataController::class, 'getAlumniData']);
+    //Route::get('/api/alumni-data', [AlumniDataController::class, 'getAlumniData']);
     // Level Management Routes (Super Admin Only)
     Route::middleware(['authorize:superadmin'])->controller(LevelController::class)->group(function () {
         Route::prefix('level')->group(function () {
