@@ -10,6 +10,12 @@ return [
             'action' => 'Aksi'
         ],
         
+        'filter' => [
+            'start_date' => 'Tanggal Mulai',
+            'end_date' => 'Tanggal Akhir',
+            'apply' => 'Terapkan'
+        ],
+
         'reports' => [
             'tracer_study' => 'Rekap Hasil Tracer Study Lulusan',
             'satisfaction_survey' => 'Rekap Hasil Survei Kepuasan Pengguna Lulusan',

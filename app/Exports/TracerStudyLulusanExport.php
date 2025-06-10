@@ -8,9 +8,18 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class TracerStudyLulusanExport implements FromCollection, WithHeadings
 {
+    protected $startDate;
+    protected $endDate;
+
+    public function __construct($startDate = null, $endDate = null)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        return DB::table('survei_alumni')
+        $query = DB::table('survei_alumni')
             ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
             ->select(
                 'alumni.program_studi AS program_studi',
@@ -36,8 +45,13 @@ class TracerStudyLulusanExport implements FromCollection, WithHeadings
                 'survei_alumni.jabatan_atasan',
                 'survei_alumni.no_telepon_atasan',
                 'survei_alumni.email_atasan'
-            )
-            ->get();
+            );
+
+        if ($this->startDate && $this->endDate) {
+            $query->whereBetween('alumni.created_at', [$this->startDate, $this->endDate]);
+        }
+
+        return $query->get();
     }
 
     public function headings(): array

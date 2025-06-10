@@ -8,9 +8,18 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class SurveyPenggunaLulusanExport implements FromCollection, WithHeadings
 {
+    protected $startDate;
+    protected $endDate;
+
+    public function __construct($startDate = null, $endDate = null)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        return DB::table('survei_perusahaan')
+        $query = DB::table('survei_perusahaan')
             ->join('alumni', 'survei_perusahaan.nim', '=', 'alumni.nim')
             ->select(
                 'survei_perusahaan.nama',
@@ -29,8 +38,13 @@ class SurveyPenggunaLulusanExport implements FromCollection, WithHeadings
                 'survei_perusahaan.etoskerja',
                 'survei_perusahaan.kompetensi_yang_belum_dipenuhi',
                 'survei_perusahaan.saran'
-            )
-            ->get();
+            );
+
+        if ($this->startDate && $this->endDate) {
+            $query->whereBetween('alumni.created_at', [$this->startDate, $this->endDate]);
+        }
+
+        return $query->get();
     }
 
     public function headings(): array
