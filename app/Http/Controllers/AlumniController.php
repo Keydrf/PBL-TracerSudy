@@ -305,7 +305,7 @@ class AlumniController extends Controller
 
                             // Kirim email OTP alumni secara langsung (bukan queue)
                             try {
-                                \Mail::to($email)->send(new \App\Mail\OtpMail($kode_otp_alumni));
+                                Mail::to($email)->send(new \App\Mail\OtpMail($kode_otp_alumni));
                             } catch (\Exception $mailException) {
                                 $errors[] = "Gagal mengirim OTP ke email alumni ($email) pada baris ke-$key: " . $mailException->getMessage();
                             }
