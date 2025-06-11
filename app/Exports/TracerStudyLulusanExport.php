@@ -16,8 +16,8 @@ class TracerStudyLulusanExport implements FromCollection, WithHeadings, WithStyl
 
     public function __construct($startDate = null, $endDate = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = $startDate . ' 00:00:00';
+        $this->endDate = $endDate . ' 23:59:59';
     }
 
     public function collection()
