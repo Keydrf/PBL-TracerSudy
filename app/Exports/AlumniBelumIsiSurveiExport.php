@@ -5,8 +5,11 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class AlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
+class AlumniBelumIsiSurveiExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $startDate;
     protected $endDate;
@@ -34,5 +37,24 @@ class AlumniBelumIsiSurveiExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return ['Program Studi', 'NIM', 'Nama', 'Tanggal Lulus'];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Baris pertama (header)
+            1 => [
+                'font' => [
+                    'bold' => true,
+                    'color' => ['argb' => 'FFFFFF'],
+                ],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FF0070C0',
+                    ],
+                ],
+            ],
+        ];
     }
 }
