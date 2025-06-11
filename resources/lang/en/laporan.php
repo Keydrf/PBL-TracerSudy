@@ -9,6 +9,12 @@ return [
             'title' => 'Report Title',
             'action' => 'Action'
         ],
+
+        'filter' => [
+            'start_date' => 'Start Date',
+            'end_date' => 'End Date',
+            'apply' => 'Apply'
+        ],
         
         'reports' => [
             'tracer_study' => 'Graduate Tracer Study Results Summary',

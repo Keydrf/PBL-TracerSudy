@@ -11,28 +11,79 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('laporan.index');
+        $reports = [
+            [
+                'title' => __('laporan.table.reports.tracer_study'),
+                'url' => '/laporan/tracer-study'
+            ],
+            [
+                'title' => __('laporan.table.reports.satisfaction_survey'),
+                'url' => '/laporan/survei-kepuasan'
+            ],
+            [
+                'title' => __('laporan.table.reports.unfilled_tracer'),
+                'url' => '/laporan/belum-tracer'
+            ],
+            [
+                'title' => __('laporan.table.reports.unfilled_survey'),
+                'url' => '/laporan/belum-survei'
+            ]
+        ];
+
+        return view('laporan.index', compact('reports'));
     }
 
-    public function belumTracer()
+    public function tracerStudy(Request $request)
     {
-        return Excel::download(new AlumniBelumIsiSurveiExport, 'Rekap Alumni Belum Isi TS.xlsx');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $fileName = __('laporan.table.reports.tracer_study') . '.xlsx';
+
+        return Excel::download(
+            new TracerStudyLulusanExport($startDate, $endDate),
+            $fileName
+        );
     }
 
-    public function belumSurvei() 
+    public function belumTracer(Request $request)
     {
-        return Excel::download(new PenggunaAlumniBelumIsiSurveiExport, 'Rekap Pengguna Lulusan Belum Isi Survey.xlsx');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $fileName = __('laporan.table.reports.unfilled_tracer') . '.xlsx';
+
+        return Excel::download(
+            new AlumniBelumIsiSurveiExport($startDate, $endDate),
+            $fileName
+        );
     }
 
-    public function tracerStudy()
+    public function belumSurvei(Request $request)
     {
-        return Excel::download(new TracerStudyLulusanExport, 'Rekap Tracer Studi Lulusan.xlsx');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $fileName = __('laporan.table.reports.unfilled_survey') . '.xlsx';
+
+        return Excel::download(
+            new PenggunaAlumniBelumIsiSurveiExport($startDate, $endDate),
+            $fileName
+        );
     }
 
-    public function surveiKepuasan()
+    public function surveiKepuasan(Request $request)
     {
-        return Excel::download(new SurveyPenggunaLulusanExport, 'Rekap Survey Pengguna Lulusan.xlsx');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $fileName = __('laporan.table.reports.satisfaction_survey') . '.xlsx';
+
+        return Excel::download(
+            new SurveyPenggunaLulusanExport($startDate, $endDate),
+            $fileName
+        );
     }
 }

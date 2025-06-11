@@ -224,18 +224,18 @@
             <table class="table table-bordered table-sm text-center" id="tableLingkupTempatKerja">
                 <thead class="table-primary">   
                     <tr>
-                        <th rowspan="2">Tahun<br>Lulus</th>
-                        <th rowspan="2">Jumlah<br>Lulusan</th>
-                        <th rowspan="2">Jumlah Lulusan<br>yang Terlacak</th>
-                        <th rowspan="2">Profesi Kerja<br>Bidang<br>Infokom</th>
-                        <th rowspan="2">Profesi Kerja<br>Bidang<br>Non Infokom</th>
-                        <th colspan="4">Lingkup Tempat Kerja</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.tahun_lulus')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.jumlah_lulusan')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.lulusan_terlacak')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_infokom')</th>
+                        <th rowspan="2">@lang('dashboard.tabel_header.profesi_non_infokom')</th>
+                        <th colspan="4">@lang('dashboard.tabel_header.lingkup_tempat_kerja')</th>
                     </tr>
                     <tr>
-                        <th>Multinasional</th>
-                        <th>Nasional</th>
-                        <th>Wirausaha</th>
-                        <th>Lokal</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.multinasional')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.nasional')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.wirausaha')</th>
+                        <th>@lang('dashboard.tabel_header.lingkup_tempat_kerja_detail.lokal')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -305,10 +305,10 @@
         <table class="table table-bordered table-sm text-center" id="tableMasaTunggu">
             <thead class="table-primary">
                 <tr>
-                    <th>Tahun Lulus</th>
-                    <th>Jumlah Lulusan</th>
-                    <th>Jumlah Lulusan yang Terlacak</th>
-                    <th>Rata-rata Masa Tunggu (bulan)</th>
+                    <th>@lang('dashboard.tabel_header.tahun_lulus')</th>
+                    <th>@lang('dashboard.tabel_header.jumlah_lulusan')</th>
+                    <th>@lang('dashboard.tabel_header.lulusan_terlacak')</th>
+                    <th>@lang('dashboard.tabel_header.rata_masa_tunggu')</th>
                 </tr>
             </thead>
             <tbody>
@@ -345,14 +345,14 @@
             <thead class="table-primary">
                 <tr>
                     <th rowspan="2">No</th>
-                    <th rowspan="2">Jenis Kemampuan</th>
-                    <th colspan="4">Tingkat Kepuasan Pengguna</th>
+                    <th rowspan="2">@lang('dashboard.tabel_header.jenis_kemampuan')</th>
+                    <th colspan="4">@lang('dashboard.tabel_header.tingkat_kepuasan_pengguna')</th>
                 </tr>
                 <tr>
-                    <th>Sangat Baik</th>
-                    <th>Baik</th>
-                    <th>Cukup</th>
-                    <th>Kurang</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.sangat_baik')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.baik')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.cukup')</th>
+                    <th>@lang('dashboard.tabel_header.skala_nilai.kurang')</th>
                 </tr>
             </thead>
             <tbody>

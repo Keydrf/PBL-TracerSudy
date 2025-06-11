@@ -42,11 +42,11 @@ return [
     ],
     
     'tabel_header' => [
-        'tahun_lulus' => 'Graduation Year',
-        'jumlah_lulusan' => 'Number of Graduates',
-        'lulusan_terlacak' => 'Number of Tracked Graduates',
-        'profesi_infokom' => 'Professions in Infokom Field',
-        'profesi_non_infokom' => 'Professions in Non-Infokom Field',
+        'tahun_lulus' => 'Graduation <br> Year',
+        'jumlah_lulusan' => 'Number of <br> Graduates',
+        'lulusan_terlacak' => 'Number of <br> Tracked <br> Graduates',
+        'profesi_infokom' => 'Professions <br> in Infocom <br> Field',
+        'profesi_non_infokom' => 'Professions in <br> Non-Infocom <br> Field',
         'lingkup_tempat_kerja' => 'Work Environment Scope',
         'program_studi' => 'Study Program',
         'rata_masa_tunggu' => 'Average Waiting Time (Months)',
@@ -54,7 +54,7 @@ return [
         'nilai_rata' => 'Average Score',
         'keterangan' => 'Description',
         'lingkup_tempat_kerja_detail' => [
-            'multinasional' => 'Multinational/International',
+            'multinasional' => 'Multinational/ <br> International',
             'nasional' => 'National',
             'wirausaha' => 'Entrepreneurship',
             'lokal' => 'Local',

@@ -42,11 +42,11 @@ return [
     ],
 
     'tabel_header' => [
-        'tahun_lulus' => 'Tahun Lulus',
-        'jumlah_lulusan' => 'Jumlah Lulusan',
-        'lulusan_terlacak' => 'Jumlah Lulusan yang Terlacak',
-        'profesi_infokom' => 'Profesi Kerja Bidang Infokom',
-        'profesi_non_infokom' => 'Profesi Kerja Bidang Non Infokom',
+        'tahun_lulus' => 'Tahun <br> Lulus',
+        'jumlah_lulusan' => 'Jumlah <br> Lulusan',
+        'lulusan_terlacak' => 'Jumlah <br> Lulusan <br> yang <br> Terlacak',
+        'profesi_infokom' => 'Profesi <br> Kerja <br> Bidang <br> Infokom',
+        'profesi_non_infokom' => 'Profesi <br> Kerja <br> Bidang <br> Non Infokom',
         'lingkup_tempat_kerja' => 'Lingkup Tempat Kerja',
         'program_studi' => 'Program Studi',
         'rata_masa_tunggu' => 'Rata-rata Masa Tunggu (Bulan)',
@@ -54,7 +54,7 @@ return [
         'nilai_rata' => 'Nilai Rata-rata',
         'keterangan' => 'Keterangan',
         'lingkup_tempat_kerja_detail' => [
-            'multinasional' => 'Multinasional/Internasional',
+            'multinasional' => 'Multinasional/ <br> Internasional',
             'nasional' => 'Nasional',
             'wirausaha' => 'Wirausaha',
             'lokal' => 'Lokal',
