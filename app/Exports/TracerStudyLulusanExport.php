@@ -24,6 +24,8 @@ class TracerStudyLulusanExport implements FromCollection, WithHeadings, WithStyl
     {
         $query = DB::table('survei_alumni')
             ->join('alumni', 'survei_alumni.nim', '=', 'alumni.nim')
+            ->join('profesi', 'survei_alumni.profesi_id', '=', 'profesi.profesi_id')
+            ->join('kategori_profesi', 'survei_alumni.kategori_id', '=', 'kategori_profesi.kategori_id')
             ->select(
                 'alumni.program_studi AS program_studi',
                 'survei_alumni.nim',
@@ -39,8 +41,8 @@ class TracerStudyLulusanExport implements FromCollection, WithHeadings, WithStyl
                 'survei_alumni.nama_instansi',
                 'survei_alumni.skala',
                 'survei_alumni.lokasi_instansi',
-                'survei_alumni.kategori_id AS kategori_profesi',
-                'survei_alumni.profesi_id AS profesi',
+                'kategori_profesi.nama_kategori AS kategori_profesi',
+                'profesi.nama_profesi AS profesi',
                 'survei_alumni.pendapatan',
                 'survei_alumni.alamat_kantor',
                 'survei_alumni.kabupaten',
