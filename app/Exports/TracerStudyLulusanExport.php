@@ -5,16 +5,19 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class TracerStudyLulusanExport implements FromCollection, WithHeadings
+class TracerStudyLulusanExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $startDate;
     protected $endDate;
 
     public function __construct($startDate = null, $endDate = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = $startDate . ' 00:00:00';
+        $this->endDate = $endDate . ' 23:59:59';
     }
 
     public function collection()
@@ -80,6 +83,25 @@ class TracerStudyLulusanExport implements FromCollection, WithHeadings
             'Jabatan Atasan Langsung',
             'No. HP Atasan Langsung',
             'Email Atasan Langsung'
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Baris pertama (header)
+            1 => [
+                'font' => [
+                    'bold' => true,
+                    'color' => ['argb' => 'FFFFFF'],
+                ],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FF0070C0',
+                    ],
+                ],
+            ],
         ];
     }
 }

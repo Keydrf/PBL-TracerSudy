@@ -5,16 +5,19 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class SurveyPenggunaLulusanExport implements FromCollection, WithHeadings
+class SurveyPenggunaLulusanExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $startDate;
     protected $endDate;
 
     public function __construct($startDate = null, $endDate = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = $startDate . ' 00:00:00';
+        $this->endDate = $endDate . ' 23:59:59';
     }
 
     public function collection()
@@ -66,6 +69,25 @@ class SurveyPenggunaLulusanExport implements FromCollection, WithHeadings
             'Etos Kerja',
             'Kompetensi yang dibutuhkan tapi belum dapat dipenuhi',
             'Saran untuk kurikulum program studi'
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Baris pertama (header)
+            1 => [
+                'font' => [
+                    'bold' => true,
+                    'color' => ['argb' => 'FFFFFF'],
+                ],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'FF0070C0',
+                    ],
+                ],
+            ],
         ];
     }
 }
