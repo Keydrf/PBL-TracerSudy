@@ -67,8 +67,8 @@
                             <div class="brand-logo">
                                 <img src="{{ asset('TemplateAdmin/TEDB1.PNG') }}" alt="logo">
                             </div>
-                            <h4>Hello! let's get started</h4>
-                            <h6 class="fw-light">Sign in to continue.</h6>
+                            <h4>Selamat datang! </h4>
+                            <h6 class="fw-light">Silahkan login terlebih dahulu</h6>
                             <form action="{{ url('login') }}" method="POST" id="form-login" class="pt-3">
                                 @csrf
                                 <div class="form-group">
