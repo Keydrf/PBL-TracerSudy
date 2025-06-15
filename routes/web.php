@@ -91,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/dashboard', [DashboardController::class, 'index']);
     //Route::get('/api/alumni-data', [AlumniDataController::class, 'getAlumniData']);
     // Level Management Routes (Super Admin Only)
-    Route::middleware(['authorize:superadmin'])->controller(LevelController::class)->group(function () {
+    Route::middleware(['authorize:'])->controller(LevelController::class)->group(function () {
         Route::prefix('level')->group(function () {
             Route::get('/', 'index');
             Route::post('/list', 'list');
